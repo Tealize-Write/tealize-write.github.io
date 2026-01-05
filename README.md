@@ -1,2 +1,2 @@
 # Tealize
-Tealize個人網站
+兌現藍的幻想基地
