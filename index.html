@@ -10,7 +10,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Noto+Sans+TC:wght@300;400;700&family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet" />
-
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
   <style>
@@ -170,7 +169,6 @@
       100% { opacity: 0.35; transform: scale(1.2) translateY(-20px); }
     }
 
-    /* Canvas particles */
     #particlesCanvas {
       position: fixed;
       inset: 0;
@@ -178,7 +176,7 @@
       pointer-events: none;
     }
 
-    /* Cursor: only for fine pointers */
+    /* Cursor */
     body[data-cursor="on"] { cursor: none; }
     body[data-cursor="on"] a,
     body[data-cursor="on"] button { cursor: none; }
@@ -245,14 +243,20 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 4.5rem;
       margin: 0 auto 2rem;
       background: linear-gradient(135deg, #0f172a, #1e293b);
       box-shadow: 0 0 40px rgba(0, 242, 254, 0.5), inset 0 0 20px rgba(0, 242, 254, 0.1);
       position: relative;
       z-index: 2;
       animation: avatarFloat 6s ease-in-out infinite;
-      will-change: transform;
+      overflow: hidden; /* 防止圖片溢出圓形 */
+    }
+
+    .avatar-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
 
     @keyframes avatarFloat {
@@ -282,7 +286,6 @@
       position: relative;
       display: inline-block;
       animation: nameGlow 3s ease-in-out infinite;
-      will-change: text-shadow;
     }
 
     @keyframes nameGlow {
@@ -376,7 +379,6 @@
       box-shadow: var(--shadow-2);
       opacity: 0;
       animation: fadeUpDecode 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-      will-change: transform, box-shadow;
     }
 
     .glass-panel::before {
@@ -440,7 +442,6 @@
       color: var(--accent-color);
       filter: drop-shadow(0 0 8px var(--accent-color));
       animation: iconFloat 3s ease-in-out infinite;
-      will-change: transform;
     }
 
     @keyframes iconFloat {
@@ -448,7 +449,6 @@
       50% { transform: translateY(-5px); }
     }
 
-    /* Quote */
     .quote {
       border-left: 4px solid var(--accent-color);
       padding: 18px 30px;
@@ -489,7 +489,6 @@
       background: #000;
       box-shadow: var(--shadow-1);
       transform-style: preserve-3d;
-      will-change: transform, box-shadow;
     }
 
     .img-wrap {
@@ -504,7 +503,6 @@
       object-fit: cover;
       transition: transform 0.7s var(--ease-pop), filter 0.7s var(--ease-smooth);
       filter: grayscale(40%) contrast(1.1) brightness(0.9);
-      will-change: transform, filter;
     }
 
     .overlay {
@@ -888,7 +886,7 @@
       <header class="hero">
         <div class="avatar-visual" aria-label="Avatar">
           <div class="avatar-ring" aria-hidden="true"></div>
-          🦎
+          <img id="avatar-img" src="avatar_white.jpg" alt="Avatar">
         </div>
         <h1 class="glitch-name" data-text="兌現藍">兌現藍</h1>
 
@@ -1070,21 +1068,6 @@
             <span class="kwd">def</span> <span class="func">cast_magic</span>(text):<br />
             &nbsp;&nbsp;<span class="kwd">if</span> meme <span class="kwd">in</span> text:<br />
             &nbsp;&nbsp;&nbsp;&nbsp;<span class="kwd">return</span> <span class="str">"Reality_Distortion"</span>
-			<h3>字命覺醒 Word-Life Awakening</h3>
-            <p>無論是創作、迷因、傳說都能產生魔法的校園奇幻作品。</p>
-<div class="code-block">
-                <span class="keyword">import</span> magic <span class="keyword">as</span> mg<br>
-                <span class="keyword">from</span> world <span class="keyword">import</span> meme, legend<br><br>
-                <span class="keyword">def</span> <span class="func">cast_spell</span>(text):<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"""將文字轉化為現實干涉力"""</span><br>
-                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> mg.execute(text)<br><br>
-                <span class="keyword"># 最新進度：第二集已生成</span>
-            </div>
-
-            <p style="font-size: 0.9rem; color: #888;">
-                特色：創作魔法的設定看起來就像呼叫程式函式？沒錯，因為我喜歡 Python。
-                想看迷因、傳說、推理大亂鬥，請參閱本專案。
-            </p>
           </div>
           <a href="https://www.kadokado.com.tw/book/1425" target="_blank" rel="noopener noreferrer" class="code-link">Vol.1_Link</a>
           <a href="https://www.kadokado.com.tw/book/42308" target="_blank" rel="noopener noreferrer" class="code-link">Vol.2_Link</a>
@@ -1107,11 +1090,6 @@
             <span class="kwd" style="color: #ff5555;">while</span> <span class="kwd" style="color: #ff5555;">True</span>:<br />
             &nbsp;&nbsp;truth = <span class="func" style="color: #ff8888;">reverse</span>(reality)<br />
             &nbsp;&nbsp;<span class="kwd" style="color: #ff5555;">if</span> truth == <span class="str" style="color: #ffaaaa;">"BLOOD"</span>: <span class="kwd" style="color: #ff5555;">break</span>
-<h3>反轉的真實 The Reversed Truth</h3>
-            <p>台灣本土恐怖 RPG 系列。偶爾降落分享美術進度與關卡設計。</p>
-            <p style="margin-top: 1rem; color: #666; font-style: italic;">
-                ⚠️ 警告：包含大量紅色顏料與精神污染（開玩笑的，但也許不是）。
-            </p>
           </div>
 
           <a href="https://responselessaircra.wixsite.com/x-destroyer" target="_blank" rel="noopener noreferrer"
@@ -1170,6 +1148,12 @@
         const isVisual = html.getAttribute("data-mode") === "visual";
         modeIcon.className = isVisual ? "fa-solid fa-terminal" : "fa-solid fa-palette";
         themeBtn.style.display = isVisual ? "inline-flex" : "none";
+
+        // Update Avatar
+        const avatarImg = document.getElementById("avatar-img");
+        if (avatarImg) {
+            avatarImg.src = isDark ? "avatar_white.jpg" : "avatar_black.jpg";
+        }
       }
       syncIcons();
 
