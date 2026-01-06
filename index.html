@@ -12,8 +12,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Noto+Sans+TC:wght@300;400;700&family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
-  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
   <style>
     :root {
       --bg-color: #030507;
@@ -48,6 +46,7 @@
       --glass-shine: rgba(255, 255, 255, 0.6);
     }
 
+    /* 程式版變數覆蓋：讓全域游標變色 */
     [data-mode="code"] {
         --accent-color: var(--code-green);
         --bg-color: var(--code-bg);
@@ -62,286 +61,894 @@
       line-height: 1.7;
       overflow-x: hidden;
       min-height: 100vh;
-      /* 隱藏預設游標 */
-      cursor: none;
       transition: background-color 0.6s var(--ease-smooth), color 0.6s var(--ease-smooth);
     }
 
-    a, button, input { cursor: none; }
+    a { color: inherit; }
+    a, button { -webkit-tap-highlight-color: transparent; }
 
-    /* ===== 1. Preloader ===== */
-    #loader {
-      position: fixed; inset: 0; background: #000; z-index: 99999;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      transition: opacity 0.8s ease, visibility 0.8s ease;
+    /* ===== Focus ===== */
+    :focus-visible {
+      outline: 2px solid var(--accent-color);
+      outline-offset: 4px;
     }
-    .loader-text {
-      font-family: 'Orbitron'; color: var(--accent-color); font-size: 1.5rem; letter-spacing: 3px; margin-bottom: 20px;
-      animation: pulseText 1.5s infinite alternate;
-    }
-    .loader-bar { width: 200px; height: 2px; background: #333; position: relative; overflow: hidden; }
-    .loader-bar::after {
-      content: ''; position: absolute; top: 0; left: 0; height: 100%; width: 50%;
-      background: var(--accent-color); animation: loadBar 1.5s infinite linear;
-    }
-    @keyframes loadBar { 0% { left: -50%; } 100% { left: 100%; } }
-    @keyframes pulseText { 0% { opacity: 0.5; } 100% { opacity: 1; text-shadow: 0 0 15px var(--accent-color); } }
-    .loaded #loader { opacity: 0; visibility: hidden; }
 
-    /* ===== 2. Control Panel ===== */
+    /* ===== Control Panel ===== */
     .control-panel {
-      position: fixed; top: 20px; right: 20px; z-index: 2000;
-      display: flex; gap: 15px; opacity: 0; transform: translateY(-20px);
-      transition: opacity 0.5s 0.5s, transform 0.5s 0.5s;
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 2000;
+      display: flex;
+      gap: 15px;
     }
-    .loaded .control-panel { opacity: 1; transform: translateY(0); }
 
     .control-btn {
-      width: 50px; height: 50px; border-radius: 999px;
+      width: 50px;
+      height: 50px;
+      border-radius: 999px;
       border: 2px solid var(--accent-color);
-      background: rgba(0, 0, 0, 0.4); color: var(--accent-color);
-      font-size: 1.3rem; display: inline-flex; align-items: center; justify-content: center;
-      backdrop-filter: blur(10px); transition: 0.3s;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    }
-    .control-btn:hover {
-      transform: scale(1.1) rotate(10deg);
-      background: var(--accent-color); color: var(--bg-color);
-      box-shadow: 0 0 20px var(--accent-color);
+      background: rgba(0, 0, 0, 0.4);
+      color: var(--accent-color);
+      font-size: 1.3rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(10px);
+      transition: transform 0.4s var(--ease-pop), box-shadow 0.4s var(--ease-smooth), background 0.4s var(--ease-smooth), color 0.4s var(--ease-smooth), border-color 0.4s var(--ease-smooth);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
     }
 
-    /* ===== 3. Modes ===== */
-    .view-mode {
-      position: fixed; /* 使用 fixed 讓各自擁有捲軸 */
+    .control-btn::before {
+      content: "";
+      position: absolute;
       inset: 0;
-      opacity: 1; visibility: visible;
-      overflow-y: auto; /* 內部捲動 */
-      -webkit-overflow-scrolling: touch;
-      transition: opacity 0.5s var(--ease-smooth), visibility 0.5s var(--ease-smooth);
+      background: var(--accent-color);
+      opacity: 0;
+      transition: opacity 0.3s var(--ease-smooth);
     }
-    .view-mode.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
 
-    /* Visual Mode Styles */
+    .control-btn i {
+      position: relative;
+      z-index: 1;
+      transition: transform 0.4s var(--ease-pop), color 0.4s var(--ease-smooth);
+    }
+
+    .control-btn:hover {
+      transform: scale(1.12) rotate(4deg);
+      box-shadow: 0 0 30px color-mix(in oklab, var(--accent-color) 70%, transparent);
+    }
+    .control-btn:hover::before { opacity: 1; }
+    .control-btn:hover i { color: var(--bg-color); transform: rotate(-4deg) scale(1.08); }
+
+    /* ===== Modes (smooth) ===== */
+    .view-mode {
+      position: fixed;
+      inset: 0;
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transition: opacity 0.5s var(--ease-smooth), visibility 0.5s var(--ease-smooth);
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .view-mode.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    /* ===== Visual Mode ===== */
     #visual-mode { background: var(--bg-color); }
-    
+
     .scan-lines {
-      position: fixed; inset: 0; pointer-events: none; z-index: 900;
-      background: repeating-linear-gradient(0deg, rgba(0,0,0,0.1), rgba(0,0,0,0.1) 1px, transparent 1px, transparent 3px);
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 900;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.15),
+        rgba(0, 0, 0, 0.15) 1px,
+        transparent 1px,
+        transparent 2px
+      );
       opacity: 0.2;
     }
+
     .bg-glow {
-      position: fixed; inset: 0; z-index: -2;
-      background: radial-gradient(circle at 50% 50%, var(--accent-glow) 0%, transparent 60%);
-      opacity: 0.15; filter: blur(100px);
-      animation: pulseGlow 15s ease-in-out infinite alternate;
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background: radial-gradient(circle at 50% 30%, var(--accent-glow) 0%, transparent 70%);
+      opacity: 0.2;
+      filter: blur(120px);
+      animation: pulseGlow 10s ease-in-out infinite alternate;
+      will-change: transform, opacity;
     }
-    @keyframes pulseGlow { 0% { opacity: 0.1; } 100% { opacity: 0.25; } }
-    
-    #particlesCanvas { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+
+    @keyframes pulseGlow {
+      0% { opacity: 0.2; transform: scale(1) translateY(0); }
+      100% { opacity: 0.35; transform: scale(1.2) translateY(-20px); }
+    }
+
+    #particlesCanvas {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+    }
 
     /* Cursor */
-    .cursor-dot {
-      width: 10px; height: 10px; background: var(--accent-color);
-      border-radius: 50%; position: fixed; z-index: 10001; pointer-events: none;
-      transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s;
-      box-shadow: 0 0 10px var(--accent-color); mix-blend-mode: screen;
-    }
-    .cursor-outline {
-      width: 40px; height: 40px; border: 1.5px solid var(--accent-color);
-      border-radius: 50%; position: fixed; z-index: 10000; pointer-events: none;
-      transform: translate(-50%, -50%); transition: width 0.3s, height 0.3s, border-color 0.3s;
-    }
-    .cursor-active .cursor-dot { width: 15px; height: 15px; }
-    .cursor-active .cursor-outline { width: 60px; height: 60px; background: rgba(0, 242, 254, 0.1); }
+    body[data-cursor="on"] { cursor: none; }
+    body[data-cursor="on"] a,
+    body[data-cursor="on"] button { cursor: none; }
 
-    /* Layout */
-    .container-visual { max-width: 1100px; margin: 0 auto; padding: 100px 25px; perspective: 1000px; }
-    
-    /* Header */
-    .hero { text-align: center; margin-bottom: 6rem; opacity: 0; transform: translateY(20px); transition: 1s ease; }
-    .loaded .hero { opacity: 1; transform: translateY(0); }
-    
+    .cursor-dot {
+      width: 12px;
+      height: 12px;
+      background-color: var(--accent-color);
+      box-shadow: 0 0 25px var(--accent-color), 0 0 15px #fff;
+      position: fixed;
+      border-radius: 50%;
+      z-index: 10001;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      transition: width 0.2s var(--ease-smooth), height 0.2s var(--ease-smooth), background-color 0.3s var(--ease-smooth);
+      mix-blend-mode: screen;
+      will-change: left, top, width, height;
+    }
+
+    .cursor-outline {
+      width: 45px;
+      height: 45px;
+      border: 2px solid var(--accent-color);
+      position: fixed;
+      border-radius: 50%;
+      z-index: 10000;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      animation: cursorPulse 2.5s var(--ease-smooth) infinite;
+      box-shadow: 0 0 15px var(--glass-border);
+      transition: width 0.3s var(--ease-smooth), height 0.3s var(--ease-smooth);
+      will-change: left, top, width, height, opacity, transform;
+    }
+
+    @keyframes cursorPulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.4; }
+      50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.7; }
+    }
+
+    .cursor-active .cursor-dot { width: 20px; height: 20px; }
+    .cursor-active .cursor-outline { width: 60px; height: 60px; }
+
+    .container-visual {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 100px 30px;
+      perspective: 1200px;
+    }
+
+    /* Hero */
+    .hero { text-align: center; margin-bottom: 6rem; }
+    .hero-sub {
+      color: var(--text-sub);
+      font-family: "Orbitron";
+      letter-spacing: 2px;
+      font-size: 1.1rem;
+    }
+
     .avatar-visual {
-      width: 140px; height: 140px; border-radius: 50%;
-      border: 3px solid var(--accent-color); margin: 0 auto 2rem;
-      background: #0f172a; position: relative; z-index: 2; overflow: hidden;
-      box-shadow: 0 0 30px rgba(0, 242, 254, 0.3);
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      border: 3px solid var(--accent-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 2rem;
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      box-shadow: 0 0 40px rgba(0, 242, 254, 0.5), inset 0 0 20px rgba(0, 242, 254, 0.1);
+      position: relative;
+      z-index: 2;
+      animation: avatarFloat 6s ease-in-out infinite;
+      overflow: hidden;
     }
-    .avatar-visual img { width: 100%; height: 100%; object-fit: cover; }
-    
+
+    .avatar-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    @keyframes avatarFloat {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(5deg); }
+    }
+
+    .avatar-ring {
+      position: absolute;
+      top: -15px; left: -15px; right: -15px; bottom: -15px;
+      border: 2px dashed var(--accent-color);
+      border-radius: 50%;
+      animation: spin 25s linear infinite;
+      opacity: 0.4;
+      z-index: -1;
+    }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+
     .glitch-name {
-      font-family: 'Orbitron'; font-size: 4rem; font-weight: 900; letter-spacing: 4px;
-      color: var(--text-main); margin-bottom: 20px; display: inline-block;
-      text-shadow: 3px 3px 0 #ff0055, -3px -3px 0 #00f2fe;
-      animation: glitchSkew 3s infinite linear alternate-reverse;
+      font-family: "Orbitron";
+      font-size: 4.5rem;
+      font-weight: 900;
+      letter-spacing: 5px;
+      color: var(--text-main);
+      text-shadow: 3px 3px 0px #ff0055, -3px -3px 0px #00f2fe;
+      margin-bottom: 20px;
+      position: relative;
+      display: inline-block;
+      animation: nameGlow 3s ease-in-out infinite;
     }
-    @keyframes glitchSkew {
-      0% { transform: skew(0deg); } 20% { transform: skew(-2deg); } 40% { transform: skew(2deg); } 60% { transform: skew(0deg); } 80% { transform: skew(1deg); } 100% { transform: skew(0deg); }
+
+    @keyframes nameGlow {
+      0%, 100% { text-shadow: 3px 3px 0px #ff0055, -3px -3px 0px #00f2fe; }
+      50% { text-shadow: 5px 5px 5px #ff0055, -5px -5px 5px #00f2fe; }
+    }
+
+    .glitch-name::before,
+    .glitch-name::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
+    .glitch-name::before {
+      color: #ff0055;
+      z-index: -1;
+      animation: glitch-anim-1 2.5s infinite linear alternate-reverse;
+    }
+    .glitch-name::after {
+      color: #00f2fe;
+      z-index: -2;
+      animation: glitch-anim-2 3.5s infinite linear alternate-reverse;
+    }
+
+    @keyframes glitch-anim-1 {
+      0% { clip-path: inset(20% 0 80% 0); transform: translate(-3px, 2px); }
+      100% { clip-path: inset(60% 0 10% 0); transform: translate(3px, -2px); }
+    }
+    @keyframes glitch-anim-2 {
+      0% { clip-path: inset(10% 0 60% 0); transform: translate(3px, 2px); }
+      100% { clip-path: inset(80% 0 5% 0); transform: translate(-3px, -2px); }
     }
 
     .tags { margin-bottom: 25px; }
+
     .neon-tag {
-      padding: 6px 18px; border-radius: 6px; border: 1px solid var(--accent-color);
-      color: var(--accent-color); font-family: 'Orbitron'; font-size: 0.8rem;
-      background: rgba(0, 242, 254, 0.05); margin: 5px; display: inline-block;
-      transition: 0.3s;
+      padding: 8px 20px;
+      border-radius: 8px;
+      border: 1.5px solid var(--accent-color);
+      color: var(--accent-color);
+      font-family: "Orbitron";
+      font-size: 0.8rem;
+      background: rgba(0, 242, 254, 0.05);
+      margin: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 0 8px rgba(0, 242, 254, 0.15);
+      transition: all 0.4s var(--ease-pop);
+      position: relative;
+      overflow: hidden;
+      text-decoration: none;
     }
-    .neon-tag:hover { background: var(--accent-color); color: var(--bg-color); box-shadow: 0 0 15px var(--accent-color); }
 
-    /* Glass Panels */
+    .neon-tag::before {
+      content: "";
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 0; height: 0;
+      border-radius: 50%;
+      background: var(--accent-color);
+      transform: translate(-50%, -50%);
+      transition: width 0.4s var(--ease-smooth), height 0.4s var(--ease-smooth);
+      z-index: -1;
+    }
+
+    .neon-tag:hover {
+      color: var(--bg-color);
+      box-shadow: 0 0 25px var(--accent-color);
+      transform: translateY(-3px) scale(1.05);
+      border-color: transparent;
+    }
+    .neon-tag:hover::before { width: 220%; height: 220%; }
+
+    /* Glass panels */
     .glass-panel {
-      background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--glass-border); border-radius: 20px; padding: 3rem;
-      margin-bottom: 4rem; position: relative; overflow: hidden;
-      box-shadow: var(--shadow-1);
-      transition: transform 0.4s, border-color 0.4s, box-shadow 0.4s;
-    }
-    .glass-panel:hover {
-      transform: translateY(-8px); border-color: var(--accent-color);
-      box-shadow: 0 20px 60px -10px rgba(0, 242, 254, 0.2);
-    }
-    
-    .section-title {
-      font-family: 'Orbitron'; font-size: 2rem; color: var(--text-main); margin-bottom: 2rem;
-      display: flex; align-items: center; gap: 15px; font-weight: 700; text-transform: uppercase;
-    }
-    .section-title i { color: var(--accent-color); text-shadow: 0 0 10px var(--accent-color); }
-    
-    .quote {
-      border-left: 4px solid var(--accent-color); padding: 15px 25px; color: var(--text-sub);
-      font-style: italic; background: linear-gradient(90deg, rgba(0,242,254,0.05), transparent);
-      margin-bottom: 2rem;
+      background: var(--glass-bg);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 3rem;
+      margin-bottom: 4rem;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.5s var(--ease-pop);
+      box-shadow: var(--shadow-2);
+      opacity: 0;
+      animation: fadeUpDecode 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
     }
 
-    /* Grids & Cards */
-    .book-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 25px; }
-    .game-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; margin-top: 30px;}
+    .glass-panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        var(--glass-shine) 0%,
+        transparent 60%
+      );
+      opacity: 0;
+      transition: opacity 0.4s var(--ease-smooth);
+      pointer-events: none;
+      z-index: 1;
+      mix-blend-mode: overlay;
+    }
+
+    .glass-panel::after {
+      content: "";
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+      transition: left 0.6s var(--ease-smooth);
+    }
+
+    .glass-panel:hover {
+      transform: translateY(-12px) rotateX(2deg);
+      border-color: var(--accent-color);
+      box-shadow: 0 30px 80px -20px rgba(0, 242, 254, 0.3);
+    }
+    .glass-panel:hover::before { opacity: 1; }
+    .glass-panel:hover::after { left: 100%; }
+
+    .glass-panel:nth-of-type(1) { animation-delay: 0.10s; }
+    .glass-panel:nth-of-type(2) { animation-delay: 0.25s; }
+    .glass-panel:nth-of-type(3) { animation-delay: 0.40s; }
+
+    @keyframes fadeUpDecode {
+      0% { opacity: 0; transform: translateY(40px) scale(0.96); filter: blur(10px); }
+      100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+    }
+
+    .section-title {
+      font-family: "Orbitron";
+      font-size: 2rem;
+      color: var(--text-main);
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-weight: 700;
+      text-transform: uppercase;
+      text-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+      position: relative;
+      z-index: 2;
+    }
+
+    .section-title i {
+      color: var(--accent-color);
+      filter: drop-shadow(0 0 8px var(--accent-color));
+      animation: iconFloat 3s ease-in-out infinite;
+    }
+
+    @keyframes iconFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+
+    .quote {
+      border-left: 4px solid var(--accent-color);
+      padding: 18px 30px;
+      color: var(--text-sub);
+      font-style: italic;
+      background: linear-gradient(90deg, rgba(0, 242, 254, 0.08), transparent);
+      margin-bottom: 2rem;
+      font-size: 1.05rem;
+      position: relative;
+      overflow: hidden;
+      border-radius: 0 8px 8px 0;
+    }
+    .quote::after {
+      content: "";
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 100%; height: 2px;
+      background: linear-gradient(90deg, var(--accent-color), transparent);
+      opacity: 0.5;
+    }
+
+    /* Cards */
+    .book-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 30px;
+      margin-top: 35px;
+    }
 
     .link-card {
-      display: block; position: relative; border-radius: 12px; overflow: hidden;
-      border: 1px solid var(--glass-border); background: #000; transition: 0.4s;
+      display: block;
+      position: relative;
+      text-decoration: none;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--glass-border);
+      transition: all 0.5s var(--ease-pop);
+      background: #000;
+      box-shadow: var(--shadow-1);
+      transform-style: preserve-3d;
     }
-    .img-wrap { position: relative; overflow: hidden; aspect-ratio: 2/3; }
-    .game-grid .img-wrap { aspect-ratio: 16/9; } /* Game wide ratio */
-    
+
+    .img-wrap {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 2 / 3;
+    }
+
     .img-wrap img {
-      width: 100%; height: 100%; object-fit: cover;
-      transition: 0.6s; filter: grayscale(30%) brightness(0.8);
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.7s var(--ease-pop), filter 0.7s var(--ease-smooth);
+      filter: grayscale(40%) contrast(1.1) brightness(0.9);
     }
-    .link-card:hover { transform: translateY(-5px); border-color: var(--accent-color); box-shadow: 0 10px 30px rgba(0,242,254,0.2); }
-    .link-card:hover img { filter: grayscale(0%) brightness(1.1); transform: scale(1.08); }
-    
+
     .overlay {
-      position: absolute; inset: 0; background: rgba(0,0,0,0.6);
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      opacity: 0; transition: 0.3s;
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(0, 242, 254, 0.4), rgba(79, 172, 254, 0.4));
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.5s var(--ease-smooth);
+      backdrop-filter: blur(5px);
     }
+
+    .overlay i {
+      font-size: 2.5rem;
+      color: #fff;
+      margin-bottom: 15px;
+      transform: translateY(30px) scale(0.8);
+      transition: transform 0.5s var(--ease-pop);
+      text-shadow: 0 0 20px var(--accent-color);
+    }
+
+    .overlay span {
+      font-family: "Orbitron";
+      font-weight: bold;
+      color: #fff;
+      letter-spacing: 3px;
+      transform: translateY(30px) scale(0.8);
+      transition: transform 0.5s var(--ease-pop) 0.1s;
+      font-size: 1rem;
+      text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    }
+
+    .link-card:hover {
+      transform: translateY(-10px) scale(1.03) rotateY(3deg);
+      border-color: var(--accent-color);
+      box-shadow: 0 20px 50px rgba(0, 242, 254, 0.3);
+      z-index: 10;
+    }
+
+    .link-card:hover .img-wrap img {
+      transform: scale(1.15) rotate(2deg);
+      filter: grayscale(0%) contrast(1.3) brightness(1.1);
+    }
+
     .link-card:hover .overlay { opacity: 1; }
-    .overlay span { font-family: 'Orbitron'; color: #fff; letter-spacing: 2px; margin-top: 10px; font-weight: bold; }
-    .overlay i { font-size: 2rem; color: var(--accent-color); }
+    .link-card:hover .overlay i,
+    .link-card:hover .overlay span { transform: translateY(0) scale(1); }
 
     .book-label {
-      padding: 12px; text-align: center; font-family: 'Orbitron'; font-size: 0.9rem;
-      background: rgba(10, 15, 25, 0.9); color: var(--accent-color); border-top: 1px solid var(--glass-border);
+      background: rgba(5, 10, 20, 0.95);
+      color: var(--accent-color);
+      padding: 15px;
+      text-align: center;
+      font-size: 0.9rem;
+      font-family: "Orbitron";
+      letter-spacing: 1.5px;
+      border-top: 1px solid var(--glass-border);
+      position: relative;
+      z-index: 2;
+      transition: background 0.3s var(--ease-smooth), color 0.3s var(--ease-smooth);
     }
-    .link-card:hover .book-label { background: var(--accent-color); color: #000; }
+    .link-card:hover .book-label { background: var(--accent-color); color: var(--bg-color); }
 
-    /* Novel Layout */
-    .novel-layout { display: flex; gap: 40px; flex-wrap: wrap; }
-    .novel-cover-link { flex: 1 1 300px; max-width: 360px; display: block; border-radius: 16px; overflow: hidden; border: 1px solid var(--glass-border); position: relative; transition: 0.4s; }
-    .novel-cover-link img { width: 100%; display: block; transition: 0.6s; filter: grayscale(20%); }
-    .novel-cover-link:hover { transform: translateY(-5px); border-color: var(--accent-color); box-shadow: 0 10px 40px rgba(0,242,254,0.2); }
-    .novel-cover-link:hover img { filter: grayscale(0%); transform: scale(1.05); }
+    /* New release layout */
+    .novel-layout {
+      display: flex;
+      gap: 50px;
+      flex-wrap: wrap;
+      align-items: stretch;
+    }
+
+    .novel-cover-link {
+      flex: 1 1 320px;
+      max-width: 380px;
+      text-decoration: none;
+      display: block;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--glass-border);
+      position: relative;
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5);
+      transition: all 0.5s var(--ease-pop);
+    }
+
+    .novel-cover-link img {
+      width: 100%;
+      display: block;
+      transition: transform 0.7s var(--ease-pop), filter 0.7s var(--ease-smooth);
+      filter: grayscale(20%) brightness(0.9);
+    }
+
+    .novel-cover-link:hover {
+      transform: scale(1.03) translateY(-10px);
+      border-color: var(--accent-color);
+      box-shadow: 0 0 40px rgba(0, 242, 254, 0.3);
+    }
+    .novel-cover-link:hover img { filter: grayscale(0%) brightness(1.1); transform: scale(1.08); }
+
     .novel-overlay {
-      position: absolute; inset: 0; background: rgba(0,0,0,0.3); opacity: 0; transition: 0.3s;
-      display: flex; align-items: center; justify-content: center;
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+      opacity: 0;
+      transition: opacity 0.4s var(--ease-smooth);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 35px;
     }
     .novel-cover-link:hover .novel-overlay { opacity: 1; }
-    .novel-info { flex: 2 1 300px; display: flex; flex-direction: column; justify-content: center; }
 
-    /* Game Buttons */
-    .game-links-container { display: flex; gap: 15px; margin-bottom: 25px; flex-wrap: wrap; }
+    .novel-info {
+      flex: 2 1 350px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .muted {
+      color: var(--text-sub);
+      margin-bottom: 1.5rem;
+      font-size: 1.05rem;
+    }
+
+    /* 遊戲圖片區塊：改回網格 (Game Grid) 以縮小圖片尺寸 */
+    .game-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-top: 35px;
+    }
+    .game-grid .img-wrap { aspect-ratio: 16 / 9; }
+
+    /* Game External Links Container */
+    .game-links-container {
+        display: flex;
+        gap: 15px;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    
+    /* Game External Buttons (Wide & Visible) */
     .game-external-btn {
-      flex: 1; min-width: 140px; padding: 12px; text-align: center; border-radius: 8px;
-      border: 1px solid var(--accent-color); color: var(--accent-color); text-decoration: none;
-      font-family: 'Orbitron'; font-weight: bold; background: rgba(0, 242, 254, 0.05); transition: 0.3s;
-      display: flex; align-items: center; justify-content: center; gap: 8px;
+        flex: 1;
+        padding: 12px;
+        text-align: center;
+        border: 2px solid var(--accent-color);
+        color: var(--accent-color);
+        text-decoration: none;
+        font-family: 'Orbitron', sans-serif;
+        font-weight: bold;
+        transition: 0.3s;
+        background: rgba(0, 242, 254, 0.05);
+        border-radius: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        font-size: 1.1rem;
+        box-shadow: 0 0 10px rgba(0, 242, 254, 0.1);
     }
-    .game-external-btn:hover { background: var(--accent-color); color: var(--bg-color); box-shadow: 0 0 20px var(--accent-color); transform: translateY(-3px); }
+    .game-external-btn i {
+        font-size: 1.2rem;
+    }
+    .game-external-btn:hover {
+        background: var(--accent-color);
+        color: var(--bg-color);
+        box-shadow: 0 0 25px var(--accent-color);
+        transform: translateY(-3px);
+    }
 
-    /* CTA Button (修正手機顯示與文字顏色) */
+    /* CTA Button (修正文字消失與樣式問題) */
     .cta-btn {
-      display: inline-flex; align-items: center; justify-content: center; gap: 12px;
-      padding: 15px 40px; border-radius: 50px; text-decoration: none;
-      background: rgba(0,0,0,0.4); border: 2px solid var(--accent-color); color: var(--accent-color);
-      font-size: 1.1rem; font-weight: bold; transition: 0.3s; margin-top: 20px;
-      box-shadow: 0 0 10px rgba(0,242,254,0.2); z-index: 5; position: relative;
+      width: auto;
+      height: auto;
+      padding: 12px 40px;
+      border-radius: 999px; /* 與 control-btn 保持圓潤感 */
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      font-size: 1rem;
+      margin-top: 20px;
+      background: rgba(0, 0, 0, 0.4);
+      color: var(--accent-color);
+      border: 2px solid var(--accent-color);
+      backdrop-filter: blur(10px);
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1), background 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      z-index: 1; /* 確保文字可見 */
     }
-    .cta-btn:hover { background: var(--accent-color); color: var(--bg-color); box-shadow: 0 0 30px var(--accent-color); transform: scale(1.05); }
+
+    .cta-btn::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: var(--accent-color);
+      opacity: 0;
+      transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: -1; /* 確保背景在文字後面 */
+    }
+
+    .cta-btn i {
+      position: relative;
+      z-index: 2;
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .cta-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 30px color-mix(in oklab, var(--accent-color) 70%, transparent);
+      color: var(--bg-color); /* Hover 文字變深色 */
+    }
+    .cta-btn:hover::before { opacity: 1; }
+    .cta-btn:hover i { color: var(--bg-color); }
 
     .footer-visual {
-      text-align: center; margin-top: 6rem; padding-top: 3rem; margin-bottom: 2rem;
-      border-top: 1px solid var(--glass-border); color: var(--text-sub);
-      font-size: 0.85rem; font-family: "Orbitron";
+      text-align: center;
+      margin-top: 6rem;
+      padding-top: 3rem;
+      border-top: 1px solid var(--glass-border);
+      color: var(--text-sub);
+      font-size: 0.85rem;
+      font-family: "Orbitron";
     }
 
     /* ===== Code Mode ===== */
     #code-mode {
-      background-color: var(--code-bg); color: var(--code-text);
-      font-family: 'JetBrains Mono', monospace;
+      background-color: var(--code-bg);
+      color: var(--code-text);
+      font-family: "JetBrains Mono", monospace;
     }
-    
-    /* 縮減 Code Mode 上方間距，避免看起來像卡住 */
-    .container-code { max-width: 1000px; margin: 0 auto; padding: 50px 25px 100px; position: relative; z-index: 3; }
-    
-    .terminal-header { margin-bottom: 2.5rem; border-bottom: 1px dashed #444; padding-bottom: 1.5rem; }
-    .cmd-line { color: var(--code-green); margin-bottom: 10px; }
-    .code-h1 { font-size: 2.5rem; color: #fff; margin-bottom: 1rem; }
-    .code-block-styled {
-      background: #111; padding: 15px; border-radius: 4px; border-left: 3px solid var(--code-green);
-      margin: 15px 0; font-size: 0.95rem; overflow-x: auto; border: 1px solid #333;
-    }
-    .kwd { color: #cc7832; } .str { color: #6a8759; } .func { color: #ffc66d; } .comment { color: #666; font-style: italic; }
-    
-    .code-project { margin-bottom: 3rem; padding-left: 20px; border-left: 1px solid #333; }
-    .code-h2 { font-size: 1.4rem; color: var(--code-green); margin-bottom: 1rem; font-weight: bold; }
-    .code-link {
-      display: inline-block; padding: 8px 20px; border: 1px solid #666; color: #ccc;
-      text-decoration: none; margin-right: 10px; margin-top: 10px; font-size: 0.9rem; transition: 0.2s;
-      background: #1a1a1a;
-    }
-    .code-link:hover { border-color: var(--code-green); background: var(--code-green); color: #000; }
 
-    /* CRT Effect */
     #code-mode::before {
-        content: " "; display: block; position: fixed; inset: 0; z-index: 2; pointer-events: none; opacity: 0.2;
-        background: linear-gradient(rgba(18,16,16,0) 50%, rgba(0,0,0,0.25) 50%), linear-gradient(90deg, rgba(255,0,0,0.06), rgba(0,255,0,0.02), rgba(0,0,255,0.06));
-        background-size: 100% 2px, 3px 100%;
+      content: " ";
+      display: block;
+      position: fixed;
+      inset: 0;
+      background:
+        linear-gradient(rgba(18,16,16,0) 50%, rgba(0,0,0,0.25) 50%),
+        linear-gradient(90deg, rgba(255,0,0,0.06), rgba(0,255,0,0.02), rgba(0,0,255,0.06));
+      z-index: 2;
+      background-size: 100% 2px, 3px 100%;
+      pointer-events: none;
+      opacity: 0.3;
     }
 
+    #code-mode::after {
+      content: " ";
+      display: block;
+      position: fixed;
+      inset: 0;
+      background: rgba(18, 16, 16, 0.1);
+      opacity: 0;
+      z-index: 2;
+      pointer-events: none;
+      animation: flicker 0.15s infinite;
+    }
+
+    @keyframes flicker {
+      0% { opacity: 0.27861; }
+      5% { opacity: 0.34769; }
+      10% { opacity: 0.23604; }
+      15% { opacity: 0.10626; }
+      20% { opacity: 0.18128; }
+      25% { opacity: 0.33896; }
+      30% { opacity: 0.15383; }
+      35% { opacity: 0.12185; }
+      40% { opacity: 0.27287; }
+      45% { opacity: 0.20666; }
+      50% { opacity: 0.19478; }
+      55% { opacity: 0.1241; }
+      60% { opacity: 0.17382; }
+      65% { opacity: 0.21974; }
+      70% { opacity: 0.33436; }
+      75% { opacity: 0.13736; }
+      80% { opacity: 0.38418; }
+      85% { opacity: 0.17992; }
+      90% { opacity: 0.23897; }
+      95% { opacity: 0.14261; }
+      100% { opacity: 0.32737; }
+    }
+
+    .container-code {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 80px 30px;
+      position: relative;
+      z-index: 3;
+    }
+
+    .terminal-header {
+      margin-bottom: 3.5rem;
+      border-bottom: 1px dashed var(--code-dim);
+      padding-bottom: 2.5rem;
+    }
+
+    .glow-text { color: var(--code-green); text-shadow: 0 0 10px var(--code-green), 0 0 20px var(--code-green); }
+    .cmd-line { margin-bottom: 15px; font-size: 0.95rem; }
+
+    .code-h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 1.5rem;
+      letter-spacing: -1px;
+      text-transform: uppercase;
+    }
+
+    .typing-cursor::after {
+      content: "█";
+      animation: blink 1s infinite;
+      margin-left: 5px;
+      color: var(--code-green);
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    .code-block-styled {
+      background: #111;
+      padding: 20px;
+      border-radius: 6px;
+      border-left: 4px solid var(--code-green);
+      margin: 20px 0;
+      color: #a9b7c6;
+      font-size: 1rem;
+      overflow-x: auto;
+      box-shadow: inset 0 0 20px #000, 0 4px 15px rgba(0, 0, 0, 0.5);
+      border: 1px solid #333;
+      transition: all 0.3s var(--ease-smooth);
+    }
+    .code-block-styled:hover {
+      border-left-color: #0f0;
+      box-shadow: inset 0 0 20px #001100, 0 0 20px rgba(0, 255, 0, 0.2);
+    }
+
+    .kwd { color: #cc7832; font-weight: bold; }
+    .str { color: #6a8759; }
+    .func { color: #ffc66d; }
+    .comment { color: #666; font-style: italic; }
+
+    .code-project {
+      margin-bottom: 3.5rem;
+      padding-left: 25px;
+      border-left: 2px solid #333;
+      transition: border-color 0.3s var(--ease-smooth);
+    }
+    .code-project:hover { border-left-color: var(--code-green); }
+
+    .code-h2 {
+      font-size: 1.6rem;
+      color: var(--code-green);
+      margin-bottom: 1.2rem;
+      font-weight: 700;
+      text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+    }
+
+    .code-link {
+      color: var(--code-text);
+      text-decoration: none;
+      border: 1px solid var(--code-dim);
+      padding: 10px 25px;
+      display: inline-block;
+      margin-top: 15px;
+      margin-right: 12px;
+      transition: all 0.3s var(--ease-pop);
+      font-size: 0.95rem;
+      background: #1a1a1a;
+      font-weight: bold;
+      letter-spacing: 1px;
+      border-radius: 6px;
+    }
+    .code-link:hover {
+      background: var(--code-green);
+      color: #000;
+      border-color: var(--code-green);
+      box-shadow: 0 0 25px var(--code-green);
+      transform: translateY(-3px);
+    }
+
+    .footer-code {
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 1px dashed #333;
+      color: #444;
+      font-size: 0.85rem;
+    }
+
+    /* ===== Responsive ===== */
     @media (max-width: 768px) {
-      .glitch-name { font-size: 2.5rem; }
+      .glitch-name { font-size: 2.8rem; letter-spacing: 3px; }
       .novel-layout { flex-direction: column; }
       .novel-cover-link { max-width: 100%; }
-      .glass-panel { padding: 1.5rem; }
+      .glass-panel { padding: 2rem; }
+      .avatar-visual { width: 110px; height: 110px; font-size: 3.5rem; }
+      .section-title { font-size: 1.5rem; }
+      .control-btn { width: 45px; height: 45px; }
+      .container-visual { padding: 80px 20px; }
+      .book-grid { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; }
+      
+      /* Mobile Game Buttons */
       .game-links-container { flex-direction: column; }
-      .container-code { padding-top: 40px; } /* 手機版頂部再縮小 */
+    }
+
+    @media (max-width: 480px) {
+      .glitch-name { font-size: 2.2rem; }
+      .control-panel { top: 15px; right: 15px; gap: 10px; }
+      .control-btn { width: 40px; height: 40px; font-size: 1.1rem; }
+    }
+
+    /* Cursor off on coarse pointer (touch) */
+    @media (pointer: coarse) {
+      .cursor-dot, .cursor-outline { display: none !important; }
+    }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+      .scan-lines { opacity: 0.12; }
     }
   </style>
 </head>
 
 <body>
-  <div id="loader">
-    <div class="loader-text">SYSTEM INITIALIZING...</div>
-    <div class="loader-bar"></div>
-  </div>
-
   <div class="cursor-dot" aria-hidden="true"></div>
   <div class="cursor-outline" aria-hidden="true"></div>
 
-  <div class="control-panel">
-    <button class="control-btn" id="themeBtn" title="Toggle Theme"><i class="fa-solid fa-sun"></i></button>
-    <button class="control-btn" id="modeBtn" title="Toggle Interface"><i class="fa-solid fa-terminal"></i></button>
+  <div class="control-panel" role="toolbar" aria-label="頁面控制">
+    <button class="control-btn" id="themeBtn" title="切換日夜模式" aria-label="切換日夜模式">
+      <i class="fa-solid fa-sun"></i>
+    </button>
+    <button class="control-btn" id="modeBtn" title="切換視覺/程式介面" aria-label="切換視覺/程式介面">
+      <i class="fa-solid fa-terminal"></i>
+    </button>
   </div>
 
   <div id="visual-mode" class="view-mode">
@@ -351,42 +958,64 @@
 
     <main class="container-visual">
       <header class="hero">
-        <div class="avatar-visual">
-          <div class="avatar-ring"></div>
+        <div class="avatar-visual" aria-label="Avatar">
+          <div class="avatar-ring" aria-hidden="true"></div>
           <img id="avatar-img" src="avatar_white.jpg" alt="Avatar">
         </div>
         <h1 class="glitch-name" data-text="兌現藍">兌現藍</h1>
-        <div class="tags">
+
+        <div class="tags" aria-label="tags">
           <span class="neon-tag">INTP</span>
           <span class="neon-tag">魔羯座</span>
           <span class="neon-tag">綠躍</span>
           <span class="neon-tag">遊戲 Maker</span>
+          <span class="neon-tag">繪圖</span>
           <span class="neon-tag">奇幻創作者</span>
         </div>
+
         <p class="hero-sub">SYSTEM ONLINE... WELCOME USER.</p>
       </header>
 
       <section class="glass-panel">
-        <h2 class="section-title"><i class="fa-solid fa-book-sparkles"></i> Grimoire: Word-Life Awakening</h2>
+        <h2 class="section-title">
+          <i class="fa-solid fa-book-sparkles"></i>
+          Grimoire: Word-Life Awakening
+        </h2>
+
         <div class="quote">「因為是文閉所以會贏。」「冠軍是我們的，你們加油吧。」</div>
+
         <p class="muted">[系統提示] 偵測到高濃度迷因與校園奇幻反應，創作即魔法。</p>
-        
+
         <div class="book-grid">
-          <a href="https://www.kadokado.com.tw/book/1425" target="_blank" class="link-card">
-            <div class="img-wrap"><img src="Story_Command1.jpg" alt="Vol.1" loading="lazy">
-              <div class="overlay"><i class="fa-solid fa-book-open"></i><span>READ VOL.1</span></div>
+          <a href="https://www.kadokado.com.tw/book/1425" target="_blank" rel="noopener noreferrer" class="link-card">
+            <div class="img-wrap">
+              <img src="Story_Command1.jpg" alt="字命覺醒 VOL.1" loading="lazy" />
+              <div class="overlay" aria-hidden="true">
+                <i class="fa-solid fa-book-open"></i>
+                <span>READ VOL.1</span>
+              </div>
             </div>
             <div class="book-label">VOL.1 小心字穢</div>
           </a>
-          <a href="https://www.kadokado.com.tw/book/42308" target="_blank" class="link-card">
-            <div class="img-wrap"><img src="Story_Command2.jpg" alt="Vol.2" loading="lazy">
-              <div class="overlay"><i class="fa-solid fa-book-open"></i><span>READ VOL.2</span></div>
+
+          <a href="https://www.kadokado.com.tw/book/42308" target="_blank" rel="noopener noreferrer" class="link-card">
+            <div class="img-wrap">
+              <img src="Story_Command2.jpg" alt="字命覺醒 VOL.2" loading="lazy" />
+              <div class="overlay" aria-hidden="true">
+                <i class="fa-solid fa-book-open"></i>
+                <span>READ VOL.2</span>
+              </div>
             </div>
             <div class="book-label">VOL.2 字者互毆</div>
           </a>
-          <a href="https://www.kadokado.com.tw/book/65322" target="_blank" class="link-card">
-            <div class="img-wrap"><img src="Story_Command0_Station_Underground_City_Rules.jpg" alt="Side" loading="lazy">
-              <div class="overlay"><i class="fa-solid fa-scroll"></i><span>READ SIDE</span></div>
+
+          <a href="https://www.kadokado.com.tw/book/65322" target="_blank" rel="noopener noreferrer" class="link-card">
+            <div class="img-wrap">
+              <img src="Story_Command0_Station_Underground_City_Rules.jpg" alt="地下城守則" loading="lazy" />
+              <div class="overlay" aria-hidden="true">
+                <i class="fa-solid fa-scroll"></i>
+                <span>READ SIDE</span>
+              </div>
             </div>
             <div class="book-label">序曲：北車地下城守則</div>
           </a>
@@ -396,28 +1025,40 @@
             <h3 style="font-family: 'Orbitron'; font-size: 1.2rem; color: var(--text-main); margin-bottom: 15px;">
                 🧪 創作者屬性鑑定 (心理測驗)
             </h3>
-            <a href="https://arya601.github.io/College_Psychological_Test/" target="_blank" class="cta-btn">
+            <a href="https://arya601.github.io/College_Psychological_Test/" target="_blank" rel="noopener noreferrer" class="cta-btn">
                 開始測驗 <i class="fa-solid fa-wand-magic-sparkles"></i>
             </a>
         </div>
       </section>
 
       <section class="glass-panel">
-        <h2 class="section-title"><i class="fa-solid fa-seedling"></i> New Release</h2>
+        <h2 class="section-title">
+          <i class="fa-solid fa-seedling"></i>
+          New Release
+        </h2>
+
         <div class="novel-layout">
-          <a href="https://www.kadokado.com.tw/book/60627" target="_blank" class="novel-cover-link">
-            <img src="Crossing_the_Soil.jpg" alt="Crossing the Soil" loading="lazy">
-            <div class="novel-overlay"><span class="neon-tag" style="background:var(--accent-color); color:#000;">點擊閱讀</span></div>
+          <a href="https://www.kadokado.com.tw/book/60627" target="_blank" rel="noopener noreferrer" class="novel-cover-link">
+            <img src="Crossing_the_Soil.jpg" alt="是誰把穿越者種在土裡" loading="lazy" />
+            <div class="novel-overlay" aria-hidden="true">
+              <span class="neon-tag" style="background: var(--accent-color); color: #000; font-weight: bold;">點擊閱讀</span>
+            </div>
           </a>
+
           <div class="novel-info">
-            <h3 style="font-size: 2rem; margin-bottom: 15px; color: var(--text-main); font-weight: 700;">是誰把穿越者種在土裡</h3>
+            <h3 style="font-size: 2rem; margin-bottom: 15px; color: var(--text-main); font-weight: 700;">
+              是誰把穿越者種在土裡
+            </h3>
+
             <div class="quote">「17歲的蘇海躍選擇結束生命，卻在陌生山林的泥土裡被挖了出來。」</div>
-            <p style="color: var(--text-sub); line-height: 1.8;">
+
+            <p style="color: var(--text-sub); margin-bottom: 2rem; line-height: 1.8;">
               一個人類分為 ABO、幽靈依附費洛蒙、恐龍遊蕩於街頭的瘋狂世界。
               蘇海躍在這個怪異卻溫暖的日常中，遇見了蒼白如鬼的 Alpha 陸翎邑。
               新聞上另一個「完美的蘇海躍」失蹤案，揭開了橫跨兩個世界的巨大陰謀。
             </p>
-            <a href="https://www.kadokado.com.tw/book/60627" target="_blank" class="neon-tag" style="margin-top:20px;">
+
+            <a href="https://www.kadokado.com.tw/book/60627" target="_blank" rel="noopener noreferrer" class="neon-tag">
               <i class="fa-solid fa-arrow-right"></i> 前往 KadoKado
             </a>
           </div>
@@ -425,16 +1066,24 @@
       </section>
 
       <section class="glass-panel">
-        <h2 class="section-title"><i class="fa-solid fa-gamepad"></i> Project: Nightmare</h2>
-        <h3 style="font-size: 1.6rem; margin-bottom: 15px; color: var(--text-main);">反轉的真實 The Reversed Truth</h3>
-        
-        <div class="game-links-container">
-            <a href="https://responselessaircra.wixsite.com/x-destroyer" target="_blank" class="game-external-btn">
+        <h2 class="section-title">
+          <i class="fa-solid fa-gamepad"></i>
+          Project: Nightmare
+        </h2>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 15px;">
+          <h3 style="font-size: 1.6rem; margin-bottom: 10px; color: var(--text-main);">
+            反轉的真實 The Reversed Truth
+          </h3>
+
+          <div class="game-links-container">
+            <a href="https://responselessaircra.wixsite.com/x-destroyer" target="_blank" rel="noopener noreferrer" class="game-external-btn">
                 <i class="fa-solid fa-globe"></i> 遊戲官網
             </a>
-            <a href="https://forum.gamer.com.tw/C.php?bsn=4918&snA=28697" target="_blank" class="game-external-btn">
+            <a href="https://forum.gamer.com.tw/C.php?bsn=4918&snA=28697" target="_blank" rel="noopener noreferrer" class="game-external-btn">
                 <i class="fa-solid fa-comments"></i> 巴哈姆特
             </a>
+          </div>
         </div>
 
         <p style="color: var(--accent-color); font-size: 1rem; margin-bottom: 2rem;">
@@ -442,15 +1091,24 @@
         </p>
 
         <div class="game-grid">
-          <a href="https://responselessaircra.wixsite.com/x-destroyer" target="_blank" class="link-card">
-            <div class="img-wrap"><img src="Friend_or_Fraud1.jpg" alt="Part 1" loading="lazy">
-              <div class="overlay"><i class="fa-solid fa-train"></i><span>PLAY PART 1</span></div>
+          <a href="https://responselessaircra.wixsite.com/x-destroyer" target="_blank" rel="noopener noreferrer" class="link-card">
+            <div class="img-wrap">
+              <img src="Friend_or_Fraud1.jpg" alt="反轉的真實 PART 1" loading="lazy" />
+              <div class="overlay" aria-hidden="true">
+                <i class="fa-solid fa-train"></i>
+                <span>PLAY PART 1</span>
+              </div>
             </div>
             <div class="book-label">PART 1: 井</div>
           </a>
-          <a href="https://responselessaircra.wixsite.com/x-destroyer" target="_blank" class="link-card">
-            <div class="img-wrap"><img src="Friend_or_Fraud2.jpg" alt="Part 2" loading="lazy">
-              <div class="overlay"><i class="fa-solid fa-train"></i><span>PLAY PART 2</span></div>
+
+          <a href="https://responselessaircra.wixsite.com/x-destroyer" target="_blank" rel="noopener noreferrer" class="link-card">
+            <div class="img-wrap">
+              <img src="Friend_or_Fraud2.jpg" alt="反轉的真實 PART 2" loading="lazy" />
+              <div class="overlay" aria-hidden="true">
+                <i class="fa-solid fa-train"></i>
+                <span>PLAY PART 2</span>
+              </div>
             </div>
             <div class="book-label">PART 2: 繩子</div>
           </a>
@@ -458,11 +1116,8 @@
       </section>
 
       <footer class="footer-visual">
-        VISUAL TERMINAL // ONLINE<br>
-        &copy; 2025 Tealize. All rights reserved.<br>
-        <span id="busuanzi_container_site_pv" style="font-size:0.8rem; opacity:0.6; display:none;">
-           [ SYSTEM ACCESS: <span id="busuanzi_value_site_pv" style="color:var(--accent-color);"></span> ]
-        </span>
+        VISUAL TERMINAL // ONLINE<br />
+        &copy; 2025 Tealize. All rights reserved.
       </footer>
     </main>
   </div>
@@ -472,119 +1127,158 @@
       <header class="terminal-header">
         <div class="cmd-line glow-text">user@tealize:~$ init_sequence --full</div>
         <h1 class="code-h1 typing-cursor" id="code-title"></h1>
-        <div id="code-bio" style="color: #888; margin-bottom: 1.5rem; opacity: 0; transition: opacity 0.5s;">
+
+        <div id="code-bio" style="color: #888; margin-bottom: 1.5rem; opacity: 0; transition: opacity 0.5s var(--ease-smooth);">
           [奇幻創作者] [遊戲Maker] [INTP] [魔羯座] [綠躍]
         </div>
-        <div class="code-block-styled" id="code-intro" style="opacity: 0; transition: opacity 0.5s 0.2s;">
-          <span class="kwd">class</span> <span class="func">Creator</span>(Reptile):<br>
-          &nbsp;&nbsp;<span class="kwd">def</span> <span class="func">__init__</span>(self):<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;self.status = <span class="str">"被創作拖著走"</span><br>
-          &nbsp;&nbsp;&nbsp;&nbsp;self.skills = [<span class="str">"Python"</span>, <span class="str">"Writing"</span>, <span class="str">"GameDev"</span>]<br>
+
+        <div class="code-block-styled" id="code-intro" style="opacity: 0; transition: opacity 0.5s var(--ease-smooth) 0.2s;">
+          <span class="kwd">class</span> <span class="func">Creator</span>(Reptile):<br />
+          &nbsp;&nbsp;<span class="kwd">def</span> <span class="func">__init__</span>(self):<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;self.status = <span class="str">"被創作拖著走"</span><br />
+          &nbsp;&nbsp;&nbsp;&nbsp;self.skills = [<span class="str">"Python"</span>, <span class="str">"Writing"</span>, <span class="str">"GameDev"</span>]<br />
           &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># 文字是 code，傳說是 function，一起來 Run 這個世界。</span>
         </div>
       </header>
 
-      <div class="code-content" style="opacity: 0; transition: opacity 1s 0.5s;">
+      <div class="code-content" style="opacity: 0; transition: opacity 1s var(--ease-smooth) 0.5s;">
         <div class="code-project">
           <h2 class="code-h2">>> Projects / [NOVEL] 《字命覺醒》</h2>
+          <p>無論是創作、迷因、傳說都能產生魔法的校園奇幻作品。</p>
           <div class="code-block-styled">
-            <span class="kwd">def</span> <span class="func">cast_spell</span>(text):<br>
-            &nbsp;&nbsp;<span class="kwd">if</span> meme <span class="kwd">in</span> text:<br>
-            &nbsp;&nbsp;&nbsp;&nbsp;<span class="kwd">return</span> <span class="str">"Reality_Distortion"</span>
+            <span class="kwd">import</span> <span class="str">magic</span> <span class="kwd">as</span> <span class="str">mg</span><br />
+            <span class="kwd">from</span> <span class="str">world</span> <span class="kwd">import</span> <span class="str">meme, legend</span><br /><br />
+            <span class="kwd">def</span> <span class="func">cast_spell</span>(text):<br />
+            &nbsp;&nbsp;<span class="comment">"""將文字轉化為現實干涉力"""</span><br />
+            &nbsp;&nbsp;<span class="kwd">return</span> <span class="str">mg.execute(text)</span><br /><br />
+            <span class="comment"># 最新進度：第二集已生成</span>
           </div>
-          <p style="color:#888; font-size:0.9rem; margin-bottom:15px;">無論是創作、迷因、傳說都能產生魔法的校園奇幻作品。</p>
-          <a href="https://www.kadokado.com.tw/book/1425" target="_blank" class="code-link">Read_Vol.1</a>
-          <a href="https://www.kadokado.com.tw/book/42308" target="_blank" class="code-link">Read_Vol.2</a>
-          <a href="https://www.kadokado.com.tw/book/65322" target="_blank" class="code-link">Read_Extra</a>
-          
-          <div style="margin-top: 20px; padding-top: 15px; border-top: 1px dashed #444;">
-             <h3 style="font-size: 1rem; color: #aaa;">>> Sub-Module: 創作者特質測驗</h3>
-             <a href="https://arya601.github.io/College_Psychological_Test/" target="_blank" class="code-link">Start.exe</a>
+          <p style="font-size: 0.9rem; color: #888; margin-bottom:15px;">
+            特色：創作魔法的設定看起來就像呼叫程式函式？沒錯，因為我喜歡 Python。<br>
+            想看迷因、傳說、推理大亂鬥，請參閱本專案。
+          </p>
+          <a href="https://www.kadokado.com.tw/book/1425" target="_blank" rel="noopener noreferrer" class="code-link">Read_Vol.1</a>
+          <a href="https://www.kadokado.com.tw/book/42308" target="_blank" rel="noopener noreferrer" class="code-link">Read_Vol.2</a>
+          <a href="https://www.kadokado.com.tw/book/65322" target="_blank" rel="noopener noreferrer" class="code-link">Read_Extra</a>
+
+          <div style="margin-top: 25px; padding-top: 15px; border-top: 1px dashed #444;">
+             <h3 style="font-size: 1.1rem; color: #aaa; margin-bottom: 10px;">>> Sub-Module: 創作者特質測驗</h3>
+             <div class="code-block-styled">
+                <span class="kwd">if</span> user.is_creator:<br>
+                &nbsp;&nbsp;<span class="func">run_diagnostics</span>(user.mind)<br>
+                <span class="comment"># 鑑定你的創作屬性...</span>
+             </div>
+             <a href="https://arya601.github.io/College_Psychological_Test/" target="_blank" rel="noopener noreferrer" class="code-link">Start.exe</a>
           </div>
         </div>
 
         <div class="code-project">
           <h2 class="code-h2">>> Projects / [NOVEL] 《是誰把穿越者種在土裡》</h2>
+          <p style="color: #a9b7c6; margin-bottom: 15px;">>>> 17歲的蘇海躍選擇結束生命，卻在陌生山林的泥土裡被挖了出來。</p>
+          
           <div class="code-block-styled">
+            <span class="kwd">class</span> <span class="func">Isekai_Protagonist</span>:<br>
+            &nbsp;&nbsp;<span class="kwd">def</span> <span class="func">__init__</span>(self):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;self.origin = <span class="str">"Suicide"</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;self.location = <span class="str">"Soil"</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;self.status = <span class="str">"Confused"</span><br><br>
+            <span class="comment"># Environment Settings:</span><br>
             <span class="str">Environment_Config</span> = {<br>
-            &nbsp;&nbsp;<span class="str">"Alpha"</span>: <span class="kwd">True</span>, <span class="str">"Omega"</span>: <span class="kwd">True</span>,<br>
-            &nbsp;&nbsp;<span class="str">"Ghost"</span>: <span class="str">"Attached"</span>, <span class="str">"Dinosaur"</span>: <span class="str">"Alive"</span><br>
+            &nbsp;&nbsp;<span class="str">"Alpha"</span>: <span class="kwd">True</span>,<br>
+            &nbsp;&nbsp;<span class="str">"Omega"</span>: <span class="kwd">True</span>,<br>
+            &nbsp;&nbsp;<span class="str">"Ghost"</span>: <span class="str">"Attached_to_Pheromones"</span>,<br>
+            &nbsp;&nbsp;<span class="str">"Dinosaur"</span>: <span class="str">"Walking_on_Street"</span><br>
             }
           </div>
-          <p style="color:#888; font-size:0.9rem; margin-bottom:15px;">>>> 17歲的蘇海躍選擇結束生命，卻在陌生山林的泥土裡被挖了出來。</p>
-          <a href="https://www.kadokado.com.tw/book/60627" target="_blank" class="code-link">Read_Book()</a>
+
+          <a href="https://www.kadokado.com.tw/book/60627" target="_blank" rel="noopener noreferrer" class="code-link">Read_Book()</a>
         </div>
 
         <div class="code-project">
-          <h2 class="code-h2" style="color: #ff3333; text-shadow: 0 0 10px #ff3333;">
+          <h2 class="code-h2" style="color: #ff3333; text-shadow: 0 0 15px #ff3333;">
             >>> Projects / [GAME] 《反轉的真實》
           </h2>
-          <div class="code-block-styled" style="border-left-color: #ff3333; box-shadow: inset 0 0 10px #300;">
+          <p>台灣本土恐怖 RPG 系列。偶爾降落分享美術進度與關卡設計。</p>
+          <p style="margin-top: 1rem; color: #ff3333; font-style: italic; margin-bottom: 15px;">
+             ⚠️ 警告：包含大量紅色顏料與精神污染（開玩笑的，但也許不是）。
+          </p>
+
+          <div class="code-block-styled" style="border-left-color: #ff3333; box-shadow: inset 0 0 20px #300;">
+            <span class="comment"># SYSTEM WARNING: SANITY LEVEL CRITICAL</span><br>
             <span class="kwd">try</span>:<br>
             &nbsp;&nbsp;<span class="func">enter_subway</span>()<br>
-            <span class="kwd">except</span> <span class="str">SanityError</span>:<br>
-            &nbsp;&nbsp;<span class="func">see_rope</span>() <span class="comment"># Don't look up</span>
+            <span class="kwd">except</span> <span class="str">RealityCollapseError</span>:<br>
+            &nbsp;&nbsp;<span class="func">see_rope</span>() <span class="comment"># Don't look up</span><br>
+            &nbsp;&nbsp;sanity -= <span class="str">50</span><br><br>
+            <span class="kwd" style="color:#ff5555">while</span> <span class="kwd" style="color:#ff5555">True</span>:<br />
+            &nbsp;&nbsp;truth = <span class="func" style="color:#ff8888">reverse</span>(reality)<br />
+            &nbsp;&nbsp;<span class="kwd" style="color:#ff5555">if</span> truth == <span class="str" style="color:#ffaaaa;">"BLOOD"</span>: <span class="kwd" style="color:#ff5555">break</span>
           </div>
-          <p style="color: #ff3333; margin-bottom: 15px; font-size:0.9rem;">⚠️ 警告：包含大量紅色顏料與精神污染。</p>
-          <a href="https://responselessaircra.wixsite.com/x-destroyer" target="_blank" class="code-link" style="border-color:#ff3333; color:#ff3333;">Website</a>
-          <a href="https://forum.gamer.com.tw/C.php?bsn=4918&snA=28697" target="_blank" class="code-link" style="border-color:#ff3333; color:#ff3333;">Forum</a>
+
+          <a href="https://responselessaircra.wixsite.com/x-destroyer" target="_blank" rel="noopener noreferrer"
+             class="code-link" style="border-color: #ff3333; color: #ff3333;">Website</a>
+          <a href="https://forum.gamer.com.tw/C.php?bsn=4918&snA=28697" target="_blank" rel="noopener noreferrer"
+             class="code-link" style="border-color: #ff3333; color: #ff3333;">Forum</a>
         </div>
       </div>
+
       <footer class="footer-code">// CODE TERMINAL // ONLINE_</footer>
     </div>
   </div>
 
   <script>
-    // Loader logic
-    window.addEventListener('load', () => {
-      setTimeout(() => document.body.classList.add('loaded'), 500);
-    });
-
     (() => {
       const html = document.documentElement;
-      // Storage helpers
+
+      // Persist state
       const storage = {
-        get(key, def) { try{ return localStorage.getItem(key)??def; }catch{return def;} },
-        set(key, val) { try{ localStorage.setItem(key, val); }catch{} }
+        get(key, fallback) {
+          try {
+            const v = localStorage.getItem(key);
+            return v ?? fallback;
+          } catch { return fallback; }
+        },
+        set(key, value) {
+          try { localStorage.setItem(key, value); } catch {}
+        }
       };
 
-      // State init
-      const savedTheme = storage.get("tealize.theme", "dark");
-      const savedMode = storage.get("tealize.mode", "visual");
+      // Init theme + mode
+      const savedTheme = storage.get("tealize.theme", html.getAttribute("data-theme") || "dark");
+      const savedMode  = storage.get("tealize.mode",  html.getAttribute("data-mode")  || "visual");
       html.setAttribute("data-theme", savedTheme);
       html.setAttribute("data-mode", savedMode);
 
-      // Elements
+      // Buttons
       const themeBtn = document.getElementById("themeBtn");
-      const modeBtn = document.getElementById("modeBtn");
+      const modeBtn  = document.getElementById("modeBtn");
       const themeIcon = themeBtn.querySelector("i");
-      const modeIcon = modeBtn.querySelector("i");
-      const visualMode = document.getElementById("visual-mode");
-      const codeMode = document.getElementById("code-mode");
+      const modeIcon  = modeBtn.querySelector("i");
 
-      // Sync UI
+      const visualMode = document.getElementById("visual-mode");
+      const codeMode   = document.getElementById("code-mode");
+
+      // Reflect icons
       function syncIcons() {
         const isDark = html.getAttribute("data-theme") === "dark";
         themeIcon.className = isDark ? "fa-solid fa-sun" : "fa-solid fa-moon";
-        
+
         const isVisual = html.getAttribute("data-mode") === "visual";
         modeIcon.className = isVisual ? "fa-solid fa-terminal" : "fa-solid fa-palette";
         themeBtn.style.display = isVisual ? "inline-flex" : "none";
 
         // Update Avatar
         const avatarImg = document.getElementById("avatar-img");
-        if(avatarImg) avatarImg.src = isDark ? "avatar_white.jpg" : "avatar_black.jpg";
+        if (avatarImg) {
+            avatarImg.src = isDark ? "avatar_white.jpg" : "avatar_black.jpg";
+        }
       }
       syncIcons();
 
-      // Scroll reset & Mode switch
+      // Apply mode UI
       function applyMode(mode) {
-        // Reset scroll position to top
-        if (visualMode) visualMode.scrollTop = 0;
-        if (codeMode) document.documentElement.scrollTop = 0; // Body scroll for code mode logic if needed
-        window.scrollTo(0,0);
-
-        if(mode === "visual") {
+        const isVisual = mode === "visual";
+        if (isVisual) {
           codeMode.classList.add("hidden");
           visualMode.classList.remove("hidden");
           html.setAttribute("data-mode", "visual");
@@ -593,131 +1287,215 @@
           codeMode.classList.remove("hidden");
           html.setAttribute("data-mode", "code");
         }
-        storage.set("tealize.mode", mode);
+        storage.set("tealize.mode", html.getAttribute("data-mode"));
         syncIcons();
       }
       applyMode(savedMode);
 
-      // Events
+      // Theme toggle
       themeBtn.addEventListener("click", () => {
-        const next = html.getAttribute("data-theme")==="dark" ? "light" : "dark";
-        html.setAttribute("data-theme", next);
-        storage.set("tealize.theme", next);
+        const isDark = html.getAttribute("data-theme") === "dark";
+        html.setAttribute("data-theme", isDark ? "light" : "dark");
+        storage.set("tealize.theme", html.getAttribute("data-theme"));
         syncIcons();
       });
 
+      // Mode toggle
       modeBtn.addEventListener("click", () => {
-        const next = html.getAttribute("data-mode")==="visual" ? "code" : "visual";
+        const next = html.getAttribute("data-mode") === "visual" ? "code" : "visual";
         applyMode(next);
-        if(next === "code") typeCodeHeader();
+        if (next === "code") typeCodeHeader();
       });
 
-      // Cursor & Canvas (Optimized)
+      // Cursor enable for fine pointer only
+      const finePointer = window.matchMedia("(pointer: fine)").matches;
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (finePointer && !reduceMotion) {
+        document.body.dataset.cursor = "on";
+      } else {
+        document.body.dataset.cursor = "off";
+        // hide cursor DOM if not needed
+        document.querySelectorAll(".cursor-dot,.cursor-outline").forEach(el => el.style.display = "none");
+      }
+
+      // Cursor system
       const dot = document.querySelector(".cursor-dot");
       const outline = document.querySelector(".cursor-outline");
+      let mouseX = 0, mouseY = 0, outlineX = 0, outlineY = 0;
+      let cursorRAF = 0;
+
+      function animateOutline() {
+        outlineX += (mouseX - outlineX) * 0.2;
+        outlineY += (mouseY - outlineY) * 0.2;
+        outline.style.left = outlineX + "px";
+        outline.style.top  = outlineY + "px";
+        cursorRAF = requestAnimationFrame(animateOutline);
+      }
+
+      if (document.body.dataset.cursor === "on") {
+        window.addEventListener("mousemove", (e) => {
+          mouseX = e.clientX;
+          mouseY = e.clientY;
+          dot.style.left = mouseX + "px";
+          dot.style.top  = mouseY + "px";
+        }, { passive: true });
+        animateOutline();
+
+        const interactive = document.querySelectorAll("a, button, .link-card, .neon-tag");
+        interactive.forEach(el => {
+          el.addEventListener("mouseenter", () => document.body.classList.add("cursor-active"));
+          el.addEventListener("mouseleave", () => document.body.classList.remove("cursor-active"));
+        });
+      }
+
+      // Glass panel mouse tracking
+      document.querySelectorAll(".glass-panel").forEach(panel => {
+        panel.addEventListener("mousemove", (e) => {
+          const rect = panel.getBoundingClientRect();
+          const x = ((e.clientX - rect.left) / rect.width) * 100;
+          const y = ((e.clientY - rect.top) / rect.height) * 100;
+          panel.style.setProperty("--mouse-x", x + "%");
+          panel.style.setProperty("--mouse-y", y + "%");
+        });
+      });
+
+      // Canvas Particles (fast)
       const canvas = document.getElementById("particlesCanvas");
-      const ctx = canvas.getContext("2d");
-      
-      let mouseX=0, mouseY=0, outX=0, outY=0;
-      let w, h, particles=[];
+      const ctx = canvas.getContext("2d", { alpha: true });
 
-      // Mouse Move
-      window.addEventListener("mousemove", e => {
-        mouseX = e.clientX; mouseY = e.clientY;
-        dot.style.left = mouseX+"px"; dot.style.top = mouseY+"px";
-        
-        // Glass panel shine effect
-        const panels = document.querySelectorAll(".glass-panel");
-        panels.forEach(p => {
-          const r = p.getBoundingClientRect();
-          if(mouseX>r.left && mouseX<r.right && mouseY>r.top && mouseY<r.bottom){
-             p.style.setProperty("--mouse-x", `${mouseX - r.left}px`);
-             p.style.setProperty("--mouse-y", `${mouseY - r.top}px`);
-          }
-        });
-      });
+      const particles = [];
+      const MAX = reduceMotion ? 0 : 90; // adjust density
+      let w = 0, h = 0;
+      let particleRAF = 0;
+      let running = true;
 
-      // Cursor Animation
-      function loopCursor() {
-        outX += (mouseX - outX) * 0.2;
-        outY += (mouseY - outY) * 0.2;
-        outline.style.left = outX+"px"; outline.style.top = outY+"px";
-        requestAnimationFrame(loopCursor);
-      }
-      loopCursor();
-
-      // Interactive Hover
-      document.querySelectorAll("a, button, .link-card").forEach(el => {
-        el.addEventListener("mouseenter", () => document.body.classList.add("cursor-active"));
-        el.addEventListener("mouseleave", () => document.body.classList.remove("cursor-active"));
-      });
-
-      // Particles
       function resize() {
-        w = canvas.width = window.innerWidth;
-        h = canvas.height = window.innerHeight;
+        w = canvas.width  = Math.floor(window.innerWidth * devicePixelRatio);
+        h = canvas.height = Math.floor(window.innerHeight * devicePixelRatio);
+        canvas.style.width = window.innerWidth + "px";
+        canvas.style.height = window.innerHeight + "px";
+        ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
       }
-      window.addEventListener("resize", resize);
       resize();
+      window.addEventListener("resize", resize, { passive: true });
 
-      function initParticles() {
-        particles.length = 0;
-        const cnt = window.matchMedia("(max-width:768px)").matches ? 20 : 50;
-        for(let i=0; i<cnt; i++) {
-          particles.push({
-            x: Math.random()*w, y: Math.random()*h,
-            s: Math.random()*2, v: Math.random()*0.5+0.2
-          });
-        }
-      }
-      initParticles();
+      function rand(min, max) { return Math.random() * (max - min) + min; }
 
-      function drawParticles() {
-        if(html.getAttribute("data-mode") === "code") {
-           ctx.clearRect(0,0,w,h); requestAnimationFrame(drawParticles); return;
-        }
-        
-        ctx.clearRect(0,0,w,h);
-        const color = getComputedStyle(html).getPropertyValue("--accent-color").trim();
-        ctx.fillStyle = color;
-        
-        particles.forEach(p => {
-          p.y -= p.v;
-          if(p.y < -10) p.y = h+10;
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.s, 0, Math.PI*2);
-          ctx.fill();
+      function spawn() {
+        if (particles.length >= MAX) return;
+        particles.push({
+          x: rand(0, window.innerWidth),
+          y: rand(window.innerHeight, window.innerHeight + 200),
+          r: rand(0.8, 2.2),
+          vx: rand(-0.25, 0.25),
+          vy: rand(-0.9, -0.35),
+          a: rand(0.15, 0.85),
+          life: rand(900, 1600)
         });
-        requestAnimationFrame(drawParticles);
       }
-      drawParticles();
 
-      // Code Typing
-      let typed = false;
-      function typeCodeHeader() {
-        if(typed) return;
-        typed = true;
-        const t1 = document.getElementById("code-title");
-        const txt = "兌現藍 TEALIZE";
-        t1.innerText = "";
-        let i=0;
-        
-        // 更快的打字速度 (50ms)
-        function type() {
-          if(i<txt.length) {
-            t1.innerText += txt.charAt(i++);
-            setTimeout(type, 50);
-          } else {
-            // 立即顯示內容
-            document.getElementById("code-bio").style.opacity = 1;
-            document.getElementById("code-intro").style.opacity = 1;
-            document.querySelector(".code-content").style.opacity = 1;
-          }
+      function colorAccent() {
+        // draw with current accent color from CSS
+        const accent = getComputedStyle(document.documentElement).getPropertyValue("--accent-color").trim();
+        return accent || "#00f2fe";
+      }
+
+      function step() {
+        if (!running) return;
+
+        // Pause particles when code mode
+        if (html.getAttribute("data-mode") === "code") {
+          ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+          particleRAF = requestAnimationFrame(step);
+          return;
         }
+
+        for (let i = 0; i < 2; i++) spawn();
+
+        ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+        ctx.globalCompositeOperation = "lighter";
+
+        const c = colorAccent();
+        for (let i = particles.length - 1; i >= 0; i--) {
+          const p = particles[i];
+          p.x += p.vx;
+          p.y += p.vy;
+          p.life -= 1;
+
+          // fade in/out
+          const fadeIn  = Math.min(1, (1600 - p.life) / 120);
+          const fadeOut = Math.min(1, p.life / 180);
+          const alpha = p.a * fadeIn * fadeOut;
+
+          ctx.beginPath();
+          ctx.fillStyle = c;
+          ctx.globalAlpha = alpha;
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fill();
+
+          // tiny glow ring
+          ctx.globalAlpha = alpha * 0.25;
+          ctx.lineWidth = 1;
+          ctx.strokeStyle = c;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r * 3.0, 0, Math.PI * 2);
+          ctx.stroke();
+
+          if (p.y < -50 || p.life <= 0) particles.splice(i, 1);
+        }
+
+        ctx.globalAlpha = 1;
+        ctx.globalCompositeOperation = "source-over";
+
+        particleRAF = requestAnimationFrame(step);
+      }
+
+      if (MAX > 0) step();
+
+      // Visibility pause (saves battery)
+      document.addEventListener("visibilitychange", () => {
+        running = !document.hidden;
+        if (running && MAX > 0 && !particleRAF) step();
+      });
+
+      // Code mode typing
+      let codeTyped = false;
+      function typeCodeHeader() {
+        if (codeTyped) return;
+        codeTyped = true;
+
+        const title = "兌現藍 TEALIZE";
+        const titleEl = document.getElementById("code-title");
+        titleEl.textContent = "";
+        let i = 0;
+
+        const type = () => {
+          if (html.getAttribute("data-mode") !== "code") return;
+          if (i < title.length) {
+            titleEl.textContent += title.charAt(i++);
+            setTimeout(type, 90);
+          } else {
+            setTimeout(() => {
+              document.getElementById("code-bio").style.opacity = 1;
+              document.getElementById("code-intro").style.opacity = 1;
+              document.querySelector(".code-content").style.opacity = 1;
+            }, 150);
+          }
+        };
         type();
       }
-      if(savedMode==="code") typeCodeHeader();
 
+      // If landing directly in code mode
+      if (html.getAttribute("data-mode") === "code") typeCodeHeader();
+
+      // Smooth anchor scroll
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute("href"));
+          target?.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      });
     })();
   </script>
 </body>
