@@ -939,18 +939,29 @@
       font-size: 0.85rem;
     }
 
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-6px); }
+      40% { transform: translateX(6px); }
+      60% { transform: translateX(-4px); }
+      80% { transform: translateX(4px); }
+    }
+    .puzzle-input.shake { animation: shake 0.4s var(--ease-smooth); }
+
     /* ===== Responsive ===== */
     @media (max-width: 768px) {
       .glitch-name { font-size: 2.8rem; letter-spacing: 3px; }
-      .novel-layout { flex-direction: column; }
+      .novel-layout, .lag-layout { flex-direction: column; }
       .novel-cover-link { max-width: 100%; }
+      .lag-images { max-width: 100%; flex-direction: row; }
+      .lag-img-main { flex: 2; }
+      .lag-img-small { flex: 1; max-height: none; }
       .glass-panel { padding: 2rem; }
       .avatar-visual { width: 110px; height: 110px; font-size: 3.5rem; }
       .section-title { font-size: 1.5rem; }
       .control-btn { width: 45px; height: 45px; }
       .container-visual { padding: 80px 20px; }
       .book-grid { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; }
-      
       /* Mobile Game Buttons */
       .game-links-container { flex-direction: column; }
     }
@@ -959,6 +970,249 @@
       .glitch-name { font-size: 2.2rem; }
       .control-panel { top: 15px; right: 15px; gap: 10px; }
       .control-btn { width: 40px; height: 40px; font-size: 1.1rem; }
+      .lag-images { flex-direction: column; }
+    }
+
+    /* ===== A Bite of God (lag) Layout ===== */
+    .lag-panel {
+      --lag-accent: #c9a227;
+      --lag-glow: rgba(201, 162, 39, 0.25);
+      border-color: rgba(201, 162, 39, 0.3);
+    }
+    .lag-panel:hover {
+      border-color: var(--lag-accent) !important;
+      box-shadow: 0 30px 80px -20px var(--lag-glow) !important;
+    }
+    .lag-panel .section-title i { color: var(--lag-accent); filter: drop-shadow(0 0 8px var(--lag-accent)); }
+
+    .lag-layout {
+      display: flex;
+      gap: 50px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .lag-text {
+      flex: 2 1 320px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .lag-booktitle {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 6px;
+      letter-spacing: 2px;
+    }
+
+    .lag-subtitle {
+      color: var(--lag-accent);
+      font-family: "Orbitron";
+      font-size: 0.75rem;
+      letter-spacing: 1.5px;
+      margin-bottom: 1.5rem;
+      opacity: 0.85;
+    }
+
+    .lag-desc {
+      color: var(--text-sub);
+      line-height: 2.2;
+      font-size: 1.05rem;
+      margin-bottom: 1.5rem;
+      font-style: italic;
+      border-left: 3px solid var(--lag-accent);
+      padding-left: 20px;
+      background: linear-gradient(90deg, rgba(201,162,39,0.06), transparent);
+      border-radius: 0 8px 8px 0;
+    }
+
+    .lag-purchase {
+      margin-bottom: 2rem;
+    }
+
+    /* Images */
+    .lag-images {
+      flex: 1 1 220px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      max-width: 300px;
+      align-self: center;
+    }
+
+    .lag-img-main {
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(201,162,39,0.3);
+      box-shadow: 0 15px 50px rgba(0,0,0,0.6);
+      transition: all 0.5s var(--ease-pop);
+    }
+    .lag-img-main:hover {
+      transform: translateY(-8px) scale(1.02);
+      border-color: var(--lag-accent);
+      box-shadow: 0 0 40px var(--lag-glow);
+    }
+    .lag-img-main img {
+      width: 100%;
+      display: block;
+      filter: brightness(0.9);
+      transition: filter 0.5s var(--ease-smooth);
+    }
+    .lag-img-main:hover img { filter: brightness(1.05); }
+
+    .lag-img-small {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(201,162,39,0.2);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+      transition: all 0.5s var(--ease-pop);
+      max-height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #000;
+    }
+    .lag-img-small:hover {
+      transform: translateX(6px);
+      border-color: var(--lag-accent);
+      box-shadow: 0 0 20px var(--lag-glow);
+    }
+    .lag-img-small img {
+      width: 100%;
+      display: block;
+      object-fit: cover;
+      object-position: left center;
+      filter: brightness(0.95);
+      transition: filter 0.5s var(--ease-smooth), transform 0.5s var(--ease-pop);
+    }
+    .lag-img-small:hover img { filter: brightness(1.1); transform: scale(1.05); }
+
+    /* ===== Puzzle Box ===== */
+    .puzzle-box {
+      background: rgba(201,162,39,0.05);
+      border: 1px solid rgba(201,162,39,0.3);
+      border-radius: 14px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      transition: border-color 0.3s var(--ease-smooth);
+    }
+    .puzzle-box:focus-within { border-color: var(--lag-accent); }
+
+    .puzzle-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: "Orbitron";
+      font-size: 0.85rem;
+      color: var(--lag-accent);
+      margin-bottom: 0.8rem;
+      letter-spacing: 1px;
+    }
+
+    .puzzle-hint {
+      color: var(--text-sub);
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+      font-style: italic;
+    }
+
+    .puzzle-input-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .puzzle-input {
+      flex: 1;
+      background: rgba(0,0,0,0.4);
+      border: 1px solid rgba(201,162,39,0.4);
+      border-radius: 8px;
+      color: var(--text-main);
+      font-family: "Orbitron";
+      font-size: 1.2rem;
+      padding: 10px 16px;
+      text-align: center;
+      outline: none;
+      transition: border-color 0.3s var(--ease-smooth), box-shadow 0.3s var(--ease-smooth);
+    }
+    .puzzle-input:focus {
+      border-color: var(--lag-accent);
+      box-shadow: 0 0 15px rgba(201,162,39,0.2);
+    }
+
+    .puzzle-submit {
+      padding: 10px 22px;
+      background: rgba(201,162,39,0.1);
+      border: 1px solid var(--lag-accent);
+      border-radius: 8px;
+      color: var(--lag-accent);
+      font-family: "Orbitron";
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.3s var(--ease-pop);
+      letter-spacing: 1px;
+    }
+    .puzzle-submit:hover {
+      background: var(--lag-accent);
+      color: #000;
+      box-shadow: 0 0 20px rgba(201,162,39,0.4);
+      transform: translateY(-2px);
+    }
+
+    .puzzle-msg {
+      margin-top: 0.6rem;
+      font-size: 0.85rem;
+      min-height: 1.2em;
+      transition: color 0.3s var(--ease-smooth);
+    }
+    .puzzle-msg.wrong { color: #ff5555; }
+    .puzzle-msg.right { color: #55ff99; }
+
+    /* Bonus content (unlocked) */
+    .bonus-content {
+      display: none;
+      background: rgba(85,255,153,0.06);
+      border: 1px solid rgba(85,255,153,0.3);
+      border-radius: 14px;
+      padding: 1.5rem;
+      margin-top: 0.5rem;
+      animation: fadeUpDecode 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+    .bonus-content.visible { display: block; }
+
+    .bonus-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: "Orbitron";
+      font-size: 0.85rem;
+      color: #55ff99;
+      margin-bottom: 0.8rem;
+      letter-spacing: 1px;
+    }
+
+    .bonus-body { color: var(--text-sub); line-height: 1.8; }
+
+    .access-code-goto {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 22px;
+      background: rgba(201,162,39,0.12);
+      border: 1px solid var(--lag-accent);
+      border-radius: 8px;
+      color: var(--lag-accent);
+      text-decoration: none;
+      font-family: "Orbitron";
+      font-size: 0.82rem;
+      letter-spacing: 1px;
+      transition: all 0.3s var(--ease-pop);
+    }
+    .access-code-goto:hover {
+      background: var(--lag-accent);
+      color: #000;
+      box-shadow: 0 0 20px rgba(201,162,39,0.4);
+      transform: translateY(-2px);
     }
 
     /* Cursor off on coarse pointer (touch) */
@@ -982,6 +1236,9 @@
   <div class="cursor-outline" aria-hidden="true"></div>
 
   <div class="control-panel" role="toolbar" aria-label="頁面控制">
+    <button class="control-btn" id="langBtn" title="Switch Language / 切換語言" aria-label="Switch Language">
+      <span style="font-size:0.75rem;font-family:'Orbitron';font-weight:700;position:relative;z-index:1;" id="langBtnLabel">EN</span>
+    </button>
     <button class="control-btn" id="themeBtn" title="切換日夜模式" aria-label="切換日夜模式">
       <i class="fa-solid fa-sun"></i>
     </button>
@@ -1005,25 +1262,25 @@
 
         <div class="tags" aria-label="tags">
           <span class="neon-tag">INTP</span>
-          <span class="neon-tag">魔羯座</span>
+          <span class="neon-tag" data-i18n="tag-capricorn">魔羯座</span>
           <span class="neon-tag">綠躍</span>
-          <span class="neon-tag">遊戲 Maker</span>
-          <span class="neon-tag">繪圖</span>
-          <span class="neon-tag">奇幻創作者</span>
+          <span class="neon-tag" data-i18n="tag-gamemaker">遊戲 Maker</span>
+          <span class="neon-tag" data-i18n="tag-art">繪圖</span>
+          <span class="neon-tag" data-i18n="tag-creator">奇幻創作者</span>
         </div>
 
         <p class="hero-sub">STORY-COMMAND SHAPES REALITY.</p>
       </header>
 
+      <!-- ===== IP: 字命覺醒 ===== -->
       <section class="glass-panel">
         <h2 class="section-title">
           <i class="fa-solid fa-book-sparkles"></i>
-          NOVEL: Story-Command Awakening
+          <span data-i18n="sc-title">NOVEL: Story-Command Awakening</span>
         </h2>
 
-        <div class="quote">「因為是文閉所以會贏。」「冠軍是我們的，你們加油吧。」</div>
-
-        <p class="muted">[系統提示] 偵測到高濃度迷因與校園奇幻反應，創作即魔法。</p>
+        <div class="quote" data-i18n="sc-quote">「因為是文閉所以會贏。」「冠軍是我們的，你們加油吧。」</div>
+        <p class="muted" data-i18n="sc-sys">[系統提示] 偵測到高濃度迷因與校園奇幻反應，創作即魔法。</p>
 
         <div class="book-grid">
           <a href="https://www.kadokado.com.tw/book/1425" target="_blank" rel="noopener noreferrer" class="link-card">
@@ -1034,7 +1291,7 @@
                 <span>READ VOL.1</span>
               </div>
             </div>
-            <div class="book-label">VOL.1 小心字穢</div>
+            <div class="book-label" data-i18n="sc-vol1">VOL.1 小心字穢</div>
           </a>
 
           <a href="https://www.kadokado.com.tw/book/42308" target="_blank" rel="noopener noreferrer" class="link-card">
@@ -1045,7 +1302,7 @@
                 <span>READ VOL.2</span>
               </div>
             </div>
-            <div class="book-label">VOL.2 字者互毆</div>
+            <div class="book-label" data-i18n="sc-vol2">VOL.2 字者互毆</div>
           </a>
 
           <a href="https://www.kadokado.com.tw/book/65322" target="_blank" rel="noopener noreferrer" class="link-card">
@@ -1056,58 +1313,129 @@
                 <span>READ SIDE</span>
               </div>
             </div>
-            <div class="book-label">序曲：北車地下城守則</div>
+            <div class="book-label" data-i18n="sc-side">序曲：北車地下城守則</div>
           </a>
         </div>
 
         <div style="margin-top: 40px; padding-top: 30px; border-top: 1px dashed var(--glass-border); text-align: center;">
-            <h3 style="font-family: 'Orbitron'; font-size: 1.2rem; color: var(--text-main); margin-bottom: 15px;">
+            <h3 style="font-family: 'Orbitron'; font-size: 1.2rem; color: var(--text-main); margin-bottom: 15px;" data-i18n="sc-quiz-title">
                 🧪 創作者屬性鑑定 (心理測驗)
             </h3>
-            <a href="https://tealize-write.github.io/story-command-academy/" target="_blank" rel="noopener noreferrer" class="cta-btn">
+            <a href="https://tealize-write.github.io/story-command-academy/" target="_blank" rel="noopener noreferrer" class="cta-btn" data-i18n="sc-quiz-btn">
                 開始測驗 <i class="fa-solid fa-wand-magic-sparkles"></i>
             </a>
         </div>
       </section>
 
+      <!-- ===== IP: 咬了神一口 ===== -->
+      <section class="glass-panel lag-panel">
+        <h2 class="section-title">
+          <i class="fa-solid fa-paw"></i>
+          <span data-i18n="lag-title">NOVEL: A Bite of God</span>
+        </h2>
+
+        <div class="quote" data-i18n="lag-quote">「改編自美女與野獸。山上有座不能亂碰的莊園，摘花要付出代價，說謊也有代價。」</div>
+
+        <div class="lag-layout">
+          <!-- 左：小說氛圍文字 -->
+          <div class="lag-text">
+            <h3 class="lag-booktitle">咬了神一口</h3>
+            <p class="lag-subtitle" data-i18n="lag-subtitle">A Bite of God &nbsp;·&nbsp; Beauty &amp; the Beast retelling</p>
+
+            <p class="lag-desc" data-i18n="lag-desc">
+              山上有座不能亂碰的莊園。<br>
+              摘花要付出代價，說謊也有代價。<br>
+              黎昂只是想把弟弟帶回家。<br>
+              但他從來不是會乖乖服從規則的獅子。<br>
+              於是，他咬了神一口。<br>
+              或許還不只一口。
+            </p>
+
+            <div class="lag-purchase" data-i18n="lag-purchase">
+              <span style="color:var(--text-sub);font-size:0.9rem;font-style:italic;"><i class="fa-solid fa-clock"></i> 購書連結 — 即將上線</span>
+            </div>
+
+            <!-- 謎題區塊 -->
+            <div class="puzzle-box" id="puzzleBox">
+              <div class="puzzle-header">
+                <i class="fa-solid fa-lock" id="puzzleLockIcon"></i>
+                <span data-i18n="puzzle-title">後記解鎖謎題</span>
+              </div>
+              <p class="puzzle-hint" data-i18n="puzzle-hint">牆上塗鴉的高大身影畫的是誰？</p>
+              <div class="puzzle-input-row">
+                <input type="text" id="puzzleInput" class="puzzle-input" maxlength="10" placeholder="____" aria-label="謎題答案" autocomplete="off" />
+                <button class="puzzle-submit" id="puzzleSubmit" data-i18n="puzzle-btn">解鎖</button>
+              </div>
+              <p class="puzzle-msg" id="puzzleMsg" aria-live="polite"></p>
+            </div>
+
+            <!-- 解鎖後內容（JS 動態插入，預設不存在 DOM） -->
+            <div class="bonus-content" id="bonusContent" aria-hidden="true">
+              <div class="bonus-header">
+                <i class="fa-solid fa-lock-open"></i>
+                <span data-i18n="bonus-unlocked">已解鎖 ✦</span>
+              </div>
+              <div class="bonus-body">
+                <p data-i18n="bonus-desc" style="margin-bottom:1.2rem;">答對了。門已經開了。</p>
+                <!-- 連結由 JS 在解鎖後動態插入 -->
+                <div id="bonusLinkSlot"></div>
+                <p style="margin-top:1rem;font-size:0.82rem;color:var(--text-sub);opacity:0.7;" data-i18n="bonus-tip">（那隻眼睛，也看著你。）</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 右：插圖組合 -->
+          <div class="lag-images">
+            <div class="lag-img-main">
+              <img src="leonAndGod.png" alt="黎昂與神 — 咬了神一口插圖" loading="lazy" />
+            </div>
+            <div class="lag-img-small">
+              <img src="littlelion.png" alt="小獅子 — 咬了神一口插圖" loading="lazy" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== IP: 穿越者 ===== -->
       <section class="glass-panel">
         <h2 class="section-title">
           <i class="fa-solid fa-seedling"></i>
-          NOVEL：REVISING(修文施工中)
+          <span data-i18n="soil-title">NOVEL：REVISING (修文施工中)</span>
         </h2>
 
         <div class="novel-layout">
           <a href="https://www.kadokado.com.tw/book/60627" target="_blank" rel="noopener noreferrer" class="novel-cover-link">
             <img src="Crossing_the_Soil.jpg" alt="是誰把穿越者種在土裡" loading="lazy" />
             <div class="novel-overlay" aria-hidden="true">
-              <span class="neon-tag" style="background: var(--accent-color); color: #000; font-weight: bold;">點擊閱讀</span>
+              <span class="neon-tag" style="background: var(--accent-color); color: #000; font-weight: bold;" data-i18n="soil-read">點擊閱讀</span>
             </div>
           </a>
 
           <div class="novel-info">
-            <h3 style="font-size: 2rem; margin-bottom: 15px; color: var(--text-main); font-weight: 700;">
+            <h3 style="font-size: 2rem; margin-bottom: 15px; color: var(--text-main); font-weight: 700;" data-i18n="soil-booktitle">
               是誰把穿越者種在土裡
             </h3>
-			<p class="muted">[系統提示] 恐龍注意！</p>
-            <div class="quote">「17歲的蘇海躍選擇結束生命，卻在陌生山林的泥土裡被挖了出來。」</div>
+            <p class="muted" data-i18n="soil-sys">[系統提示] 恐龍注意！</p>
+            <div class="quote" data-i18n="soil-quote">「17歲的蘇海躍選擇結束生命，卻在陌生山林的泥土裡被挖了出來。」</div>
 
-            <p style="color: var(--text-sub); margin-bottom: 2rem; line-height: 1.8;">
+            <p style="color: var(--text-sub); margin-bottom: 2rem; line-height: 1.8;" data-i18n="soil-desc">
               一個人類分為 ABO、幽靈依附費洛蒙、恐龍遊蕩於街頭的瘋狂世界。
               蘇海躍在這個怪異卻溫暖的日常中，遇見了蒼白如鬼的 Alpha 陸翎邑。
               新聞上另一個「完美的蘇海躍」失蹤案，揭開了橫跨兩個世界的巨大陰謀。
             </p>
 
-            <a href="https://www.kadokado.com.tw/book/60627" target="_blank" rel="noopener noreferrer" class="neon-tag">
+            <a href="https://www.kadokado.com.tw/book/60627" target="_blank" rel="noopener noreferrer" class="neon-tag" data-i18n="soil-link">
               <i class="fa-solid fa-arrow-right"></i> 前往 KadoKado
             </a>
           </div>
         </div>
       </section>
 
+      <!-- ===== GAME ===== -->
       <section class="glass-panel">
         <h2 class="section-title">
           <i class="fa-solid fa-gamepad"></i>
-          GAME: 恐怖民俗RPG遊戲
+          <span data-i18n="game-title">GAME: 恐怖民俗RPG遊戲</span>
         </h2>
 
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 15px;">
@@ -1116,16 +1444,16 @@
           </h3>
 
           <div class="game-links-container">
-            <a href="https://responselessaircra.wixsite.com/x-destroyer" target="_blank" rel="noopener noreferrer" class="game-external-btn">
+            <a href="https://responselessaircra.wixsite.com/x-destroyer" target="_blank" rel="noopener noreferrer" class="game-external-btn" data-i18n="game-web">
                 <i class="fa-solid fa-globe"></i> 遊戲官網
             </a>
-            <a href="https://forum.gamer.com.tw/C.php?bsn=4918&snA=28697" target="_blank" rel="noopener noreferrer" class="game-external-btn">
+            <a href="https://forum.gamer.com.tw/C.php?bsn=4918&snA=28697" target="_blank" rel="noopener noreferrer" class="game-external-btn" data-i18n="game-forum">
                 <i class="fa-solid fa-comments"></i> 巴哈姆特
             </a>
           </div>
         </div>
 
-        <p style="color: var(--accent-color); font-size: 1rem; margin-bottom: 2rem;">
+        <p style="color: var(--accent-color); font-size: 1rem; margin-bottom: 2rem;" data-i18n="game-warn">
           <i class="fa-solid fa-triangle-exclamation"></i> 【系統警告】包含大量紅色顏料與精神污染（開玩笑的，但也許不是）。
         </p>
 
@@ -1211,7 +1539,24 @@
         </div>
 
         <div class="code-project">
-          <h2 class="code-h2">>> Projects / [NOVEL] 《是誰把穿越者種在土裡》</h2>
+          <h2 class="code-h2">>> Projects / [NOVEL] 《咬了神一口》</h2>
+          <p style="color: #a9b7c6; margin-bottom: 15px;">>>> 改編自美女與野獸。獅子黎昂想把弟弟帶回來，神的莊園卻不好惹。</p>
+
+          <div class="code-block-styled" style="border-left-color: #c9a227; box-shadow: inset 0 0 20px rgba(40,30,0,0.4);">
+            <span class="kwd">class</span> <span class="func">Leon</span>(Lion):<br>
+            &nbsp;&nbsp;<span class="kwd">def</span> <span class="func">__init__</span>(self):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;self.goal = <span class="str">"Bring Brother Home"</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;self.rule_compliance = <span class="str">False</span><br><br>
+            &nbsp;&nbsp;<span class="kwd">def</span> <span class="func">interact</span>(self, god):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># He bit God. Probably more than once.</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="kwd">return</span> <span class="func">bite</span>(god, repeat=<span class="kwd">True</span>)
+          </div>
+
+          <p style="font-size: 0.9rem; color: #888; margin-bottom:15px;">Beauty &amp; the Beast retelling · 購書連結 coming soon.</p>
+          <span style="color:#c9a227;font-size:0.85rem;font-family:'JetBrains Mono',monospace;"># 謎題：神最後有幾隻眼睛？答對解鎖番外 → 前往視覺模式</span>
+        </div>
+
+        <div class="code-project">
           <p style="color: #a9b7c6; margin-bottom: 15px;">>>> 17歲的蘇海躍選擇結束生命，卻在陌生山林的泥土裡被挖了出來。</p>
           
           <div class="code-block-styled">
@@ -1535,7 +1880,175 @@
         });
       });
 
-      // Service Worker Registration (PWA)
+      // ===== i18n =====
+      const i18nData = {
+        zh: {
+          "tag-capricorn": "魔羯座",
+          "tag-gamemaker": "遊戲 Maker",
+          "tag-art": "繪圖",
+          "tag-creator": "奇幻創作者",
+          "sc-title": "NOVEL: Story-Command Awakening 《字命覺醒》",
+          "sc-quote": "「因為是文閉所以會贏。」「冠軍是我們的，你們加油吧。」",
+          "sc-sys": "[系統提示] 偵測到高濃度迷因與校園奇幻反應，創作即魔法。",
+          "sc-vol1": "VOL.1 小心字穢",
+          "sc-vol2": "VOL.2 字者互毆",
+          "sc-side": "序曲：北車地下城守則",
+          "sc-quiz-title": "🧪 創作者屬性鑑定 (心理測驗)",
+          "sc-quiz-btn": "開始測驗",
+          "lag-title": "NOVEL: 《咬了神一口》",
+          "lag-quote": "「改編自美女與野獸。山上有座不能亂碰的莊園，摘花要付出代價，說謊也有代價。」",
+          "lag-subtitle": "A Bite of God &nbsp;·&nbsp; Beauty &amp; the Beast retelling",
+          "lag-desc": "山上有座不能亂碰的莊園。<br>摘花要付出代價，說謊也有代價。<br>黎昂只是想把弟弟帶回家。<br>但他從來不是會乖乖服從規則的獅子。<br>於是，他咬了神一口。<br>或許還不只一口。",
+          "lag-purchase": '<span style="color:var(--text-sub);font-size:0.9rem;font-style:italic;"><i class="fa-solid fa-clock"></i> 購書連結 — 即將上線</span>',
+          "puzzle-title": "後記解鎖謎題",
+          "puzzle-hint": "牆上塗鴉的高大身影畫的是誰？",
+          "puzzle-btn": "解鎖",
+          "bonus-unlocked": "已解鎖 ✦",
+          "bonus-desc": "答對了。門已經開了。",
+          "bonus-goto": "前往後記",
+          "bonus-tip": "（那隻眼睛，也看著你。）",
+          "soil-title": "NOVEL：REVISING (修文施工中)",
+          "soil-read": "點擊閱讀",
+          "soil-booktitle": "是誰把穿越者種在土裡",
+          "soil-sys": "[系統提示] 恐龍注意！",
+          "soil-quote": "「17歲的蘇海躍選擇結束生命，卻在陌生山林的泥土裡被挖了出來。」",
+          "soil-desc": "一個人類分為 ABO、幽靈依附費洛蒙、恐龍遊蕩於街頭的瘋狂世界。蘇海躍在這個怪異卻溫暖的日常中，遇見了蒼白如鬼的 Alpha 陸翎邑。新聞上另一個「完美的蘇海躍」失蹤案，揭開了橫跨兩個世界的巨大陰謀。",
+          "soil-link": '<i class="fa-solid fa-arrow-right"></i> 前往 KadoKado',
+          "game-title": "GAME: 恐怖民俗RPG遊戲",
+          "game-web": '<i class="fa-solid fa-globe"></i> 遊戲官網',
+          "game-forum": '<i class="fa-solid fa-comments"></i> 巴哈姆特',
+          "game-warn": '<i class="fa-solid fa-triangle-exclamation"></i> 【系統警告】包含大量紅色顏料與精神污染（開玩笑的，但也許不是）。',
+        },
+        en: {
+          "tag-capricorn": "Capricorn",
+          "tag-gamemaker": "Game Maker",
+          "tag-art": "Illustration",
+          "tag-creator": "Fantasy Creator",
+          "sc-title": "NOVEL: Story-Command Awakening",
+          "sc-quote": '"Because it\'s a literary shutdown, we\'ll win." "The championship is ours — good luck, everyone else."',
+          "sc-sys": "[System] High concentration of meme & campus fantasy detected. Creation is magic.",
+          "sc-vol1": "VOL.1 Beware the Word Filth",
+          "sc-vol2": "VOL.2 Word-Users Brawl",
+          "sc-side": "Prelude: Underground City Rules",
+          "sc-quiz-title": "🧪 Creator Type Diagnosis (Quiz)",
+          "sc-quiz-btn": "Start Quiz",
+          "lag-title": "NOVEL: A Bite of God",
+          "lag-quote": '"Adapted from Beauty and the Beast. There is a manor on the hill that must not be touched — picking a flower has its price, and so does a lie."',
+          "lag-subtitle": "A Bite of God &nbsp;·&nbsp; Beauty &amp; the Beast retelling",
+          "lag-desc": "There is a manor on the hill that must not be touched.<br>Picking a flower has its price. So does a lie.<br>Leon only wanted to bring his brother home.<br>But he was never the kind of lion to obey the rules.<br>So he bit God.<br>Perhaps more than once.",
+          "lag-purchase": '<span style="color:var(--text-sub);font-size:0.9rem;font-style:italic;"><i class="fa-solid fa-clock"></i> Purchase link — coming soon</span>',
+          "puzzle-title": "Unlock the Afterword",
+          "puzzle-hint": "Who is the tall figure in the graffiti on the wall?",
+          "puzzle-btn": "Unlock",
+          "bonus-unlocked": "Unlocked ✦",
+          "bonus-desc": "Correct. The door is open.",
+          "bonus-goto": "Go to Afterword",
+          "bonus-tip": "(That eye is watching you too.)",
+          "soil-title": "NOVEL：REVISING (Work in Progress)",
+          "soil-read": "Read Now",
+          "soil-booktitle": "Who Planted the Isekai Protagonist in the Soil?",
+          "soil-sys": "[System] Dinosaur alert!",
+          "soil-quote": '"Su Haiyue, 17, chose to end his life — and was dug out of unfamiliar forest soil."',
+          "soil-desc": "A chaotic world where humans are divided into ABO, ghosts cling to pheromones, and dinosaurs roam the streets. In this strange yet warm daily life, Su Haiyue meets the ghost-pale Alpha Lu Linyi. A missing-person case of a \"perfect Su Haiyue\" unravels a conspiracy spanning two worlds.",
+          "soil-link": '<i class="fa-solid fa-arrow-right"></i> Read on KadoKado',
+          "game-title": "GAME: Taiwanese Folk Horror RPG",
+          "game-web": '<i class="fa-solid fa-globe"></i> Official Site',
+          "game-forum": '<i class="fa-solid fa-comments"></i> Bahamut Forum',
+          "game-warn": '<i class="fa-solid fa-triangle-exclamation"></i> [System Warning] Contains large amounts of red paint and mental contamination. (Joking. Maybe.)',
+        }
+      };
+
+      let currentLang = storage.get("tealize.lang", "zh");
+
+      function applyLang(lang) {
+        currentLang = lang;
+        storage.set("tealize.lang", lang);
+        document.documentElement.lang = lang === "zh" ? "zh-Hant-TW" : "en";
+        document.getElementById("langBtnLabel").textContent = lang === "zh" ? "EN" : "中";
+        const dict = i18nData[lang];
+        document.querySelectorAll("[data-i18n]").forEach(el => {
+          const key = el.dataset.i18n;
+          if (dict[key] !== undefined) el.innerHTML = dict[key];
+        });
+        // Update puzzle placeholder
+        const pi = document.getElementById("puzzleInput");
+        if (pi) pi.placeholder = lang === "zh" ? "?" : "?";
+      }
+
+      applyLang(currentLang);
+
+      document.getElementById("langBtn").addEventListener("click", () => {
+        applyLang(currentLang === "zh" ? "en" : "zh");
+      });
+
+      // ===== Puzzle (hash-based, no access code needed) =====
+      // Accepted answers (normalized: lowercase, strip spaces)
+      const ACCEPTED = ["神", "山神"];
+      // The hash token the afterword page will verify
+      const AFTERWORD_HASH = "#grail-sanctum-open";
+      const AFTERWORD_URL  = "lag-afterword.html" + AFTERWORD_HASH;
+
+      const puzzleInput  = document.getElementById("puzzleInput");
+      const puzzleSubmit = document.getElementById("puzzleSubmit");
+      const puzzleMsg    = document.getElementById("puzzleMsg");
+      const bonusContent = document.getElementById("bonusContent");
+      const puzzleBox    = document.getElementById("puzzleBox");
+
+      function buildLink() {
+        const slot = document.getElementById("bonusLinkSlot");
+        if (!slot || slot.querySelector("a")) return; // already built
+        const label = currentLang === "zh" ? "前往後記" : "Go to Afterword";
+        const a = document.createElement("a");
+        a.href = AFTERWORD_URL;
+        a.className = "access-code-goto";
+        a.target = "_blank";
+        a.rel = "noopener noreferrer";
+        a.innerHTML = `<i class="fa-solid fa-arrow-right-to-bracket"></i> <span>${label}</span>`;
+        slot.appendChild(a);
+      }
+
+      function showUnlocked(save) {
+        puzzleBox.style.display = "none";
+        bonusContent.classList.add("visible");
+        bonusContent.setAttribute("aria-hidden", "false");
+        buildLink();
+        if (save) storage.set("tealize.lag.unlocked", "1");
+      }
+
+      // Restore unlocked state on reload — but DON'T auto-build link until confirmed
+      // We only restore the UI; the actual link is built safely in buildLink()
+      if (storage.get("tealize.lag.unlocked", "0") === "1") {
+        showUnlocked(false);
+      }
+
+      function normalize(s) { return s.trim().toLowerCase().replace(/\s/g, ""); }
+
+      function tryAnswer() {
+        const val = normalize(puzzleInput.value);
+        if (ACCEPTED.map(normalize).includes(val)) {
+          puzzleMsg.textContent = currentLang === "zh" ? "✓ 正確。" : "✓ Correct.";
+          puzzleMsg.className = "puzzle-msg right";
+          setTimeout(() => showUnlocked(true), 600);
+        } else {
+          puzzleMsg.textContent = currentLang === "zh" ? "✗ 再想想…" : "✗ Try again…";
+          puzzleMsg.className = "puzzle-msg wrong";
+          puzzleInput.classList.add("shake");
+          setTimeout(() => puzzleInput.classList.remove("shake"), 500);
+        }
+      }
+
+      puzzleSubmit.addEventListener("click", tryAnswer);
+      puzzleInput.addEventListener("keydown", e => { if (e.key === "Enter") tryAnswer(); });
+
+      // Keep link label in sync with language switches
+      document.getElementById("langBtn").addEventListener("click", () => {
+        const linkSpan = document.querySelector("#bonusLinkSlot a span");
+        if (linkSpan) {
+          linkSpan.textContent = currentLang === "zh" ? "Go to Afterword" : "前往後記";
+        }
+      }, { capture: false });
+
+
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
           navigator.serviceWorker.register('sw.js')
