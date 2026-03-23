@@ -1,17 +1,19 @@
 // Service Worker for Tealize Website
-const CACHE_NAME = 'tealize-v1';
+const CACHE_NAME = 'tealize-v2';
 const urlsToCache = [
   '/',
   '/index.html',
   '/manifest.json',
-  '/avatar_white.jpg',
-  '/avatar_black.jpg',
-  '/Story_Command1.jpg',
-  '/Story_Command2.jpg',
-  '/Story_Command0_Station_Underground_City_Rules.jpg',
-  '/Crossing_the_Soil.jpg',
-  '/Friend_or_Fraud1.jpg',
-  '/Friend_or_Fraud2.jpg'
+  '/img/avatar_white.jpg',
+  '/img/avatar_black.jpg',
+  '/img/Story_Command1.jpg',
+  '/img/Story_Command2.jpg',
+  '/img/Story_Command0_Station_Underground_City_Rules.jpg',
+  '/img/Crossing_the_Soil.jpg',
+  '/img/Friend_or_Fraud1.jpg',
+  '/img/Friend_or_Fraud2.jpg',
+  '/img/leonAndGod.jpg',
+  '/img/littlelion.jpg'
 ];
 
 // Install event - cache resources

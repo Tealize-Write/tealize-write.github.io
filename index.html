@@ -8,7 +8,6 @@
 
   <!-- ── Primary SEO ── -->
   <title>兌現藍 Tealize | 奇幻小說・恐怖RPG・原創插畫</title>
-  <meta name="google-site-verification" content="uB_aFApILzTFF7Bp_Yc8fmh0yfOdIci8e6AqQmNUh5c" />
   <meta name="description" content="兌現藍（Tealize）的創作奇想基地。奇幻輕小說《字命覺醒》、異世界輕小說《是誰把穿越者種在土裡》、美女與野獸改編短篇《咬了神一口》，以及台灣本土恐怖RPG遊戲《反轉的真實》。" />
   <meta name="keywords" content="兌現藍,Tealize,字命覺醒,是誰把穿越者種在土裡,咬了神一口,反轉的真實,奇幻小說,輕小說,BL,ABO,恐怖RPG,台灣創作,原創插畫,KadoKado" />
   <meta name="author" content="兌現藍 Tealize" />
@@ -95,7 +94,7 @@
 
   <!-- PWA Support -->
   <link rel="manifest" href="manifest.json" />
-  <link rel="apple-touch-icon" href="avatar_white.jpg" />
+  <link rel="apple-touch-icon" href="img/avatar_white.jpg" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -1065,14 +1064,12 @@
       }
       .lag-images {
         order: 1;
-        width: 100%;          /* full width on mobile */
+        width: 100%;
         flex-direction: column;
         gap: 12px;
       }
       /* Portrait main fills full width, keeps 3:4 ratio naturally */
       .lag-img-main { width: 100%; aspect-ratio: 1000 / 1343; }
-      /* Landscape small fills full width, keeps 3:2 ratio naturally */
-      .lag-img-small { width: 100%; aspect-ratio: 1087 / 707; }
       .lag-text { order: 2; }
       .lag-booktitle { font-size: 1.8rem; }
 
@@ -1106,7 +1103,6 @@
       .section-title { font-size: 1.15rem; }
 
       /* lag images already full-width with aspect-ratio from 768px rule */
-      .lag-img-small { max-height: none; } /* remove any inherited cap */
 
       /* Book grid — 2 columns still but tighter */
       .book-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
@@ -1343,6 +1339,43 @@
       letter-spacing: 1px;
     }
 
+    /* lag 區塊 — 黑暗特質測驗按鈕 */
+    .lag-quiz-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 26px;
+      background: rgba(107,143,62,0.10);
+      border: 1px solid var(--lag-accent);
+      border-radius: 8px;
+      color: var(--lag-accent);
+      text-decoration: none;
+      font-family: "Orbitron";
+      font-size: 0.82rem;
+      letter-spacing: 1px;
+      transition: all 0.3s var(--ease-pop);
+    }
+    .lag-quiz-btn:hover {
+      background: var(--lag-accent);
+      color: #fff;
+      box-shadow: 0 0 22px rgba(107,143,62,0.45);
+      transform: translateY(-2px);
+    }
+
+    /* ===== 暗色模式字色修正 ===== */
+    /* lag-desc 在暗色下加亮，確保斜體文字可見 */
+    .lag-desc { color: #b8cfa8; }
+    /* bonus-tip 去掉 opacity 壓暗 */
+    #bonusContent .bonus-body p[data-i18n="bonus-tip"] { opacity: 1 !important; color: var(--text-sub); }
+    /* quote 引言在暗色模式加亮 */
+    [data-theme="dark"] .quote { color: #b0c8e0; }
+    /* muted 系統提示文字加亮 */
+    [data-theme="dark"] .muted { color: #8facc4; }
+    /* soil-desc 段落加亮 */
+    [data-theme="dark"] .novel-info > p[data-i18n="soil-desc"] { color: #9ab8d0; }
+    /* 購書連結 coming soon 文字在暗色模式加亮 */
+    [data-theme="dark"] .lag-purchase span { color: #9ab4a0 !important; }
+
     .bonus-body { color: var(--text-sub); line-height: 1.8; }
 
     .access-code-goto {
@@ -1443,7 +1476,7 @@
       <header class="hero">
         <div class="avatar-visual" aria-label="Avatar">
           <div class="avatar-ring" aria-hidden="true"></div>
-          <img id="avatar-img" src="avatar_white.jpg" alt="Avatar">
+          <img id="avatar-img" src="img/avatar_white.jpg" alt="Avatar">
         </div>
         <h1 class="glitch-name" data-text="兌現藍">兌現藍</h1>
 
@@ -1472,7 +1505,7 @@
         <div class="book-grid">
           <a href="https://www.kadokado.com.tw/book/1425" target="_blank" rel="noopener noreferrer" class="link-card">
             <div class="img-wrap">
-              <img src="Story_Command1.jpg" alt="字命覺醒 VOL.1" loading="lazy" />
+              <img src="img/Story_Command1.jpg" alt="字命覺醒 VOL.1" loading="lazy" />
               <div class="overlay" aria-hidden="true">
                 <i class="fa-solid fa-book-open"></i>
                 <span>READ VOL.1</span>
@@ -1483,7 +1516,7 @@
 
           <a href="https://www.kadokado.com.tw/book/42308" target="_blank" rel="noopener noreferrer" class="link-card">
             <div class="img-wrap">
-              <img src="Story_Command2.jpg" alt="字命覺醒 VOL.2" loading="lazy" />
+              <img src="img/Story_Command2.jpg" alt="字命覺醒 VOL.2" loading="lazy" />
               <div class="overlay" aria-hidden="true">
                 <i class="fa-solid fa-book-open"></i>
                 <span>READ VOL.2</span>
@@ -1494,7 +1527,7 @@
 
           <a href="https://www.kadokado.com.tw/book/65322" target="_blank" rel="noopener noreferrer" class="link-card">
             <div class="img-wrap">
-              <img src="Story_Command0_Station_Underground_City_Rules.jpg" alt="地下城守則" loading="lazy" />
+              <img src="img/Story_Command0_Station_Underground_City_Rules.jpg" alt="地下城守則" loading="lazy" />
               <div class="overlay" aria-hidden="true">
                 <i class="fa-solid fa-scroll"></i>
                 <span>READ SIDE</span>
@@ -1571,15 +1604,23 @@
             </div>
           </div>
 
-          <!-- 右：插圖組合 -->
+          <!-- 右：插圖 -->
           <div class="lag-images">
             <div class="lag-img-main">
-              <img src="leonAndGod.jpg" alt="黎昂與神 — 咬了神一口插圖" loading="lazy" />
-            </div>
-            <div class="lag-img-small">
-              <img src="littlelion.jpg" alt="小獅子 — 咬了神一口插圖" loading="lazy" />
+              <img src="img/leonAndGod.jpg" alt="黎昂與神 — 咬了神一口插圖" loading="lazy" />
             </div>
           </div>
+        </div>
+
+        <!-- 黑暗特質測驗 -->
+        <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px dashed rgba(107,143,62,0.25); text-align: center;">
+          <h3 style="font-family:'Orbitron'; font-size:1rem; color:var(--lag-accent); margin-bottom:12px; letter-spacing:1px; opacity:0.9;">
+            🌿 黑暗特質 BL 心理測驗
+          </h3>
+          <a href="https://tealize-write.github.io/DarkBLstory/" target="_blank" rel="noopener noreferrer"
+             class="lag-quiz-btn" data-i18n="lag-quiz-btn">
+            測測你的黑暗特質 <i class="fa-solid fa-arrow-right"></i>
+          </a>
         </div>
       </section>
 
@@ -1592,7 +1633,7 @@
 
         <div class="novel-layout">
           <a href="https://www.kadokado.com.tw/book/60627" target="_blank" rel="noopener noreferrer" class="novel-cover-link">
-            <img src="Crossing_the_Soil.jpg" alt="是誰把穿越者種在土裡" loading="lazy" />
+            <img src="img/Crossing_the_Soil.jpg" alt="是誰把穿越者種在土裡" loading="lazy" />
             <div class="novel-overlay" aria-hidden="true">
               <span class="neon-tag" style="background: var(--accent-color); color: #000; font-weight: bold;" data-i18n="soil-read">點擊閱讀</span>
             </div>
@@ -1647,7 +1688,7 @@
         <div class="game-grid">
           <a href="https://responselessaircra.wixsite.com/x-destroyer" target="_blank" rel="noopener noreferrer" class="link-card">
             <div class="img-wrap">
-              <img src="Friend_or_Fraud1.jpg" alt="反轉的真實 PART 1" loading="lazy" />
+              <img src="img/Friend_or_Fraud1.jpg" alt="反轉的真實 PART 1" loading="lazy" />
               <div class="overlay" aria-hidden="true">
                 <i class="fa-solid fa-train"></i>
                 <span>PLAY PART 1</span>
@@ -1658,7 +1699,7 @@
 
           <a href="https://responselessaircra.wixsite.com/x-destroyer" target="_blank" rel="noopener noreferrer" class="link-card">
             <div class="img-wrap">
-              <img src="Friend_or_Fraud2.jpg" alt="反轉的真實 PART 2" loading="lazy" />
+              <img src="img/Friend_or_Fraud2.jpg" alt="反轉的真實 PART 2" loading="lazy" />
               <div class="overlay" aria-hidden="true">
                 <i class="fa-solid fa-train"></i>
                 <span>PLAY PART 2</span>
@@ -1840,7 +1881,7 @@
         // Update Avatar
         const avatarImg = document.getElementById("avatar-img");
         if (avatarImg) {
-            avatarImg.src = isDark ? "avatar_white.jpg" : "avatar_black.jpg";
+            avatarImg.src = isDark ? "img/avatar_white.jpg" : "img/avatar_black.jpg";
         }
       }
       syncIcons();
@@ -2094,6 +2135,7 @@
           "bonus-desc": "答對了。門已經開了。",
           "bonus-goto": "前往後記",
           "bonus-tip": "（那隻眼睛，也看著你。）",
+          "lag-quiz-btn": "測測你的黑暗特質 →",
           "soil-title": "NOVEL：REVISING (修文施工中)",
           "soil-read": "點擊閱讀",
           "soil-booktitle": "是誰把穿越者種在土裡",
@@ -2131,6 +2173,7 @@
           "bonus-desc": "Correct. The door is open.",
           "bonus-goto": "Go to Afterword",
           "bonus-tip": "(That eye is watching you too.)",
+          "lag-quiz-btn": "Take the Dark Trait Quiz →",
           "soil-title": "NOVEL：REVISING (Work in Progress)",
           "soil-read": "Read Now",
           "soil-booktitle": "Who Planted the Isekai Protagonist in the Soil?",

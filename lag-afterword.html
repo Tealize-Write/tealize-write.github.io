@@ -184,6 +184,32 @@
       border-top:1px dashed var(--glass-border); padding-top:1.5rem;
     }
 
+    /* littlelion 插圖 */
+    .afterword-illus {
+      width: 100%;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+      margin-bottom: 3rem;
+      aspect-ratio: 1087 / 707;
+    }
+    .afterword-illus img {
+      width: 100%; height: 100%;
+      display: block;
+      object-fit: cover;
+      filter: brightness(0.92);
+      transition: filter 0.5s ease, transform 0.6s ease;
+    }
+    .afterword-illus:hover img {
+      filter: brightness(1.05);
+      transform: scale(1.02);
+    }
+    [data-theme="light"] .afterword-illus {
+      box-shadow: 0 8px 28px rgba(74,107,40,0.15);
+      border-color: rgba(107,143,62,0.3);
+    }
+
     /* nav back */
     .nav-back {
       display:inline-flex; align-items:center; gap:8px;
@@ -291,19 +317,32 @@
         <span class="verified-badge"><i class="fa-solid fa-lock-open"></i>&nbsp; VERIFIED READER</span>
       </header>
 
+      <div class="afterword-illus">
+        <img src="img/littlelion.jpg" alt="小獅子 — 咬了神一口插圖" loading="lazy" />
+      </div>
+
       <article class="afterword-body">
         <p>
-          這是個跟《美女與野獸》<span class="highlight">樣樣反著來</span>的「鬼」屋冒險逃生故事，屋主是美人，被囚禁的是野獸。只是正常人在鬼屋裡通常是解謎逃生，黎昂是打鬼打不成、<span class="highlight">跟鬼打砲</span>的奇葩一枚。
+          當初抽到三個 TAG──<span class="highlight">綑綁、獸人、互攻</span>，非常高興，因為完全是我的好球帶，就不亂搞了。畢竟當初想著，如果抽到抹布，我就寫灰姑娘拿抹布擦地板；抽到高潮地獄就血海格力士在地獄裡衝浪；NTR 就是小王子搭核熱火箭（nuclear thermal rocket）。最後竟然抽到好球帶，簡直是受到 BL 之神的照顧！
         </p>
         <p>
-          於是喜得神砲友一隻，可喜可賀！是說黎昂變成神的皮，算不算是一種<span class="highlight">神製充氣娃娃</span>？總之變成鹿後，大概也是雞飛狗跳的生活，讓我們祝福他早日被弟弟吃掉！
+          因為是獸人，想一想後決定改編《美女與野獸》，只是一切都想跟原故事<span class="highlight">反著來</span>。原故事是美女教會了野獸文明，學會了愛，變成人類。《咬了神一口》是野獸教會了美人（神）獸性，將神從文明中解放，恢復成山神，同樣地也學會了愛。誰說愛是人類專屬呢？
+        </p>
+        <p>
+          最初神和黎昂的關係，我本來甚至想寫成邪神和祭品，然後也沒有弟弟，讓這兩隻打得更兇，血肉橫飛，肉也想寫那種邊吃邊做的食肉 play。不過這樣計算下來黎昂只有辦法活五天，之後敗血症陣亡，根本 GAME OVER，難怪我寫不下去。最後多誕生出弟弟讓故事直奔溫馨可愛，讓<span class="highlight">小奧誕生</span>簡直是我做出最棒的決定！
+        </p>
+        <p>
+          或許這故事看起來和原童話很不一樣，不過應該都能對上──主角同樣是因為親人摘花被困在屋主的領地，之後和屋主相處磨合，認識彼此，產生情感。主角也有外出遇到一群暴民，最後一樣是野獸在美人的垂淚下發出<span class="highlight">魔法少女變身</span>一般的特效，變成另一個型態。看，其實都有對上吧！（？？？
+        </p>
+        <p>
+          總之就是個跟原作反著來的「鬼」屋冒險逃生故事，只是正常人在鬼屋裡通常是解謎逃生，黎昂是打鬼打不成、<span class="highlight">跟鬼打砲</span>的奇葩一枚。於是喜得神砲友一隻，可喜可賀！是說黎昂變成神的皮，算不算是一種<span class="highlight">神製充氣娃娃</span>？總之變成鹿後，大概也是雞飛狗跳的生活，讓我們祝福他早日被弟弟吃掉！
         </p>
         <p class="aside">（黎：你是不是沒被鹿踢過？）</p>
         <p>
-          野獸視角能用的詞太少，為此我作弊讓黎昂受過人類文化影響，逃避雖然可恥但真的有用，不然要變<span class="highlight">國家地理頻道</span>了！
+          寫這故事還有個困難點，野獸視角能用的詞太少，為此我作弊讓黎昂受過人類文化影響，逃避雖然可恥但真的有用，不然要變<span class="highlight">國家地理頻道</span>了！
         </p>
         <p>
-          這個合誌我玩得很開心，也很謝謝各個夥伴的幫助！因為字數爆炸，後記就從簡（？）吧！謝謝閱讀到此的您！
+          這個合誌我玩得很開心，也很謝謝各個夥伴的幫助！因為正文字數爆炸，於是把後記放在這裡。謝謝閱讀到此的您！
         </p>
         <p class="signed">
           ─ 兌現藍 · Tealize<br>
