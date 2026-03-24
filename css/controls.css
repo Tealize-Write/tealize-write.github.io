@@ -1,0 +1,45 @@
+/* ══════════════════════════════════════
+   controls.css — Floating control buttons
+   ══════════════════════════════════════ */
+.control-panel {
+  position: fixed; top: 68px; right: 20px; z-index: 2000;
+  display: flex; gap: 15px;
+}
+
+.control-btn {
+  width: 50px; height: 50px; border-radius: 999px;
+  border: 2px solid var(--accent-color);
+  background: var(--glass-bg); color: var(--accent-color);
+  font-size: 1.3rem;
+  display: inline-flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(10px);
+  transition: transform 0.4s var(--ease-pop), box-shadow 0.4s var(--ease-smooth),
+              background 0.4s var(--ease-smooth), color 0.4s var(--ease-smooth),
+              border-color 0.4s var(--ease-smooth);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  position: relative; overflow: hidden; cursor: pointer;
+}
+.control-btn::before {
+  content: ""; position: absolute; inset: 0;
+  background: var(--accent-color); opacity: 0;
+  transition: opacity 0.3s var(--ease-smooth);
+}
+.control-btn i,
+.control-btn span {
+  position: relative; z-index: 1;
+  transition: transform 0.4s var(--ease-pop), color 0.4s var(--ease-smooth);
+}
+.control-btn:hover {
+  transform: scale(1.12) rotate(4deg);
+  box-shadow: 0 0 30px color-mix(in oklab, var(--accent-color) 70%, transparent);
+}
+.control-btn:hover::before { opacity: 1; }
+.control-btn:hover i { 
+  color: var(--bg-color); 
+  transform: rotate(-4deg) scale(1.08); 
+}
+/* 針對文字按鈕的 hover 特效：變色並稍微放大，但不旋轉以免影響閱讀 */
+.control-btn:hover span { 
+  color: var(--bg-color); 
+  transform: scale(1.08); 
+}

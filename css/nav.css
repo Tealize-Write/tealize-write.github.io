@@ -1,0 +1,152 @@
+/* ══════════════════════════════════════
+   nav.css — 氣泡藤蔓目錄 (Hero Nav) v3
+   ══════════════════════════════════════ */
+
+.hero-nav {
+  position: relative;
+  margin-top: 3.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  align-items: center;
+  padding: 20px 0;
+  z-index: 10;
+  width: 100%;
+}
+
+/* 藤蔓背景 SVG — 重新定位與美化 */
+.hero-vine {
+  position: absolute;
+  top: -10px; /* 稍微往上移一點 */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 130%; /* 擴大藤蔓範圍 */
+  max-width: 1000px;
+  height: 110%;
+  z-index: -1;
+  pointer-events: none;
+  filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.4)); /* 增加藍色螢光光暈 */
+  animation: vineFloat 6s ease-in-out infinite alternate;
+  overflow: visible; /* 確保 SVG 的濾鏡不被切斷 */
+}
+
+@keyframes vineFloat {
+  0% { transform: translateX(-50%) translateY(0) scale(1); }
+  100% { transform: translateX(-50%) translateY(5px) scale(1.02); }
+}
+
+/* 針對 SVG 路徑的填色與線條調整 */
+.hero-vine path.vine-stroke {
+  stroke: var(--accent-color);
+  stroke-width: 1.5;
+  fill: none;
+  opacity: 0.35; /* 藤蔓本身維持半透明，只留線條 */
+}
+.hero-vine path.vine-leaf {
+  fill: var(--accent-color);
+  opacity: 0.55; /* 葉片半透明填色 */
+}
+
+/* 分類區塊 (小說/遊戲) */
+.nav-category {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+}
+
+/* 分類標籤 (Pill) */
+.category-label {
+  font-family: "Orbitron", "Noto Sans TC", sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--accent-color);
+  letter-spacing: 2px;
+  background: rgba(255, 255, 255, 0.05); /* 極透玻璃感 */
+  padding: 6px 20px;
+  border-radius: 999px;
+  border: 1px dashed rgba(59, 130, 246, 0.3);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.bubble-group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  max-width: 600px;
+}
+
+/* 氣泡按鈕 (Bubble Link) */
+.bubble-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 28px;
+  border-radius: 999px; /* 超圓潤氣泡 */
+  background: rgba(8, 12, 30, 0.7); /* 深色背景使文字清晰 */
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 2px solid rgba(59, 130, 246, 0.2);
+  color: var(--text-main);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 1px;
+  transition: all 0.4s var(--ease-pop), border-color 0.4s;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4), inset 0 0 10px rgba(255, 255, 255, 0.03);
+  position: relative;
+  overflow: hidden;
+}
+
+/* 氣泡反光特效 */
+.bubble-link::after {
+  content: "";
+  position: absolute;
+  top: 0; left: -100%; width: 50%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transition: left 0.7s var(--ease-smooth);
+}
+
+.bubble-link i {
+  color: var(--accent-color);
+  font-size: 1.1rem;
+  transition: transform 0.4s var(--ease-pop), color 0.4s;
+}
+
+/* 氣泡 Hover 互動 */
+.bubble-link:hover {
+  background: var(--accent-color);
+  color: var(--bg-color);
+  border-color: var(--accent-color);
+  transform: translateY(-8px) scale(1.06);
+  box-shadow: 0 18px 40px color-mix(in oklab, var(--accent-color) 45%, transparent);
+}
+.bubble-link:hover::after { left: 250%; } /* 反光掃過 */
+.bubble-link:hover i {
+  color: var(--bg-color);
+  transform: scale(1.2) rotate(15deg);
+}
+
+/* Light Mode 調整 */
+[data-theme="light"] .bubble-link {
+  background: rgba(255, 255, 255, 0.8); /* 亮色背景透白 */
+  color: #0c122a;
+  box-shadow: 0 8px 25px rgba(10,30,60,0.1);
+  border: 2px solid rgba(59, 130, 246, 0.15);
+}
+[data-theme="light"] .category-label {
+  background: rgba(255, 255, 255, 0.9);
+  color: #0c122a;
+}
+[data-theme="light"] .bubble-link:hover {
+  background: #0c122a;
+  color: #fff;
+  border-color: #0c122a;
+}
+[data-theme="light"] .bubble-link:hover i {
+  color: #fff;
+}

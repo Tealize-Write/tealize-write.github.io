@@ -24,9 +24,9 @@
   <style>
     /* ── Theme tokens ── */
     :root {
-      --bg: #05030a;
-      --text: #e8e0d5;
-      --text-sub: #8a7f74;
+      --bg: #030510;
+      --text: #e0e5f0;
+      --text-sub: #7a8aa8;
       --accent: #6b8f3e;
       --accent-dim: rgba(107,143,62,0.15);
       --accent-glow: rgba(107,143,62,0.28);
@@ -37,9 +37,9 @@
 
     /* ── Light theme ── */
     [data-theme="light"] {
-      --bg: #faf7f2;
-      --text: #1c1610;
-      --text-sub: #6b5e4e;
+      --bg: #f0f4fa;
+      --text: #0f1a2e;
+      --text-sub: #4a5e7a;
       --accent: #4a6b28;
       --accent-dim: rgba(74,107,40,0.10);
       --accent-glow: rgba(74,107,40,0.18);
@@ -88,55 +88,10 @@
       transform: scale(1.1) rotate(8deg);
     }
 
-    /* ── GATE (wrong / no hash) ── */
-    #gate {
-      position: fixed; inset: 0;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      padding: 40px 24px; text-align: center;
-      background: var(--bg);
-      z-index: 100;
-      transition: opacity 0.7s var(--ease-smooth), visibility 0.7s;
-    }
-    #gate.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-
-    .gate-eye {
-      font-size: 3rem; color: var(--accent); margin-bottom: 1.5rem;
-      filter: drop-shadow(0 0 20px var(--accent));
-      animation: eyePulse 3s ease-in-out infinite;
-    }
-    @keyframes eyePulse {
-      0%,100% { filter: drop-shadow(0 0 15px var(--accent)); transform: scale(1); }
-      50%      { filter: drop-shadow(0 0 35px var(--accent)); transform: scale(1.08); }
-    }
-
-    .gate-title {
-      font-family:"Orbitron"; font-size:1rem; color:var(--accent);
-      letter-spacing:3px; margin-bottom:.6rem;
-    }
-    .gate-message {
-      color:var(--text-sub); font-family:"Noto Sans TC"; font-size:.95rem;
-      line-height:1.9; margin-bottom:2rem; max-width:360px;
-    }
-    .gate-back {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 11px 26px;
-      border: 1px solid var(--glass-border); border-radius: 8px;
-      color: var(--text-sub); text-decoration: none;
-      font-family: "Orbitron"; font-size: .75rem; letter-spacing: 1px;
-      transition: all .3s var(--ease-pop);
-      background: var(--accent-dim);
-    }
-    .gate-back:hover {
-      border-color: var(--accent); color: var(--accent);
-      box-shadow: 0 0 15px var(--accent-glow);
-    }
-
     /* ── CONTENT ── */
     #content {
-      opacity: 0; visibility: hidden;
-      transition: opacity 1s var(--ease-smooth) .2s, visibility 1s;
+      opacity: 1; visibility: visible;
     }
-    #content.visible { opacity: 1; visibility: visible; }
 
     .container { max-width: 720px; margin: 0 auto; padding: 80px 28px 100px; }
 
@@ -149,7 +104,6 @@
     .afterword-ip {
       font-family:"Orbitron"; font-size:.7rem; color:var(--accent);
       letter-spacing:4px; opacity:.75; margin-bottom:.6rem;
-      /* prevent overflow on tiny screens */
       word-break: break-word;
     }
     .afterword-title {
@@ -161,14 +115,6 @@
       width:100px; height:1px; margin:1.8rem auto;
       background: linear-gradient(90deg, transparent, var(--accent), transparent); opacity:.5;
     }
-    .verified-badge {
-      display:inline-flex; align-items:center; gap:8px;
-      padding:5px 14px;
-      border:1px solid rgba(107,143,62,.35); border-radius:999px;
-      font-family:"JetBrains Mono"; font-size:.7rem; color:#7ec850;
-      background:rgba(107,143,62,.07); letter-spacing:1px;
-    }
-    [data-theme="light"] .verified-badge { color:#3d6e1a; border-color:rgba(74,107,40,.3); background:rgba(74,107,40,.06); }
 
     /* article body */
     .afterword-body { font-size: clamp(.95rem, 2.5vw, 1.05rem); line-height:2.2; color:var(--text); }
@@ -248,10 +194,13 @@
 
     /* ── Light theme overrides ── */
     [data-theme="light"] body { background: var(--bg); }
-    [data-theme="light"] #gate { background: var(--bg); }
-    [data-theme="light"] .gate-back { background: rgba(255,255,255,0.5); }
-    [data-theme="light"] .nav-back  { background: rgba(255,255,255,0.5); }
-    [data-theme="light"] .future-box { background: rgba(255,255,255,0.4); }
+    [data-theme="light"] .nav-back  { background: rgba(240,245,255,0.6); }
+    [data-theme="light"] .future-box { background: rgba(240,245,255,0.5); }
+    [data-theme="light"] .bg-glow { opacity: 0.15; }
+    [data-theme="light"] #particlesCanvas { opacity: 0.35; }
+    [data-theme="light"] .afterword-illus {
+      box-shadow: 0 8px 28px rgba(20,50,80,0.10);
+    }
 
     /* ── Mobile responsive ── */
     @media (max-width: 600px) {
@@ -267,8 +216,7 @@
     }
 
     @media (max-width: 380px) {
-      .afterword-ip { display: none; } /* too cramped on tiny screens */
-      .verified-badge { font-size: .62rem; padding: 4px 10px; }
+      .afterword-ip { display: none; }
     }
 
     /* ── Reduced motion ── */
@@ -287,21 +235,8 @@
   <div class="bg-glow" aria-hidden="true"></div>
   <canvas id="particlesCanvas" aria-hidden="true"></canvas>
 
-  <!-- ── GATE: shown when hash is wrong/missing ── -->
-  <div id="gate" role="alert">
-    <i class="fa-solid fa-eye gate-eye" aria-hidden="true"></i>
-    <p class="gate-title">A BITE OF GOD · 後記</p>
-    <p class="gate-message">
-      這扇門只對答對謎題的人開啟。<br>
-      請回到主頁，解開《咬了神一口》的謎題，<br>再循連結前來。
-    </p>
-    <a href="index.html" class="gate-back">
-      <i class="fa-solid fa-arrow-left"></i> 返回主頁解謎
-    </a>
-  </div>
-
-  <!-- ── CONTENT ── -->
-  <div id="content" aria-hidden="true">
+  <!-- ── CONTENT (always visible, no gate) ── -->
+  <div id="content" class="visible" aria-hidden="false">
     <div class="container">
 
       <a href="index.html" class="nav-back">
@@ -314,7 +249,6 @@
         <h1 class="afterword-title">後記</h1>
         <p class="afterword-en">Author's Note</p>
         <div class="afterword-divider" aria-hidden="true"></div>
-        <span class="verified-badge"><i class="fa-solid fa-lock-open"></i>&nbsp; VERIFIED READER</span>
       </header>
 
       <div class="afterword-illus">
@@ -359,7 +293,7 @@
       </div>
 
       <footer class="afterword-footer">
-        &copy; 2026 Tealize &nbsp;·&nbsp; All rights reserved &nbsp;·&nbsp; For verified readers only.
+        &copy; 2026 Tealize &nbsp;·&nbsp; All rights reserved.
       </footer>
     </div>
   </div>
@@ -391,20 +325,7 @@
         syncThemeIcon();
       });
 
-      // ── Hash gate ──
-      // Must match AFTERWORD_HASH in index.html exactly.
-      const VALID_HASH = "#grail-sanctum-open";
-
-      const gate    = document.getElementById("gate");
-      const content = document.getElementById("content");
-
-      if (window.location.hash === VALID_HASH) {
-        gate.classList.add("hidden");
-        gate.setAttribute("aria-hidden", "true");
-        content.classList.add("visible");
-        content.setAttribute("aria-hidden", "false");
-        history.replaceState(null, "", window.location.pathname);
-      }
+      // ── No gate — content always visible ──
 
       // ── Olive green particle effect ──
       const canvas = document.getElementById("particlesCanvas");

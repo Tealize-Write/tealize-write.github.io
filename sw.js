@@ -1,9 +1,24 @@
 // Service Worker for Tealize Website
-const CACHE_NAME = 'tealize-v2';
+const CACHE_NAME = 'tealize-v3'; // 升級為 v3！
 const urlsToCache = [
   '/',
   '/index.html',
+  '/lag-afterword.html', 
   '/manifest.json',
+  '/js/app.js',         
+  
+  // 新增所有拆分的 CSS
+  '/css/variables.css',
+  '/css/base.css',
+  '/css/nav.css',
+  '/css/controls.css',
+  '/css/visual-mode.css',
+  '/css/lag-section.css',
+  '/css/code-mode.css',
+  '/css/light-overrides.css',
+  '/css/responsive.css',
+
+  // 圖片
   '/img/avatar_white.jpg',
   '/img/avatar_black.jpg',
   '/img/Story_Command1.jpg',
