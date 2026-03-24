@@ -43,3 +43,55 @@
   color: var(--bg-color); 
   transform: scale(1.08); 
 }
+/* ══════════════════════════════════════
+   回頂端按鈕 (Back to Top)
+   ══════════════════════════════════════ */
+.back-to-top {
+  position: fixed;
+  bottom: 40px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--glass-bg);
+  border: 2px solid var(--accent-color);
+  color: var(--accent-color);
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(30px); /* 初始位置稍微往下 */
+  transition: all 0.5s var(--ease-pop);
+  z-index: 1500;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* 當 JS 加上 show 類別時浮現 */
+.back-to-top.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.back-to-top:hover {
+  background: var(--accent-color);
+  color: var(--bg-color);
+  box-shadow: 0 0 25px var(--accent-color);
+  transform: translateY(-8px) scale(1.1); /* 往上浮游特效 */
+}
+
+/* 手機版稍微縮小並靠邊 */
+@media (max-width: 768px) {
+  .back-to-top {
+    bottom: 25px;
+    right: 20px;
+    width: 42px;
+    height: 42px;
+    font-size: 1rem;
+  }
+}
