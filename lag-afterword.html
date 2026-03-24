@@ -202,6 +202,82 @@
       box-shadow: 0 8px 28px rgba(20,50,80,0.10);
     }
 
+/* ── Poll Box (投票系統) ── */
+    .poll-box {
+      margin-top: 3.5rem;
+      padding: 2.5rem 2rem;
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      background: rgba(107, 143, 62, 0.05); /* 微微的專屬綠色透視背景 */
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      backdrop-filter: blur(10px);
+    }
+    .poll-title {
+      font-family: "Orbitron", "Noto Sans TC";
+      font-size: 1.2rem;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .poll-desc {
+      text-align: center;
+      color: var(--text-sub);
+      font-size: 0.9rem;
+      margin-bottom: 2rem;
+    }
+    .poll-options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .poll-btn {
+      background: var(--bg);
+      border: 1px solid var(--glass-border);
+      color: var(--text);
+      padding: 14px 20px;
+      border-radius: 12px;
+      font-family: "Noto Sans TC";
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s var(--ease-pop);
+      position: relative;
+      overflow: hidden;
+    }
+    .poll-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px var(--accent-glow);
+    }
+    
+    /* 統計結果 */
+    .poll-results {
+      animation: fadeIn 0.8s var(--ease-smooth);
+    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .poll-thanks {
+      text-align: center; color: var(--accent); font-weight: bold; margin-bottom: 1.5rem;
+    }
+    .result-item { margin-bottom: 1rem; }
+    .result-info {
+      display: flex; justify-content: space-between;
+      font-size: 0.9rem; color: var(--text); margin-bottom: 6px;
+    }
+    .progress-bar {
+      width: 100%; height: 12px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 8px; overflow: hidden;
+    }
+    [data-theme="light"] .progress-bar { background: rgba(0,0,0,0.08); }
+    .progress-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 8px;
+      transition: width 1.2s var(--ease-pop);
+      box-shadow: 0 0 10px var(--accent-glow);
+    }
+	
     /* ── Mobile responsive ── */
     @media (max-width: 600px) {
       .container { padding: 56px 16px 72px; }
@@ -283,6 +359,35 @@
         </p>
       </article>
 
+<div class="poll-box" id="pollBox">
+        <h3 class="poll-title"><i class="fa-solid fa-heart-pulse"></i> 讀者調查：你最支持誰攻誰受？</h3>
+        
+        <div class="poll-options" id="pollOptions">
+          <button class="poll-btn" data-vote="deer">白鹿攻 × 黑獅受</button>
+          <button class="poll-btn" data-vote="lion">黑獅攻 × 白鹿受</button>
+          <button class="poll-btn" data-vote="switch">輪流互攻 (小孩子才做選擇)</button>
+        </div>
+
+        <div class="poll-results" id="pollResults" style="display: none;">
+          <p class="poll-thanks">感謝投票！目前戰況如下：</p>
+          
+          <div class="result-item">
+            <div class="result-info"><span>白鹿攻 × 黑獅受</span> <span id="res-deer">0%</span></div>
+            <div class="progress-bar"><div class="progress-fill" id="bar-deer" style="width: 0%;"></div></div>
+          </div>
+          
+          <div class="result-item">
+            <div class="result-info"><span>黑獅攻 × 白鹿受</span> <span id="res-lion">0%</span></div>
+            <div class="progress-bar"><div class="progress-fill" id="bar-lion" style="width: 0%;"></div></div>
+          </div>
+          
+          <div class="result-item">
+            <div class="result-info"><span>輪流互攻</span> <span id="res-switch">0%</span></div>
+            <div class="progress-bar"><div class="progress-fill" id="bar-switch" style="width: 0%;"></div></div>
+          </div>
+        </div>
+      </div>
+	  
       <div class="future-box">
         <p class="future-box-title"><i class="fa-solid fa-scroll"></i>&nbsp; 番外預留區</p>
         <p class="future-box-desc">
@@ -380,6 +485,81 @@
         requestAnimationFrame(tick);
       }
       tick();
+	  
+	  // ── Poll Logic (連線正式版) ──
+      const pollOptions = document.getElementById("pollOptions");
+      const pollResults = document.getElementById("pollResults");
+      const pollBtns = document.querySelectorAll(".poll-btn");
+
+      const API_URL = "https://script.google.com/macros/s/AKfycbxx9-JwDwcQ-XPm4I782i9z0JfYpvw0em4ugiCPI28NR9pKyniRyebA1pTHWSJ6fGJ0/exec"; 
+
+      let dbVotes = { deer: 0, lion: 0, switch: 0 };
+      const hasVoted = storage.get("tealize.voted");
+
+      // 1. 網頁載入時，先去後台抓取目前最新票數
+      fetch(API_URL + "?action=get")
+        .then(res => res.json())
+        .then(data => {
+          dbVotes.deer = data.deer || 0;
+          dbVotes.lion = data.lion || 0;
+          dbVotes.switch = data.switch || 0;
+          // 如果已經投過票，就直接顯示最新結果
+          if (hasVoted) showResults(); 
+        })
+        .catch(err => console.log("獲取票數失敗", err));
+
+      // 2. 綁定按鈕點擊事件
+      pollBtns.forEach(btn => {
+        btn.addEventListener("click", function() {
+          const choice = this.getAttribute("data-vote");
+          
+          // 樂觀更新：前端先假裝投進去了，讓 UI 瞬間反應
+          dbVotes[choice]++;
+          storage.set("tealize.voted", choice);
+          pollOptions.style.display = "none";
+          pollResults.style.display = "block";
+          
+          // 顯示「計算中」的狀態
+          document.getElementById("res-deer").textContent = "連線更新中...";
+          document.getElementById("res-lion").textContent = "連線更新中...";
+          document.getElementById("res-switch").textContent = "連線更新中...";
+
+          // 3. 背景將票數傳送到 Google Sheets
+          fetch(API_URL + "?action=vote&choice=" + choice)
+            .then(res => res.json())
+            .then(data => {
+              // 收到 Google Sheets 的確認後，刷新為全網最準確的數據
+              dbVotes.deer = data.deer || 0;
+              dbVotes.lion = data.lion || 0;
+              dbVotes.switch = data.switch || 0;
+              showResults();
+            });
+        });
+      });
+
+      function showResults() {
+        pollOptions.style.display = "none";
+        pollResults.style.display = "block";
+
+        const totalVotes = dbVotes.deer + dbVotes.lion + dbVotes.switch;
+        // 避免除以 0 的錯誤
+        if (totalVotes === 0) return;
+
+        const pDeer = Math.round((dbVotes.deer / totalVotes) * 100);
+        const pLion = Math.round((dbVotes.lion / totalVotes) * 100);
+        const pSwitch = 100 - pDeer - pLion;
+
+        document.getElementById("res-deer").textContent = pDeer + "% (" + dbVotes.deer + "票)";
+        document.getElementById("res-lion").textContent = pLion + "% (" + dbVotes.lion + "票)";
+        document.getElementById("res-switch").textContent = pSwitch + "% (" + dbVotes.switch + "票)";
+
+        setTimeout(() => {
+          document.getElementById("bar-deer").style.width = pDeer + "%";
+          document.getElementById("bar-lion").style.width = pLion + "%";
+          document.getElementById("bar-switch").style.width = pSwitch + "%";
+        }, 50);
+      }
+	  
     })();
   </script>
 </body>

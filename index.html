@@ -104,6 +104,10 @@
     <button class="control-btn" id="modeBtn" title="切換視覺/程式介面" aria-label="切換視覺/程式介面"><i class="fa-solid fa-terminal"></i></button>
   </div>
 
+  <button id="backToTop" class="back-to-top" aria-label="回到頂端">
+    <i class="fa-solid fa-chevron-up"></i>
+  </button>
+
   <!-- ═══════════ VISUAL MODE ═══════════ -->
   <div id="visual-mode" class="view-mode">
     <div class="scan-lines" aria-hidden="true"></div>
@@ -258,7 +262,14 @@
         </div>
       </section>
 
-      <footer class="footer-visual">&copy; 2026 Tealize. All rights reserved.</footer>
+      <footer class="footer-visual">
+        &copy; 2026 Tealize. All rights reserved.<br>
+        <span id="visitorCountDisplay" style="display: inline-block; margin-top: 10px; font-family: 'Orbitron', 'Noto Sans TC', sans-serif; font-size: 0.85rem; color: var(--accent-color); opacity: 0.8; letter-spacing: 1px;">
+          <i class="fa-solid fa-eye"></i> 你是第 <span id="visitorNumber" style="font-weight: bold; font-size: 1rem; color: var(--text-main);">...</span> 位拜訪者
+        </span>
+      </footer>
+    </main>
+  </div>
     </main>
   </div>
 
