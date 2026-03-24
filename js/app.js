@@ -261,15 +261,23 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // ── 顏色輔助：將任何 CSS 顏色格式轉為 rgba ──
+  let _colorProbe = null;
+  function getAccentRGBA(opacity) {
+    if (!_colorProbe) { _colorProbe = document.createElement("div"); _colorProbe.style.display = "none"; body.appendChild(_colorProbe); }
+    _colorProbe.style.color = getComputedStyle(html).getPropertyValue("--accent-color").trim();
+    const rgb = getComputedStyle(_colorProbe).color; // 瀏覽器一定回傳 "rgb(r, g, b)"
+    return rgb.replace("rgb(", "rgba(").replace(")", ", " + opacity + ")");
+  }
+
   function animateCanvas() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    const accentColor = getComputedStyle(body).getPropertyValue("--accent-color");
     particles.forEach(p => {
       p.x += p.vx; p.y += p.vy;
       if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
       if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
       ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = accentColor.replace(')', `, ${p.opacity})`).replace('rgb', 'rgba');
+      ctx.fillStyle = getAccentRGBA(p.opacity);
       ctx.fill();
     });
     animationId = requestAnimationFrame(animateCanvas);
