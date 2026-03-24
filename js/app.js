@@ -195,18 +195,52 @@ document.addEventListener("DOMContentLoaded", () => {
     if (themeBtnIcon) themeBtnIcon.className = isDark ? "fa-solid fa-sun" : "fa-solid fa-moon";
   }
 
-  // ── 平滑滾動 ──
+// ── 平滑滾動與回頂端按鈕 ──
+  const backToTopBtn = document.getElementById("backToTop");
+
+  // 1. 目錄按鈕點擊：精準滾動到對應區塊
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
      anchor.addEventListener("click", function (e) {
         e.preventDefault();
         const targetId = this.getAttribute("href");
         if (targetId === "#") return;
         const target = document.querySelector(targetId);
+        
         if (target) {
-           window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - 60, behavior: "smooth" });
+           // 找出當前真正產生滾動軸的容器 (視覺模式 或 程式模式)
+           const scrollContainer = document.querySelector('.view-mode:not(.hidden)');
+           if (scrollContainer) {
+             // target.getBoundingClientRect().top 是目標相對視窗頂部的距離
+             // 加上容器目前的 scrollTop，再扣掉 80px 的上方緩衝空間
+             const targetPosition = scrollContainer.scrollTop + target.getBoundingClientRect().top - 80;
+             scrollContainer.scrollTo({ top: targetPosition, behavior: "smooth" });
+           }
         }
      });
   });
+
+  // 2. 監聽滾動：控制回頂端按鈕的浮現與隱藏
+  document.querySelectorAll('.view-mode').forEach(container => {
+    container.addEventListener("scroll", () => {
+      if (!backToTopBtn) return;
+      // 只要往下滾動超過 400px，就顯示按鈕
+      if (container.scrollTop > 400) {
+        backToTopBtn.classList.add("show");
+      } else {
+        backToTopBtn.classList.remove("show");
+      }
+    }, { passive: true });
+  });
+
+  // 3. 回頂端按鈕點擊：捲回最上方
+  if (backToTopBtn) {
+    backToTopBtn.addEventListener("click", () => {
+      const scrollContainer = document.querySelector('.view-mode:not(.hidden)');
+      if (scrollContainer) {
+        scrollContainer.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    });
+  }
 
   // ── 咬了神一口：防雷彈窗邏輯 ──
   const spoilerBtn = document.getElementById("lagAfterwordBtn");
@@ -364,5 +398,32 @@ document.addEventListener("DOMContentLoaded", () => {
     window.addEventListener("load", () => {
       navigator.serviceWorker.register("sw.js").then(() => console.log("SW registered")).catch(() => {});
     });
+  }
+  
+  // ── 記錄進站人數 (PageView) ──
+  const API_URL = "https://script.google.com/macros/s/AKfycbxx9-JwDwcQ-XPm4I782i9z0JfYpvw0em4ugiCPI28NR9pKyniRyebA1pTHWSJ6fGJ0/exec"; 
+  const visitorNumberEl = document.getElementById("visitorNumber");
+
+  if (visitorNumberEl) {
+    // 利用 sessionStorage 判斷：同一個人在同一個視窗一直按 F5 重新整理，數字不會狂飆，只算 1 次
+    const isNewView = !sessionStorage.getItem("tealize.viewed");
+    
+    // 如果是新訪客就呼叫 action=view (加1)，如果是重新整理就呼叫 action=get (純讀取)
+    const action = isNewView ? "view" : "get";
+
+    fetch(`${API_URL}?action=${action}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.views !== undefined) {
+          // 將從 Google Sheets 抓到的數字填入畫面中
+          visitorNumberEl.textContent = data.views;
+          // 標記這個視窗已經計算過了
+          if (isNewView) sessionStorage.setItem("tealize.viewed", "true");
+        }
+      })
+      .catch(err => {
+        console.log("無法獲取瀏覽人數", err);
+        visitorNumberEl.textContent = "???"; // 斷線或出錯時的備用顯示
+      });
   }
 });
