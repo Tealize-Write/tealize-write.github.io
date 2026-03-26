@@ -643,14 +643,13 @@ document.addEventListener("DOMContentLoaded", () => {
         device:    device
       });
 
-      // GAS 部署 URL 會做 302 redirect，sendBeacon 不跟 redirect 所以永遠失敗。
-      // 改用 fetch + keepalive:true，瀏覽器關閉時仍會送完整請求並跟隨 redirect。
+      // fetch + keepalive：不加 Content-Type header，避免觸發 CORS preflight
+      // GAS doPost 用 e.postData.contents 讀 body，不需要 Content-Type
       try {
         fetch(API_URL, {
           method:    "POST",
           body:      payload,
-          keepalive: true,
-          headers:   { "Content-Type": "application/json" }
+          keepalive: true
         });
       } catch (_) {}
     }
