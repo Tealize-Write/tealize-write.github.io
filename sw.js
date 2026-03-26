@@ -1,10 +1,13 @@
 // Service Worker for Tealize Website
-const CACHE_NAME = 'tealize-v3'; // 升級為 v3！
+// ✅ 只需改這一個數字就能讓所有客戶端強制更新快取
+const CACHE_VERSION = 4;
+const CACHE_NAME = `tealize-v${CACHE_VERSION}`;
 const urlsToCache = [
   '/',
   '/index.html',
   '/lag-afterword.html', 
   '/manifest.json',
+  '/js/i18n.js',
   '/js/app.js',         
   
   // 新增所有拆分的 CSS

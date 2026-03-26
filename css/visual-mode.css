@@ -32,10 +32,10 @@
 }
 #particlesCanvas { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
 
-/* Custom cursor */
-body[data-cursor="on"]   { cursor: none; }
+/* Custom cursor — 跨模式全站生效 */
+body[data-cursor="on"]          { cursor: none; }
 body[data-cursor="on"] a,
-body[data-cursor="on"] button { cursor: none; }
+body[data-cursor="on"] button   { cursor: none; }
 
 .cursor-dot {
   width: 12px; height: 12px; background-color: var(--accent-color);
@@ -63,15 +63,55 @@ body[data-cursor="on"] button { cursor: none; }
 
 /* Container */
 .container-visual {
-  max-width: 1100px; margin: 0 auto;
-  padding: 120px 30px 100px; perspective: 1200px;
+  max-width: 100%; margin: 0;
+  padding: 72px 24px 100px 24px; perspective: 1200px;
 }
 
 /* ── Hero ── */
-.hero { text-align: center; margin-bottom: 6rem; }
+.hero { text-align: center; margin-bottom: 4rem; }
 .hero-sub {
   color: var(--text-sub); font-family: "Orbitron";
-  letter-spacing: 2px; font-size: 1.1rem;
+  letter-spacing: 2px; font-size: 1.1rem; margin-bottom: 2.5rem;
+}
+
+/* ── 資歷時間軸（一行） ── */
+.career-timeline {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px 10px;
+  margin: 1.2rem auto 0;
+  padding: 8px 20px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  font-size: 0.8rem;
+  max-width: 100%;
+}
+.career-item {
+  display: inline-flex; align-items: center; gap: 5px;
+  color: var(--text-sub);
+  white-space: nowrap;
+}
+.career-item i {
+  color: var(--accent-color); font-size: 0.75rem;
+  opacity: 0.8;
+}
+.career-label { color: var(--text-sub); }
+.career-years {
+  font-family: "Orbitron"; font-size: 0.78rem; font-weight: 700;
+  color: var(--accent-color);
+}
+.career-unit {
+  font-family: "Orbitron"; font-size: 0.6rem;
+  color: var(--text-sub); opacity: 0.7;
+}
+.career-dot {
+  color: var(--glass-border); font-size: 1rem; line-height: 1;
+  opacity: 0.6; user-select: none;
 }
 .avatar-visual {
   width: 140px; height: 140px; border-radius: 50%;
@@ -177,9 +217,9 @@ body[data-cursor="on"] button { cursor: none; }
 }
 .glass-panel:hover::before { opacity: 1; }
 .glass-panel:hover::after  { left: 100%; }
-.glass-panel:nth-of-type(1) { animation-delay: 0.10s; }
-.glass-panel:nth-of-type(2) { animation-delay: 0.25s; }
-.glass-panel:nth-of-type(3) { animation-delay: 0.40s; }
+.glass-panel:nth-child(1) { animation-delay: 0.10s; }
+.glass-panel:nth-child(2) { animation-delay: 0.25s; }
+.glass-panel:nth-child(3) { animation-delay: 0.40s; }
 
 @keyframes fadeUpDecode {
   0%   { opacity: 0; transform: translateY(40px) scale(0.96); filter: blur(10px); }
@@ -212,6 +252,140 @@ body[data-cursor="on"] button { cursor: none; }
   content: ""; position: absolute; bottom: 0; left: 0;
   width: 100%; height: 2px;
   background: linear-gradient(90deg, var(--accent-color), transparent); opacity: 0.5;
+}
+
+/* ══════════════════════════════════════
+   統一 Section 模板
+   ══════════════════════════════════════ */
+
+/* 引言 */
+.section-quote {
+  border-left: 4px solid var(--accent-color);
+  padding: 16px 28px; color: var(--text-sub); font-style: italic;
+  background: linear-gradient(90deg, rgba(0,150,255,0.08), transparent);
+  margin-bottom: 1.8rem; font-size: 1.05rem;
+  position: relative; border-radius: 0 8px 8px 0; overflow: hidden;
+}
+.section-quote::after {
+  content: ""; position: absolute; bottom: 0; left: 0;
+  width: 100%; height: 2px;
+  background: linear-gradient(90deg, var(--accent-color), transparent); opacity: 0.5;
+}
+
+/* 系統提示 */
+.section-sys {
+  color: var(--text-sub); margin-bottom: 1.4rem; font-size: 1.05rem;
+}
+
+/* 主體：封面圖 + 文字並排 */
+.section-body {
+  display: flex; gap: 40px; align-items: flex-start; flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+.section-cover {
+  flex: 0 0 auto; width: 220px;
+}
+.section-cover .link-card { border-radius: 14px; }
+.section-info {
+  flex: 1 1 280px; display: flex; flex-direction: column;
+}
+
+/* 作品標題 */
+.section-title2 {
+  font-size: 1.9rem; font-weight: 700;
+  color: var(--text-main); margin-bottom: 6px; letter-spacing: 1px;
+  position: relative; display: inline-block;
+}
+.section-title2::after {
+  content: ""; position: absolute; bottom: -4px; left: 0;
+  width: 40px; height: 2px;
+  background: var(--accent-color);
+  border-radius: 2px;
+  transition: width 0.4s var(--ease-pop);
+}
+.section-info:hover .section-title2::after { width: 100%; }
+
+/* 副標題 */
+.section-sub {
+  color: var(--accent-color); font-family: "Orbitron";
+  font-size: 0.72rem; letter-spacing: 1.5px;
+  margin: 10px 0 1.4rem; opacity: 0.85;
+}
+/* 描述 */
+.section-desc {
+  color: var(--text-sub); line-height: 2; font-size: 1rem;
+  margin-bottom: 1.8rem;
+}
+
+/* 按鈕列 */
+.section-actions {
+  display: flex; gap: 12px; flex-wrap: wrap; align-items: center;
+  margin-top: auto;
+}
+
+/* 圖片格（多張，grid） */
+.section-media {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 24px; margin-top: 1.5rem;
+}
+.section-media--wide {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+/* 附加區塊（測驗等） */
+.section-extra {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px dashed var(--glass-border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+.section-extra__title {
+  font-family: "Orbitron"; font-size: 0.9rem;
+  color: var(--accent-color);
+  letter-spacing: 1px; opacity: 0.9;
+  margin: 0;
+}
+.section-extra .section-actions {
+  justify-content: center;
+  margin-top: 0;
+}
+
+/* CTA 按鈕變體 */
+.cta-btn--secondary {
+  background: transparent;
+  border-color: rgba(0,200,255,0.35);
+  color: var(--text-sub);
+  font-size: 0.88rem;
+  padding: 10px 22px;
+}
+.cta-btn--secondary:hover {
+  background: rgba(0,200,255,0.1);
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+}
+.cta-btn--featured {
+  font-family: "Orbitron", sans-serif;
+  font-weight: 700; font-size: 0.95rem;
+  letter-spacing: 1.5px;
+  background: linear-gradient(135deg, rgba(0,200,255,0.15), rgba(61,142,255,0.1));
+  border: 2px solid var(--accent-color);
+  color: var(--accent-color);
+  box-shadow: 0 0 20px rgba(0,200,255,0.25), inset 0 0 12px rgba(0,200,255,0.06);
+  animation: featuredPulse 3s ease-in-out infinite;
+}
+.cta-btn--featured:hover {
+  background: var(--accent-color);
+  color: #020a18;
+  box-shadow: 0 0 40px rgba(0,200,255,0.55);
+  transform: scale(1.05);
+}
+@keyframes featuredPulse {
+  0%,100% { box-shadow: 0 0 18px rgba(0,200,255,0.22), inset 0 0 10px rgba(0,200,255,0.05); }
+  50%     { box-shadow: 0 0 32px rgba(0,200,255,0.42), inset 0 0 16px rgba(0,200,255,0.10); }
 }
 
 /* ── Book / link cards ── */
@@ -366,7 +540,206 @@ body[data-cursor="on"] button { cursor: none; }
   .cursor-dot, .cursor-outline { display: none !important; }
 }
 @media (prefers-reduced-motion: reduce) {
-  * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important;
-      transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+  /* 只停用裝飾性動畫，保留 modal/overlay 的 transition 以免跳現 */
+  .bg-glow,
+  .avatar-visual,
+  .avatar-ring,
+  .glitch-name,
+  .glitch-name::before,
+  .glitch-name::after,
+  .section-title i,
+  .cursor-outline,
+  .spoiler-icon {
+    animation: none !important;
+  }
+  .glass-panel,
+  .link-card,
+  .neon-tag,
+  .bubble-link,
+  .control-btn,
+  .lag-img-main,
+  .lag-img-small,
+  .novel-cover-link {
+    transition: none !important;
+  }
   .scan-lines { opacity: 0.12; }
+  html { scroll-behavior: auto !important; }
+}
+
+/* ══════════════════════════════════════
+   Section Template — 統一區塊模板
+   新增區塊只需複製 glass-panel 結構
+   ══════════════════════════════════════ */
+
+/* ── 區塊 header：標題 + badge 同行 ── */
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 1.2rem;
+  flex-wrap: wrap;
+}
+.section-header .section-title { margin-bottom: 0; }
+
+/* ── Type badge ── */
+.section-badge {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid;
+  opacity: 0.8;
+  flex-shrink: 0;
+  align-self: center;
+}
+.badge-novel { color: var(--accent-color); border-color: rgba(0,200,255,0.4); background: rgba(0,200,255,0.06); }
+.badge-game  { color: #ff6b4a;            border-color: rgba(255,107,74,0.4); background: rgba(255,107,74,0.06); }
+
+/* ── 引言 ── */
+.section-quote {
+  border-left: 3px solid var(--accent-color);
+  padding: 14px 22px;
+  color: var(--text-sub);
+  font-style: italic;
+  background: linear-gradient(90deg, rgba(0,150,255,0.07), transparent);
+  margin-bottom: 1.5rem;
+  font-size: 1.02rem;
+  line-height: 1.8;
+  border-radius: 0 8px 8px 0;
+  position: relative;
+}
+.section-quote::after {
+  content: ""; position: absolute; bottom: 0; left: 0;
+  width: 100%; height: 2px;
+  background: linear-gradient(90deg, var(--accent-color), transparent);
+  opacity: 0.4;
+}
+
+/* ── 系統提示 ── */
+.section-sys {
+  color: var(--text-sub);
+  font-size: 0.92rem;
+  margin-bottom: 1.2rem;
+  opacity: 0.85;
+}
+.section-sys--warn { color: var(--accent-color); font-size: 1rem; }
+
+/* ── 主體內容 ── */
+.section-body { margin-bottom: 0; }
+
+/* 封面 + 文字並排版型 */
+.section-body--cover {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+.section-cover {
+  flex: 0 0 auto;
+  width: 220px;
+  border-radius: 14px;
+  overflow: hidden;
+  display: block;
+}
+.section-info {
+  flex: 1 1 280px;
+  display: flex;
+  flex-direction: column;
+}
+.section-booktitle {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 6px;
+  letter-spacing: 1.5px;
+}
+.section-subtitle {
+  color: var(--accent-color);
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 1.5px;
+  margin-bottom: 1.2rem;
+  opacity: 0.85;
+}
+.section-desc {
+  color: var(--text-sub);
+  line-height: 2.1;
+  font-size: 1rem;
+  margin-bottom: 1.6rem;
+  font-style: italic;
+}
+
+/* ── 按鈕列 ── */
+.section-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* 次要按鈕 */
+.cta-btn--secondary {
+  background: transparent;
+  border-color: rgba(0,200,255,0.35);
+  color: var(--text-sub);
+  font-size: 0.88rem;
+  padding: 10px 22px;
+}
+.cta-btn--secondary:hover {
+  background: rgba(0,200,255,0.08);
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+}
+
+/* 主要發光按鈕 */
+.cta-btn--featured {
+  font-family: "Orbitron", sans-serif;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  background: linear-gradient(135deg, rgba(0,200,255,0.15), rgba(61,142,255,0.1));
+  border: 2px solid var(--accent-color);
+  color: var(--accent-color);
+  box-shadow: 0 0 20px rgba(0,200,255,0.22), inset 0 0 12px rgba(0,200,255,0.05);
+  animation: featuredPulse 3s ease-in-out infinite;
+}
+.cta-btn--featured:hover {
+  background: var(--accent-color);
+  color: #020a18;
+  box-shadow: 0 0 40px rgba(0,200,255,0.5);
+  transform: scale(1.05);
+}
+@keyframes featuredPulse {
+  0%,100% { box-shadow: 0 0 18px rgba(0,200,255,0.2),  inset 0 0 10px rgba(0,200,255,0.04); }
+  50%     { box-shadow: 0 0 32px rgba(0,200,255,0.38), inset 0 0 16px rgba(0,200,255,0.09); }
+}
+
+/* ── 區塊 footer（次要功能） ── */
+.section-footer {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px dashed var(--glass-border);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+.section-footer-title {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.95rem;
+  color: var(--accent-color);
+  letter-spacing: 1px;
+  opacity: 0.9;
+}
+.section-footer .section-actions { justify-content: center; }
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .section-body--cover { flex-direction: column; gap: 20px; }
+  .section-cover { width: 100%; }
+  .section-booktitle { font-size: 1.7rem; }
+  .section-actions { flex-direction: column; align-items: stretch; }
+  .section-actions .cta-btn { justify-content: center; }
 }

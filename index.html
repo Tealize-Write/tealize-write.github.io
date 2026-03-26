@@ -12,6 +12,9 @@
   <meta name="keywords" content="兌現藍,Tealize,字命覺醒,是誰把穿越者種在土裡,咬了神一口,反轉的真實,奇幻小說,輕小說,BL,ABO,恐怖RPG,台灣創作,原創插畫,KadoKado" />
   <meta name="author" content="兌現藍 Tealize" />
   <meta name="robots" content="index, follow" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self' https://script.google.com; frame-ancestors 'none';" />
+  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
   <link rel="canonical" href="https://tealize-write.github.io/" />
 
   <!-- ── Open Graph ── -->
@@ -19,7 +22,7 @@
   <meta property="og:url" content="https://tealize-write.github.io/" />
   <meta property="og:title" content="兌現藍 Tealize | 奇幻小說・恐怖RPG・原創插畫" />
   <meta property="og:description" content="奇幻小說《字命覺醒》、異世界小說《是誰把穿越者種在土裡》、短篇《咬了神一口》，台灣恐怖RPG《反轉的真實》。兌現藍的創作奇想基地。" />
-  <meta property="og:image" content="https://tealize-write.github.io/avatar_white.jpg" />
+  <meta property="og:image" content="https://tealize-write.github.io/img/avatar_white.jpg" />
   <meta property="og:image:width" content="512" />
   <meta property="og:image:height" content="512" />
   <meta property="og:locale" content="zh_TW" />
@@ -30,7 +33,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="兌現藍 Tealize | 奇幻小說・恐怖RPG" />
   <meta name="twitter:description" content="奇幻小說《字命覺醒》・《是誰把穿越者種在土裡》・《咬了神一口》，台灣恐怖RPG《反轉的真實》。" />
-  <meta name="twitter:image" content="https://tealize-write.github.io/avatar_white.jpg" />
+  <meta name="twitter:image" content="https://tealize-write.github.io/img/avatar_white.jpg" />
 
   <!-- ── JSON-LD ── -->
   <script type="application/ld+json">
@@ -69,7 +72,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Noto+Sans+TC:wght@300;400;700&family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
-  <!-- Theme Flash Prevention (inline, must stay in head) -->
+  <!-- Theme Flash Prevention -->
   <script>
     (function(){try{
       const t=localStorage.getItem("tealize.theme"),m=localStorage.getItem("tealize.mode");
@@ -78,7 +81,7 @@
     }catch(e){}})();
   </script>
 
-  <!-- ── CSS (split) ── -->
+  <!-- ── CSS ── -->
   <link rel="stylesheet" href="css/variables.css" />
   <link rel="stylesheet" href="css/base.css" />
   <link rel="stylesheet" href="css/nav.css" />
@@ -92,10 +95,10 @@
 
 <body>
   <a href="#main-content" class="skip-to-main">跳到主要內容</a>
-  
   <div class="cursor-dot" aria-hidden="true"></div>
   <div class="cursor-outline" aria-hidden="true"></div>
 
+  <!-- ── Header controls ── -->
   <div class="control-panel" role="toolbar" aria-label="頁面控制">
     <button class="control-btn" id="langBtn" title="Switch Language / 切換語言" aria-label="Switch Language">
       <span style="font-size:0.75rem;font-family:'Orbitron';font-weight:700;position:relative;z-index:1;" id="langBtnLabel">EN</span>
@@ -114,7 +117,26 @@
     <div class="bg-glow" aria-hidden="true"></div>
     <canvas id="particlesCanvas" aria-hidden="true"></canvas>
 
+    <!-- 右側懸浮藤蔓導航 -->
+    <nav class="side-nav" id="sideNav" aria-label="快速導航">
+      <svg class="side-vine-svg" id="sideVineSvg" aria-hidden="true"
+           viewBox="0 0 80 420" preserveAspectRatio="xMidYMid meet"></svg>
+      <button class="side-nav-toggle" id="sideNavToggle" aria-label="展開導航" aria-expanded="false">
+        <i class="fa-solid fa-chevron-down" id="sideNavToggleIcon"></i>
+      </button>
+      <div class="side-bubbles" id="sideBubbles">
+        <span class="side-cat-label cat-novel" data-i18n="cat-novel-short">NOVELS</span>
+        <a href="#section-sc"   class="side-bubble bubble-novel" data-section="section-sc"><i class="fa-solid fa-book-sparkles"></i><span data-i18n="nav-sc">字命覺醒</span></a>
+        <a href="#section-lag"  class="side-bubble bubble-novel" data-section="section-lag"><i class="fa-solid fa-paw"></i><span data-i18n="nav-lag">咬了神一口</span></a>
+        <a href="#section-soil" class="side-bubble bubble-novel" data-section="section-soil"><i class="fa-solid fa-seedling"></i><span data-i18n="nav-soil">穿越者種土裡</span></a>
+        <span class="side-cat-label cat-game" data-i18n="cat-game-short">GAMES</span>
+        <a href="#section-game" class="side-bubble bubble-game" data-section="section-game"><i class="fa-solid fa-ghost"></i><span data-i18n="nav-game">反轉的真實</span></a>
+      </div>
+    </nav>
+
     <main id="main-content" class="container-visual">
+
+      <!-- Hero -->
       <header class="hero">
         <div class="avatar-visual" aria-label="Avatar">
           <div class="avatar-ring" aria-hidden="true"></div>
@@ -129,58 +151,64 @@
           <span class="neon-tag" data-i18n="tag-art">繪圖</span>
           <span class="neon-tag" data-i18n="tag-creator">奇幻創作者</span>
         </div>
-		
-		<header class="hero">
         <p class="hero-sub">STORY-COMMAND SHAPES REALITY.</p>
 
-        <div class="hero-nav" aria-label="主要目錄">
-          <svg class="hero-vine" viewBox="0 0 1000 240" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-            <path d="M -50,100 C 200,100 350,180 550,160 S 850,90 1050,130" 
-                  stroke="var(--accent-color)" stroke-width="1.5" fill="none" opacity="0.25" />
-
-            <path d="M -50,170 C 250,170 350,90 550,110 S 850,110 1050,90" 
-                  stroke="var(--accent-color)" stroke-width="2.5" fill="none" opacity="0.6" 
-                  stroke-dasharray="12 8" stroke-linecap="round" />
-
-            <circle cx="285" cy="133" r="2.5" fill="var(--accent-color)" opacity="0.8" />
-            <circle cx="490" cy="107" r="4" fill="var(--accent-color)" opacity="0.9" />
-            <circle cx="830" cy="110" r="2" fill="var(--accent-color)" opacity="0.5" />
-
-            <path d="M 760,170 C 785,195 820,180 820,180 C 795,205 760,195 760,170 Z" 
-                  fill="var(--accent-color)" opacity="0.8" />
-            
-            <path d="M 200,60 C 215,75 235,70 235,70 C 220,85 200,80 200,60 Z" 
-                  fill="var(--accent-color)" opacity="0.4" />
-
-            <path d="M 580,70 Q 590,65 600,75 Q 585,85 580,70 Z" 
-                  fill="var(--accent-color)" opacity="0.5" />
-          </svg>
-
-          <div class="nav-category">
-            <span class="category-label" data-i18n="cat-novel"><i class="fa-solid fa-book-open"></i> NOVELS | 小說區</span>
-            <div class="bubble-group">
-              <a href="#section-sc" class="bubble-link"><i class="fa-solid fa-book-sparkles"></i> <span data-i18n="nav-sc">字命覺醒</span></a>
-              <a href="#section-lag" class="bubble-link"><i class="fa-solid fa-paw"></i> <span data-i18n="nav-lag">咬了神一口</span></a>
-              <a href="#section-soil" class="bubble-link"><i class="fa-solid fa-seedling"></i> <span data-i18n="nav-soil">穿越者</span></a>
-            </div>
-          </div>
-
-          <div class="nav-category">
-            <span class="category-label" data-i18n="cat-game"><i class="fa-solid fa-gamepad"></i> GAMES | 遊戲區</span>
-            <div class="bubble-group">
-              <a href="#section-game" class="bubble-link"><i class="fa-solid fa-ghost"></i> <span data-i18n="nav-game">反轉的真實</span></a>
-            </div>
-          </div>
+        <!-- ── 資歷時間軸（一行） ── -->
+        <div class="career-timeline">
+          <span class="career-item">
+            <i class="fa-solid fa-feather-pointed"></i>
+            <span class="career-label">小說</span>
+            <span class="career-years" id="career-writing">19</span><span class="career-unit"> 年</span>
+          </span>
+          <span class="career-dot" aria-hidden="true">·</span>
+          <span class="career-item">
+            <i class="fa-solid fa-cube"></i>
+            <span class="career-label">3D美術</span>
+            <span class="career-years">4</span><span class="career-unit"> 年+</span>
+          </span>
+          <span class="career-dot" aria-hidden="true">·</span>
+          <span class="career-item">
+            <i class="fa-solid fa-server"></i>
+            <span class="career-label">IT系統管理</span>
+            <span class="career-years" id="career-mis">6</span><span class="career-unit"> 年+</span>
+          </span>
+          <span class="career-dot" aria-hidden="true">·</span>
+          <span class="career-item">
+            <i class="fa-solid fa-code"></i>
+            <span class="career-label">前端工程師</span>
+            <span class="career-years" id="career-penana">&lt;1</span><span class="career-unit"> 年</span>
+          </span>
         </div>
       </header>
-      </header>
+
+      <!-- ═══════════════════════════════════════════
+           視覺模式區塊模板（Visual Section Template）
+           每個 section 結構：
+           ┌─ section.glass-panel #section-{id}
+           │  ├─ h2.section-title          ← 區塊標題
+           │  ├─ .section-quote            ← 引言（可省略）
+           │  ├─ .section-sys              ← 系統提示（可省略）
+           │  ├─ .section-body             ← 主體
+           │  │   ├─ .section-cover        ← 封面圖（可省略）
+           │  │   └─ .section-info         ← 文字區
+           │  │       ├─ .section-title2   ← 作品標題
+           │  │       ├─ .section-sub      ← 副標題
+           │  │       ├─ .section-desc     ← 描述
+           │  │       └─ .section-actions  ← 按鈕列
+           │  ├─ .section-media            ← 圖片格（可省略）
+           │  └─ .section-extra            ← 附加區塊（可省略）
+           ════════════════════════════════════════════ -->
 
       <!-- ===== 字命覺醒 ===== -->
       <section class="glass-panel" id="section-sc">
-        <h2 class="section-title"><i class="fa-solid fa-book-sparkles"></i> <span data-i18n="sc-title">NOVEL: Story-Command Awakening</span></h2>
-        <div class="quote" data-i18n="sc-quote">「因為是文閉所以會贏。」「冠軍是我們的，你們加油吧。」</div>
-        <p class="muted" data-i18n="sc-sys">[系統提示] 偵測到高濃度迷因與校園奇幻反應，創作即魔法。</p>
-        <div class="book-grid">
+        <h2 class="section-title">
+          <i class="fa-solid fa-book-sparkles"></i>
+          <span data-i18n="sc-title">NOVEL: 字命覺醒</span>
+        </h2>
+        <div class="section-quote" data-i18n="sc-quote">「因為是文閉所以會贏。」「冠軍是我們的，你們加油吧。」</div>
+        <p class="section-sys" data-i18n="sc-sys">[系統提示] 偵測到高濃度迷因與校園奇幻反應，創作即魔法。</p>
+
+        <div class="section-media">
           <a href="https://www.kadokado.com.tw/book/1425" target="_blank" rel="noopener noreferrer" class="link-card">
             <div class="img-wrap"><img src="img/Story_Command1.jpg" alt="字命覺醒 VOL.1" loading="lazy" /><div class="overlay" aria-hidden="true"><i class="fa-solid fa-book-open"></i><span>READ VOL.1</span></div></div>
             <div class="book-label" data-i18n="sc-vol1">VOL.1 小心字穢</div>
@@ -194,69 +222,106 @@
             <div class="book-label" data-i18n="sc-side">序曲：北車地下城守則</div>
           </a>
         </div>
-        <div style="margin-top:40px;padding-top:30px;border-top:1px dashed var(--glass-border);text-align:center;">
-          <h3 style="font-family:'Orbitron';font-size:1.2rem;color:var(--text-main);margin-bottom:15px;" data-i18n="sc-quiz-title">🧪 創作者屬性鑑定 (心理測驗)</h3>
-          <a href="https://tealize-write.github.io/story-command-academy/" target="_blank" rel="noopener noreferrer" class="cta-btn" data-i18n="sc-quiz-btn">開始測驗 <i class="fa-solid fa-wand-magic-sparkles"></i></a>
+
+        <div class="section-extra">
+          <h3 class="section-extra__title" data-i18n="sc-quiz-title">🧪 創作者屬性鑑定 (心理測驗)</h3>
+          <div class="section-actions">
+            <a href="https://tealize-write.github.io/story-command-academy/" target="_blank" rel="noopener noreferrer" class="cta-btn" data-i18n="sc-quiz-btn">開始測驗 <i class="fa-solid fa-wand-magic-sparkles"></i></a>
+          </div>
         </div>
       </section>
 
       <!-- ===== 咬了神一口 ===== -->
       <section class="glass-panel" id="section-lag">
-        <h2 class="section-title"><i class="fa-solid fa-paw"></i> <span data-i18n="lag-title">NOVEL: 《咬了神一口》</span></h2>
-        <div class="quote" data-i18n="lag-quote">「改編自美女與野獸。山上有座不能亂碰的莊園，摘花要付出代價，說謊也有代價。」</div>
-        <div class="lag-layout">
-          <div class="lag-text">
-            <h3 class="lag-booktitle">咬了神一口</h3>
-            <p class="lag-subtitle" data-i18n="lag-subtitle">A Bite of God &nbsp;·&nbsp; Beauty &amp; the Beast retelling</p>
-            <p class="lag-desc" data-i18n="lag-desc">山上有座不能亂碰的莊園。<br>摘花要付出代價，說謊則被警告。<br>黎昂只是想把弟弟帶回家。<br>但他從來不是會乖乖服從規則的獅子。<br>於是，他咬了神一口。<br>或許還不只一口。</p>
-            <div class="lag-purchase" data-i18n="lag-purchase"><span style="color:var(--text-sub);font-size:0.9rem;font-style:italic;"><i class="fa-solid fa-clock"></i> 購書連結 — 即將上線</span></div>
-            <!-- 後記按鈕 -->
-            <button class="cta-btn lag-afterword-btn" id="lagAfterwordBtn" data-i18n="lag-afterword-btn"><i class="fa-solid fa-scroll"></i> 閱讀後記</button>
+        <h2 class="section-title">
+          <i class="fa-solid fa-paw"></i>
+          <span data-i18n="lag-title">NOVEL: 《咬了神一口》</span>
+        </h2>
+        <div class="section-quote" data-i18n="lag-quote">「改編自美女與野獸。山上有座不能亂碰的莊園，摘花要付出代價，說謊也有代價。」</div>
+
+        <div class="section-body">
+          <div class="section-cover">
+            <a href="https://early-marketplaces-521584.framer.app/" target="_blank" rel="noopener noreferrer" class="link-card">
+              <div class="img-wrap" style="aspect-ratio:1000/1343;">
+                <img src="img/leonAndGod.jpg" alt="黎昂與神 — 咬了神一口插圖" loading="lazy" />
+                <div class="overlay" aria-hidden="true"><i class="fa-solid fa-paw"></i><span>前往官網</span></div>
+              </div>
+            </a>
           </div>
-          <div class="lag-images"><div class="lag-img-main"><img src="img/leonAndGod.jpg" alt="黎昂與神 — 咬了神一口插圖" loading="lazy" /></div></div>
+          <div class="section-info">
+            <h3 class="section-title2">咬了神一口</h3>
+            <p class="section-sub" data-i18n="lag-subtitle">A Bite of God &nbsp;·&nbsp; Beauty &amp; the Beast retelling</p>
+            <p class="section-desc" data-i18n="lag-desc">山上有座不能亂碰的莊園。<br>摘花要付出代價，說謊也有代價。<br>黎昂只是想把弟弟帶回家。<br>但他從來不是會乖乖服從規則的獅子。<br>於是，他咬了神一口。<br>或許還不只一口。</p>
+            <div class="section-actions">
+              <a href="https://early-marketplaces-521584.framer.app/" target="_blank" rel="noopener noreferrer" class="cta-btn cta-btn--secondary" data-i18n="lag-purchase">
+                <i class="fa-solid fa-globe"></i> 前往官網
+              </a>
+              <button class="cta-btn cta-btn--featured" id="lagAfterwordBtn" data-i18n="lag-afterword-btn">
+                <i class="fa-solid fa-scroll"></i> 閱讀後記
+              </button>
+            </div>
+          </div>
         </div>
-        <div style="margin-top:2rem;padding-top:1.5rem;border-top:1px dashed var(--glass-border);text-align:center;">
-          <h3 style="font-family:'Orbitron';font-size:1rem;color:var(--accent-color);margin-bottom:12px;letter-spacing:1px;opacity:0.9;">🌿 黑暗特質 BL 心理測驗</h3>
-          <a href="https://tealize-write.github.io/DarkBLstory/" target="_blank" rel="noopener noreferrer" class="cta-btn" style="border-radius:8px;padding:11px 26px;font-size:0.82rem;" data-i18n="lag-quiz-btn">測測你的黑暗特質 <i class="fa-solid fa-arrow-right"></i></a>
+
+        <div class="section-extra">
+          <h3 class="section-extra__title">🌿 黑暗特質 BL 心理測驗</h3>
+          <div class="section-actions">
+            <a href="https://tealize-write.github.io/DarkBLstory/" target="_blank" rel="noopener noreferrer" class="cta-btn" data-i18n="lag-quiz-btn">測測你的黑暗特質 <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
         </div>
       </section>
 
-      <!-- ===== 穿越者 ===== -->
+      <!-- ===== 穿越者種在土裡 ===== -->
       <section class="glass-panel" id="section-soil">
-        <h2 class="section-title"><i class="fa-solid fa-seedling"></i> <span data-i18n="soil-title">NOVEL：REVISING (修文施工中)</span></h2>
-        <div class="novel-layout">
-          <a href="https://www.kadokado.com.tw/book/60627" target="_blank" rel="noopener noreferrer" class="novel-cover-link">
-            <img src="img/Crossing_the_Soil.jpg" alt="是誰把穿越者種在土裡" loading="lazy" />
-            <div class="novel-overlay" aria-hidden="true"><span class="neon-tag" style="background:var(--accent-color);color:#000;font-weight:bold;" data-i18n="soil-read">點擊閱讀</span></div>
-          </a>
-          <div class="novel-info">
-            <h3 style="font-size:2rem;margin-bottom:15px;color:var(--text-main);font-weight:700;" data-i18n="soil-booktitle">是誰把穿越者種在土裡</h3>
-            <p class="muted" data-i18n="soil-sys">[系統提示] 恐龍注意！</p>
-            <div class="quote" data-i18n="soil-quote">「17歲的蘇海躍選擇結束生命，卻在陌生山林的泥土裡被挖了出來。」</div>
-            <p style="color:var(--text-sub);margin-bottom:2rem;line-height:1.8;" data-i18n="soil-desc">一個人類分為 ABO、幽靈依附費洛蒙、恐龍遊蕩於街頭的瘋狂世界。蘇海躍在這個怪異卻溫暖的日常中，遇見了蒼白如鬼的 Alpha 陸翎邑。新聞上另一個「完美的蘇海躍」失蹤案，揭開了橫跨兩個世界的巨大陰謀。</p>
-            <a href="https://www.kadokado.com.tw/book/60627" target="_blank" rel="noopener noreferrer" class="neon-tag" data-i18n="soil-link"><i class="fa-solid fa-arrow-right"></i> 前往 KadoKado</a>
+        <h2 class="section-title">
+          <i class="fa-solid fa-seedling"></i>
+          <span data-i18n="soil-title">NOVEL：REVISING (修文施工中)</span>
+        </h2>
+
+        <div class="section-body">
+          <div class="section-cover">
+            <a href="https://www.kadokado.com.tw/book/60627" target="_blank" rel="noopener noreferrer" class="link-card">
+              <div class="img-wrap" style="aspect-ratio:2/3;">
+                <img src="img/Crossing_the_Soil.jpg" alt="是誰把穿越者種在土裡" loading="lazy" />
+                <div class="overlay" aria-hidden="true"><i class="fa-solid fa-book-open"></i><span data-i18n="soil-read">點擊閱讀</span></div>
+              </div>
+            </a>
+          </div>
+          <div class="section-info">
+            <h3 class="section-title2" data-i18n="soil-booktitle">是誰把穿越者種在土裡</h3>
+            <p class="section-sys" data-i18n="soil-sys">[系統提示] 恐龍注意！</p>
+            <div class="section-quote" data-i18n="soil-quote">「17歲的蘇海躍選擇結束生命，卻在陌生山林的泥土裡被挖了出來。」</div>
+            <p class="section-desc" data-i18n="soil-desc">一個人類分為 ABO、幽靈依附費洛蒙、恐龍遊蕩於街頭的瘋狂世界。蘇海躍在這個怪異卻溫暖的日常中，遇見了蒼白如鬼的 Alpha 陸翎邑。新聞上另一個「完美的蘇海躍」失蹤案，揭開了橫跨兩個世界的巨大陰謀。</p>
+            <div class="section-actions">
+              <a href="https://www.kadokado.com.tw/book/60627" target="_blank" rel="noopener noreferrer" class="cta-btn" data-i18n="soil-link"><i class="fa-solid fa-arrow-right"></i> 前往 KadoKado</a>
+            </div>
           </div>
         </div>
       </section>
 
-      <!-- ===== GAME ===== -->
+      <!-- ===== 反轉的真實 ===== -->
       <section class="glass-panel" id="section-game">
-        <h2 class="section-title"><i class="fa-solid fa-gamepad"></i> <span data-i18n="game-title">GAME: 恐怖民俗RPG遊戲</span></h2>
-        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;margin-bottom:15px;">
-          <h3 style="font-size:1.6rem;margin-bottom:10px;color:var(--text-main);">反轉的真實 Friend or Fraud</h3>
-          <div class="game-links-container">
-            <a href="https://responselessaircra.wixsite.com/x-destroyer" target="_blank" rel="noopener noreferrer" class="game-external-btn" data-i18n="game-web"><i class="fa-solid fa-globe"></i> 遊戲官網</a>
-            <a href="https://forum.gamer.com.tw/C.php?bsn=4918&snA=28697" target="_blank" rel="noopener noreferrer" class="game-external-btn" data-i18n="game-forum"><i class="fa-solid fa-comments"></i> 巴哈姆特</a>
+        <h2 class="section-title">
+          <i class="fa-solid fa-gamepad"></i>
+          <span data-i18n="game-title">GAME: 恐怖民俗RPG遊戲</span>
+        </h2>
+        <div class="section-quote" data-i18n="game-warn"><i class="fa-solid fa-triangle-exclamation"></i> 【系統警告】包含大量紅色顏料與精神污染（開玩笑的，但也許不是）。</div>
+
+        <div class="section-info" style="margin-bottom:1.5rem;">
+          <h3 class="section-title2">反轉的真實 Friend or Fraud</h3>
+          <div class="section-actions">
+            <a href="https://responselessaircra.wixsite.com/x-destroyer" target="_blank" rel="noopener noreferrer" class="cta-btn" data-i18n="game-web"><i class="fa-solid fa-globe"></i> 遊戲官網</a>
+            <a href="https://forum.gamer.com.tw/C.php?bsn=4918&snA=28697" target="_blank" rel="noopener noreferrer" class="cta-btn cta-btn--secondary" data-i18n="game-forum"><i class="fa-solid fa-comments"></i> 巴哈姆特</a>
           </div>
         </div>
-        <p style="color:var(--accent-color);font-size:1rem;margin-bottom:2rem;" data-i18n="game-warn"><i class="fa-solid fa-triangle-exclamation"></i> 【系統警告】包含大量紅色顏料與精神污染（開玩笑的，但也許不是）。</p>
-        <div class="game-grid">
+
+        <div class="section-media section-media--wide">
           <a href="https://responselessaircra.wixsite.com/x-destroyer" target="_blank" rel="noopener noreferrer" class="link-card">
-            <div class="img-wrap"><img src="img/Friend_or_Fraud1.jpg" alt="反轉的真實 PART 1" loading="lazy" /><div class="overlay" aria-hidden="true"><i class="fa-solid fa-train"></i><span>PLAY PART 1</span></div></div>
+            <div class="img-wrap" style="aspect-ratio:16/9;"><img src="img/Friend_or_Fraud1.jpg" alt="反轉的真實 PART 1" loading="lazy" /><div class="overlay" aria-hidden="true"><i class="fa-solid fa-train"></i><span>PLAY PART 1</span></div></div>
             <div class="book-label">PART 1: 井</div>
           </a>
           <a href="https://responselessaircra.wixsite.com/x-destroyer" target="_blank" rel="noopener noreferrer" class="link-card">
-            <div class="img-wrap"><img src="img/Friend_or_Fraud2.jpg" alt="反轉的真實 PART 2" loading="lazy" /><div class="overlay" aria-hidden="true"><i class="fa-solid fa-train"></i><span>PLAY PART 2</span></div></div>
+            <div class="img-wrap" style="aspect-ratio:16/9;"><img src="img/Friend_or_Fraud2.jpg" alt="反轉的真實 PART 2" loading="lazy" /><div class="overlay" aria-hidden="true"><i class="fa-solid fa-train"></i><span>PLAY PART 2</span></div></div>
             <div class="book-label">PART 2: 繩子</div>
           </a>
         </div>
@@ -264,16 +329,26 @@
 
       <footer class="footer-visual">
         &copy; 2026 Tealize. All rights reserved.<br>
-        <span id="visitorCountDisplay" style="display: inline-block; margin-top: 10px; font-family: 'Orbitron', 'Noto Sans TC', sans-serif; font-size: 0.85rem; color: var(--accent-color); opacity: 0.8; letter-spacing: 1px;">
-          <i class="fa-solid fa-eye"></i> 你是第 <span id="visitorNumber" style="font-weight: bold; font-size: 1rem; color: var(--text-main);">...</span> 位拜訪者
+        <span id="visitorCountDisplay" style="display:inline-block;margin-top:10px;font-family:'Orbitron','Noto Sans TC',sans-serif;font-size:0.85rem;color:var(--accent-color);opacity:0.8;letter-spacing:1px;">
+          <i class="fa-solid fa-eye"></i> 你是第 <span id="visitorNumber" style="font-weight:bold;font-size:1rem;color:var(--text-main);">...</span> 位拜訪者
         </span>
       </footer>
     </main>
   </div>
-    </main>
-  </div>
 
   <!-- ═══════════ CODE MODE ═══════════ -->
+  <!--
+    終端機模式區塊模板（Code Section Template）
+    每個 .code-project 結構：
+    ┌─ div.code-project[data-color="green|red|blue"]
+    │  ├─ h2.code-h2           ← >>> Projects / [TYPE] 《名稱》
+    │  ├─ p.code-desc          ← 一句話描述
+    │  ├─ div.code-block-styled ← 程式碼區塊
+    │  ├─ p.code-meta          ← 補充說明（可省略）
+    │  └─ div.code-links       ← 連結按鈕群
+    │      └─ a.code-link[.code-link-red] ← 按鈕
+    └─ (可加 div.code-submodule 作為子模組)
+  -->
   <div id="code-mode" class="view-mode hidden">
     <div class="container-code">
       <header class="terminal-header">
@@ -288,10 +363,13 @@
           &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># 文字是 code，傳說是 function，一起來 Run 這個世界。</span>
         </div>
       </header>
+
       <div class="code-content" style="opacity:0;transition:opacity 1s var(--ease-smooth) 0.5s;">
+
+        <!-- ===== 字命覺醒 ===== -->
         <div class="code-project">
-          <h2 class="code-h2">>> Projects / [NOVEL] 《字命覺醒》</h2>
-          <p>無論是創作、迷因、傳說都能產生魔法的校園奇幻作品。</p>
+          <h2 class="code-h2">&gt;&gt;&gt; Projects / [NOVEL] 《字命覺醒》</h2>
+          <p class="code-desc">無論是創作、迷因、傳說都能產生魔法的校園奇幻作品。</p>
           <div class="code-block-styled">
             <span class="kwd">import</span> <span class="str">magic</span> <span class="kwd">as</span> <span class="str">mg</span><br/>
             <span class="kwd">from</span> <span class="str">world</span> <span class="kwd">import</span> <span class="str">meme, legend</span><br/><br/>
@@ -300,48 +378,96 @@
             &nbsp;&nbsp;<span class="kwd">return</span> <span class="str">mg.execute(text)</span><br/><br/>
             <span class="comment"># 最新進度：第二集已生成</span>
           </div>
-          <p style="font-size:0.9rem;color:#888;margin-bottom:15px;">特色：創作魔法的設定看起來就像呼叫function？沒錯，因為我喜歡 Python。<br>想看迷因、傳說、推理大亂鬥，請參閱本專案。</p>
-          <a href="https://www.kadokado.com.tw/book/1425" target="_blank" rel="noopener noreferrer" class="code-link">Read_Vol.1</a>
-          <a href="https://www.kadokado.com.tw/book/42308" target="_blank" rel="noopener noreferrer" class="code-link">Read_Vol.2</a>
-          <a href="https://www.kadokado.com.tw/book/65322" target="_blank" rel="noopener noreferrer" class="code-link">Read_Extra</a>
-          <div style="margin-top:25px;padding-top:15px;border-top:1px dashed #444;">
-            <h3 style="font-size:1.1rem;color:#aaa;margin-bottom:10px;">>> Sub-Module: 創作者特質測驗</h3>
-            <div class="code-block-styled"><span class="kwd">if</span> user.is_creator:<br>&nbsp;&nbsp;<span class="func">run_diagnostics</span>(user.mind)<br><span class="comment"># 鑑定你的創作屬性...</span></div>
-            <a href="https://tealize-write.github.io/story-command-academy/" target="_blank" rel="noopener noreferrer" class="code-link">Start.exe</a>
+          <p class="code-meta">特色：創作魔法的設定看起來就像呼叫 function？沒錯，因為我喜歡 Python。<br>想看迷因、傳說、推理大亂鬥，請參閱本專案。</p>
+          <div class="code-links">
+            <a href="https://www.kadokado.com.tw/book/1425" target="_blank" rel="noopener noreferrer" class="code-link">Read_Vol.1</a>
+            <a href="https://www.kadokado.com.tw/book/42308" target="_blank" rel="noopener noreferrer" class="code-link">Read_Vol.2</a>
+            <a href="https://www.kadokado.com.tw/book/65322" target="_blank" rel="noopener noreferrer" class="code-link">Read_Extra</a>
+          </div>
+          <!-- 子模組 -->
+          <div class="code-submodule">
+            <h3 class="code-submodule__title">&gt;&gt; Sub-Module: 創作者特質測驗</h3>
+            <div class="code-block-styled">
+              <span class="kwd">if</span> user.is_creator:<br>
+              &nbsp;&nbsp;<span class="func">run_diagnostics</span>(user.mind)<br>
+              <span class="comment"># 鑑定你的創作屬性...</span>
+            </div>
+            <div class="code-links">
+              <a href="https://tealize-write.github.io/story-command-academy/" target="_blank" rel="noopener noreferrer" class="code-link">Start.exe</a>
+            </div>
           </div>
         </div>
+
+        <!-- ===== 咬了神一口 ===== -->
         <div class="code-project">
-          <h2 class="code-h2">>> Projects / [NOVEL] 《咬了神一口》</h2>
-          <p style="color:#a9b7c6;margin-bottom:15px;">>>> 改編自美女與野獸。獅子黎昂想把弟弟帶回來，神的莊園卻不好惹。</p>
-          <div class="code-block-styled" style="border-left-color:var(--accent-color);box-shadow:inset 0 0 20px rgba(0,20,60,0.4);">
-            <span class="kwd">class</span> <span class="func">Leon</span>(Lion):<br>&nbsp;&nbsp;<span class="kwd">def</span> <span class="func">__init__</span>(self):<br>&nbsp;&nbsp;&nbsp;&nbsp;self.goal = <span class="str">"Bring Brother Home"</span><br>&nbsp;&nbsp;&nbsp;&nbsp;self.rule_compliance = <span class="str">False</span><br><br>&nbsp;&nbsp;<span class="kwd">def</span> <span class="func">interact</span>(self, god):<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># He bit God. Probably more than once.</span><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="kwd">return</span> <span class="func">bite</span>(god, repeat=<span class="kwd">True</span>)
-          </div>
-          <p style="font-size:0.9rem;color:#888;margin-bottom:15px;">Beauty &amp; the Beast retelling · 購書連結 coming soon.</p>
-          <span style="color:var(--accent-color);font-size:0.85rem;font-family:'JetBrains Mono',monospace;"># 後記已開放 → 前往視覺模式閱讀</span>
-        </div>
-        <div class="code-project">
-          <p style="color:#a9b7c6;margin-bottom:15px;">>>> 17歲的蘇海躍選擇結束生命，卻在陌生山林的泥土裡被挖了出來。</p>
+          <h2 class="code-h2">&gt;&gt;&gt; Projects / [NOVEL] 《咬了神一口》</h2>
+          <p class="code-desc">改編自美女與野獸。獅子黎昂想把弟弟帶回來，神的莊園卻不好惹。</p>
           <div class="code-block-styled">
-            <span class="kwd">class</span> <span class="func">Isekai_Protagonist</span>:<br>&nbsp;&nbsp;<span class="kwd">def</span> <span class="func">__init__</span>(self):<br>&nbsp;&nbsp;&nbsp;&nbsp;self.origin = <span class="str">"Suicide"</span><br>&nbsp;&nbsp;&nbsp;&nbsp;self.location = <span class="str">"Soil"</span><br>&nbsp;&nbsp;&nbsp;&nbsp;self.status = <span class="str">"Confused"</span><br><br><span class="comment"># Environment Settings:</span><br><span class="str">Environment_Config</span> = {<br>&nbsp;&nbsp;<span class="str">"Alpha"</span>: <span class="kwd">True</span>,<br>&nbsp;&nbsp;<span class="str">"Omega"</span>: <span class="kwd">True</span>,<br>&nbsp;&nbsp;<span class="str">"Ghost"</span>: <span class="str">"Attached_to_Pheromones"</span>,<br>&nbsp;&nbsp;<span class="str">"Dinosaur"</span>: <span class="str">"Walking_on_Street"</span><br>}
+            <span class="kwd">class</span> <span class="func">Leon</span>(Lion):<br>
+            &nbsp;&nbsp;<span class="kwd">def</span> <span class="func">__init__</span>(self):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;self.goal = <span class="str">"Bring Brother Home"</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;self.rule_compliance = <span class="str">False</span><br><br>
+            &nbsp;&nbsp;<span class="kwd">def</span> <span class="func">interact</span>(self, god):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># He bit God. Probably more than once.</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="kwd">return</span> <span class="func">bite</span>(god, repeat=<span class="kwd">True</span>)
           </div>
-          <a href="https://www.kadokado.com.tw/book/60627" target="_blank" rel="noopener noreferrer" class="code-link">Read_Book()</a>
+          <p class="code-meta">Beauty &amp; the Beast retelling · 官網已開放</p>
+          <div class="code-links">
+            <a href="https://early-marketplaces-521584.framer.app/" target="_blank" rel="noopener noreferrer" class="code-link">Official_Site()</a>
+          </div>
         </div>
+
+        <!-- ===== 穿越者種在土裡 ===== -->
         <div class="code-project">
-          <h2 class="code-h2" style="color:#ff3333;text-shadow:0 0 15px #ff3333;">>>> Projects / [GAME] 《反轉的真實》</h2>
-          <p>台灣本土恐怖 RPG 系列</p>
-          <p style="margin-top:1rem;color:#ff3333;font-style:italic;margin-bottom:15px;">⚠️ 警告：包含大量紅色顏料與精神污染（開玩笑的，但也許不是）。</p>
-          <div class="code-block-styled" style="border-left-color:#ff3333;box-shadow:inset 0 0 20px #300;">
-            <span class="comment"># SYSTEM WARNING: SANITY LEVEL CRITICAL</span><br><span class="kwd">try</span>:<br>&nbsp;&nbsp;<span class="func">enter_subway</span>()<br><span class="kwd">except</span> <span class="str">RealityCollapseError</span>:<br>&nbsp;&nbsp;<span class="func">see_rope</span>() <span class="comment"># Don't look up</span><br>&nbsp;&nbsp;sanity -= <span class="str">50</span><br><br><span class="kwd" style="color:#ff5555">while</span> <span class="kwd" style="color:#ff5555">True</span>:<br/>&nbsp;&nbsp;truth = <span class="func" style="color:#ff8888">reverse</span>(reality)<br/>&nbsp;&nbsp;<span class="kwd" style="color:#ff5555">if</span> truth == <span class="str" style="color:#ffaaaa;">"BLOOD"</span>: <span class="kwd" style="color:#ff5555">break</span>
+          <h2 class="code-h2">&gt;&gt;&gt; Projects / [NOVEL] 《是誰把穿越者種在土裡》</h2>
+          <p class="code-desc">17歲的蘇海躍選擇結束生命，卻在陌生山林的泥土裡被挖了出來。</p>
+          <div class="code-block-styled">
+            <span class="kwd">class</span> <span class="func">Isekai_Protagonist</span>:<br>
+            &nbsp;&nbsp;<span class="kwd">def</span> <span class="func">__init__</span>(self):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;self.origin = <span class="str">"Suicide"</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;self.location = <span class="str">"Soil"</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;self.status = <span class="str">"Confused"</span><br><br>
+            <span class="comment"># Environment Settings:</span><br>
+            <span class="str">Environment_Config</span> = {<br>
+            &nbsp;&nbsp;<span class="str">"Alpha"</span>: <span class="kwd">True</span>,<br>
+            &nbsp;&nbsp;<span class="str">"Ghost"</span>: <span class="str">"Attached_to_Pheromones"</span>,<br>
+            &nbsp;&nbsp;<span class="str">"Dinosaur"</span>: <span class="str">"Walking_on_Street"</span><br>
+            }
           </div>
-          <a href="https://responselessaircra.wixsite.com/x-destroyer" target="_blank" rel="noopener noreferrer" class="code-link" style="border-color:#ff3333;color:#ff3333;">Website</a>
-          <a href="https://forum.gamer.com.tw/C.php?bsn=4918&snA=28697" target="_blank" rel="noopener noreferrer" class="code-link" style="border-color:#ff3333;color:#ff3333;">Forum</a>
+          <p class="code-meta">REVISING — 修文施工中</p>
+          <div class="code-links">
+            <a href="https://www.kadokado.com.tw/book/60627" target="_blank" rel="noopener noreferrer" class="code-link">Read_Book()</a>
+          </div>
         </div>
+
+        <!-- ===== 反轉的真實 ===== -->
+        <div class="code-project code-project--red">
+          <h2 class="code-h2 code-h2--red">&gt;&gt;&gt; Projects / [GAME] 《反轉的真實》</h2>
+          <p class="code-desc">台灣本土恐怖 RPG 系列</p>
+          <p class="code-meta code-meta--red">⚠️ 警告：包含大量紅色顏料與精神污染（開玩笑的，但也許不是）。</p>
+          <div class="code-block-styled" style="border-left-color:#ff3333;box-shadow:inset 0 0 20px #300;">
+            <span class="comment"># SYSTEM WARNING: SANITY LEVEL CRITICAL</span><br>
+            <span class="kwd">try</span>:<br>
+            &nbsp;&nbsp;<span class="func">enter_subway</span>()<br>
+            <span class="kwd">except</span> <span class="str">RealityCollapseError</span>:<br>
+            &nbsp;&nbsp;<span class="func">see_rope</span>() <span class="comment"># Don't look up</span><br>
+            &nbsp;&nbsp;sanity -= <span class="str">50</span><br><br>
+            <span class="kwd" style="color:#ff5555">while</span> <span class="kwd" style="color:#ff5555">True</span>:<br>
+            &nbsp;&nbsp;truth = <span class="func" style="color:#ff8888">reverse</span>(reality)<br>
+            &nbsp;&nbsp;<span class="kwd" style="color:#ff5555">if</span> truth == <span class="str" style="color:#ffaaaa;">"BLOOD"</span>: <span class="kwd" style="color:#ff5555">break</span>
+          </div>
+          <div class="code-links">
+            <a href="https://responselessaircra.wixsite.com/x-destroyer" target="_blank" rel="noopener noreferrer" class="code-link code-link-red">Website</a>
+            <a href="https://forum.gamer.com.tw/C.php?bsn=4918&snA=28697" target="_blank" rel="noopener noreferrer" class="code-link code-link-red">Forum</a>
+          </div>
+        </div>
+
       </div>
       <footer class="footer-code">// CODE TERMINAL // ONLINE_</footer>
     </div>
   </div>
 
-  <!-- ===== Spoiler Modal (body level to escape stacking context) ===== -->
+  <!-- Spoiler Modal -->
   <div class="spoiler-overlay" id="spoilerOverlay" aria-hidden="true">
     <div class="spoiler-modal" role="dialog" aria-labelledby="spoilerTitle" aria-modal="true">
       <div class="spoiler-icon"><i class="fa-solid fa-eye"></i></div>
@@ -355,7 +481,8 @@
     </div>
   </div>
 
-  <!-- ── JS (bundled inline — avoids CORS issues with file://) ── -->
+  <!-- ── JS ── -->
+  <script src="js/i18n.js" defer></script>
   <script src="js/app.js" defer></script>
 </body>
 </html>

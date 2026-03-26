@@ -1,106 +1,22 @@
 /* ══════════════════════════════════════
-   Tealize Base v3 - Core Script (終極修復版 2.0)
+   Tealize Base v3 - Core Script
+   i18n 翻譯字典已拆至 js/i18n.js
    ══════════════════════════════════════ */
 "use strict";
 
 document.addEventListener("DOMContentLoaded", () => {
-  const html = document.documentElement; // ✅ 修正：把主導權還給 html
+  const html = document.documentElement;
   const body = document.body;
   const isMobile = "ontouchstart" in window || navigator.maxTouchPoints > 0;
   let canvas, ctx, particles = [], animationId;
 
-  // 1. 字典定義：完整收錄所有區塊的翻譯
-  const i18nData = {
-    zh: {
-      "nav-home": "奇想基地", "nav-sc": "字命覺醒", "nav-lag": "咬了神一口", "nav-soil": "穿越者種土裡", "nav-game": "反轉的真實",
-      "cat-novel": '<i class="fa-solid fa-book-open"></i> NOVELS | 小說區',
-      "cat-game": '<i class="fa-solid fa-gamepad"></i> GAMES | 遊戲區',
-      "tag-capricorn": "魔羯座", "tag-gamemaker": "遊戲 Maker", "tag-art": "繪圖", "tag-creator": "奇幻創作者",
-
-      "sc-title": "NOVEL: 字命覺醒",
-      "sc-quote": "「因為是文閉所以會贏。」「冠軍是我們的，你們加油吧。」",
-      "sc-sys": "[系統提示] 偵測到高濃度迷因與校園奇幻反應，創作即魔法。",
-      "sc-vol1": "VOL.1 小心字穢",
-      "sc-vol2": "VOL.2 字者互毆",
-      "sc-side": "序曲：北車地下城守則",
-      "sc-quiz-title": "🧪 創作者屬性鑑定 (心理測驗)",
-      "sc-quiz-btn": '開始測驗 <i class="fa-solid fa-wand-magic-sparkles"></i>',
-
-      "lag-title": "NOVEL: 《咬了神一口》",
-      "lag-quote": "「改編自美女與野獸。山上有座不能亂碰的莊園，摘花要付出代價，說謊也有代價。」",
-      "lag-subtitle": "A Bite of God &nbsp;·&nbsp; Beauty &amp; the Beast retelling",
-      "lag-desc": "山上有座不能亂碰的莊園。<br>摘花要付出代價，說謊也有代價。<br>黎昂只是想把弟弟帶回家。<br>但他從來不是會乖乖服從規則的獅子。<br>於是，他咬了神一口。<br>或許還不只一口。",
-      "lag-purchase": '<span style="color:var(--text-sub);font-size:0.9rem;font-style:italic;"><i class="fa-solid fa-clock"></i> 購書連結 — 即將上線</span>',
-      "lag-afterword-btn": '<i class="fa-solid fa-scroll"></i> 閱讀後記',
-      "lag-quiz-btn": '測測你的黑暗特質 <i class="fa-solid fa-arrow-right"></i>',
-
-      "soil-title": "NOVEL：REVISING (修文施工中)",
-      "soil-read": "點擊閱讀",
-      "soil-booktitle": "是誰把穿越者種在土裡",
-      "soil-sys": "[系統提示] 恐龍注意！",
-      "soil-quote": "「17歲的蘇海躍選擇結束生命，卻在陌生山林的泥土裡被挖了出來。」",
-      "soil-desc": "一個人類分為 ABO、幽靈依附費洛蒙、恐龍遊蕩於街頭的瘋狂世界。蘇海躍在這個怪異卻溫暖的日常中，遇見了蒼白如鬼的 Alpha 陸翎邑。新聞上另一個「完美的蘇海躍」失蹤案，揭開了橫跨兩個世界的巨大陰謀。",
-      "soil-link": '<i class="fa-solid fa-arrow-right"></i> 前往 KadoKado',
-
-      "game-title": "GAME: 恐怖民俗RPG遊戲",
-      "game-web": '<i class="fa-solid fa-globe"></i> 遊戲官網',
-      "game-forum": '<i class="fa-solid fa-comments"></i> 巴哈姆特',
-      "game-warn": '<i class="fa-solid fa-triangle-exclamation"></i> 【系統警告】包含大量紅色顏料與精神污染（開玩笑的，但也許不是）。',
-
-      "modal-title": "⚠ 劇透警告",
-      "modal-body": "後記包含《咬了神一口》的劇情劇透，<br>建議閱讀完正文後再前往。",
-      "modal-sub": "確定要繼續嗎？",
-      "modal-cancel": "返回",
-      "modal-confirm": '<i class="fa-solid fa-arrow-right"></i> 我要閱讀'
-    },
-    en: {
-      "nav-home": "Tealize Hub", "nav-sc": "Word Awakening", "nav-lag": "Bitten by God", "nav-soil": "Soil Crossing", "nav-game": "Reversed Truth",
-      "cat-novel": '<i class="fa-solid fa-book-open"></i> NOVELS',
-      "cat-game": '<i class="fa-solid fa-gamepad"></i> GAMES',
-      "tag-capricorn": "Capricorn", "tag-gamemaker": "Game Maker", "tag-art": "Illustration", "tag-creator": "Fantasy Creator",
-
-      "sc-title": "NOVEL: Word Awakening",
-      "sc-quote": '"Because I\'m a closed-writer, I\'ll win." "The championship is ours."',
-      "sc-sys": "[System Prompt] High concentration of memes & school fantasy detected.",
-      "sc-vol1": "VOL.1 Beware of Word-Filth",
-      "sc-vol2": "VOL.2 Writers' Brawl",
-      "sc-side": "Prologue: Taipei Main Station Rules",
-      "sc-quiz-title": "🧪 Creator Attribute Assessment",
-      "sc-quiz-btn": 'Start Test <i class="fa-solid fa-wand-magic-sparkles"></i>',
-
-      "lag-title": "NOVEL: Bitten by God",
-      "lag-quote": '"A Beauty and the Beast retelling. There\'s an untouchable manor on the mountain..."',
-      "lag-subtitle": "A Bite of God &nbsp;·&nbsp; Beauty &amp; the Beast retelling",
-      "lag-desc": "There is a manor on the mountain that shouldn't be touched.<br>Picking flowers has a price, and lying does too.<br>Leon just wanted to bring his brother home.<br>But he's never been an obedient lion.<br>So, he took a bite out of God.<br>Maybe more than one bite.",
-      "lag-purchase": '<span style="color:var(--text-sub);font-size:0.9rem;font-style:italic;"><i class="fa-solid fa-clock"></i> Purchase Link — Coming Soon</span>',
-      "lag-afterword-btn": '<i class="fa-solid fa-scroll"></i> Read Afterword',
-      "lag-quiz-btn": 'Test Your Dark Traits <i class="fa-solid fa-arrow-right"></i>',
-
-      "soil-title": "NOVEL: REVISING",
-      "soil-read": "Click to Read",
-      "soil-booktitle": "Who Planted the Time-Traveler in the Soil?",
-      "soil-sys": "[System Prompt] Dinosaur Warning!",
-      "soil-quote": '"17-year-old Su Hai-Yue chose to end his life, only to be dug out of the soil..."',
-      "soil-desc": "A crazy world where humans are divided into ABO, ghosts cling to pheromones, and dinosaurs roam the streets. Su Hai-Yue meets the ghost-pale Alpha, Lu Ling-Yi, uncovering a massive conspiracy spanning two worlds.",
-      "soil-link": '<i class="fa-solid fa-arrow-right"></i> Go to KadoKado',
-
-      "game-title": "GAME: Folklore Horror RPG",
-      "game-web": '<i class="fa-solid fa-globe"></i> Official Website',
-      "game-forum": '<i class="fa-solid fa-comments"></i> Bahamut Forum',
-      "game-warn": '<i class="fa-solid fa-triangle-exclamation"></i> [System Warning] Contains a large amount of red paint and mental pollution.',
-
-      "modal-title": "⚠ Spoiler Warning",
-      "modal-body": "The afterword contains major plot spoilers for Bitten by God.<br>We recommend reading the main story first.",
-      "modal-sub": "Do you want to continue?",
-      "modal-cancel": "Return",
-      "modal-confirm": '<i class="fa-solid fa-arrow-right"></i> Read Afterword'
-    }
-  };
+  // 從 i18n.js 讀取字典（i18n.js 必須在 app.js 之前載入）
+  const i18nData = window.i18nData || {};
 
   // 2. 定義所有核心函式
   function setLang(lang) {
     html.lang = lang;
-    localStorage.setItem("tealize.lang", lang);
+    lsSet("tealize.lang", lang);
     document.querySelectorAll("[data-i18n]").forEach(el => {
       const key = el.dataset.i18n;
       if (i18nData[lang] && i18nData[lang][key]) el.innerHTML = i18nData[lang][key];
@@ -114,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const currentMode = html.getAttribute("data-mode");
     const newMode = currentMode === "visual" ? "code" : "visual";
     html.setAttribute("data-mode", newMode);
-    localStorage.setItem("tealize.mode", newMode);
+    lsSet("tealize.mode", newMode);
     
     if (newMode === "visual") initCanvas();
     else stopCanvas();
@@ -127,12 +43,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const visualContainer = document.getElementById("visual-mode");
     const codeContainer = document.getElementById("code-mode");
-    
+
     if (visualContainer) {
       if (isVisual) visualContainer.classList.remove("hidden");
       else visualContainer.classList.add("hidden");
     }
-    
+
     if (codeContainer) {
       if (isVisual) {
         codeContainer.classList.add("hidden");
@@ -141,6 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (typeof playCodeModeAnimation === "function") playCodeModeAnimation();
       }
     }
+    // 游標完全不碰，讓 initCustomCursor 獨立管理
   }
 
   function playCodeModeAnimation() {
@@ -182,7 +99,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const currentTheme = html.getAttribute("data-theme");
     const newTheme = currentTheme === "dark" ? "light" : "dark";
     html.setAttribute("data-theme", newTheme);
-    localStorage.setItem("tealize.theme", newTheme);
+    lsSet("tealize.theme", newTheme);
+    refreshAccentCache(); // ✅ 主題切換後刷新粒子顏色快取
     syncIcons();
   }
 
@@ -195,7 +113,44 @@ document.addEventListener("DOMContentLoaded", () => {
     if (themeBtnIcon) themeBtnIcon.className = isDark ? "fa-solid fa-sun" : "fa-solid fa-moon";
   }
 
-// ── 平滑滾動與回頂端按鈕 ──
+  // ── 動態計算資歷年數 ──
+  (function updateCareerYears() {
+    const now = new Date();
+    const yr  = now.getFullYear();
+    const mo  = now.getMonth() + 1; // 1-12
+
+    function yearsFrom(startY, startM = 1) {
+      const diff = (yr - startY) + (mo - startM) / 12;
+      return Math.floor(diff);
+    }
+
+    const elWriting = document.getElementById("career-writing");
+    const elMis     = document.getElementById("career-mis");
+    const elPenana  = document.getElementById("career-penana");
+
+    if (elWriting) elWriting.textContent = yearsFrom(2007);
+    if (elMis)     elMis.textContent     = yearsFrom(2019, 7);
+    if (elPenana) {
+      const y = yearsFrom(2025, 6);
+      elPenana.textContent = y < 1 ? "<1" : y;
+      // 滿 1 年後單位顯示「年+」
+      const unitEl = elPenana.nextElementSibling;
+      if (unitEl && y >= 1) unitEl.textContent = " 年+";
+    }
+  })();
+
+  // ── Header 漸層隨滾動加深 ──
+  const controlPanel = document.querySelector(".control-panel");
+  document.querySelectorAll(".view-mode").forEach(container => {
+    container.addEventListener("scroll", () => {
+      if (!controlPanel) return;
+      const scrolled = container.scrollTop > 10;
+      controlPanel.style.backdropFilter = scrolled ? "blur(8px)" : "blur(0px)";
+      controlPanel.style.webkitBackdropFilter = scrolled ? "blur(8px)" : "blur(0px)";
+    }, { passive: true });
+  });
+
+  // ── 平滑滾動與回頂端按鈕 ──
   const backToTopBtn = document.getElementById("backToTop");
 
   // 1. 目錄按鈕點擊：精準滾動到對應區塊
@@ -295,13 +250,18 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // ── 顏色輔助：將任何 CSS 顏色格式轉為 rgba ──
-  let _colorProbe = null;
+  // ── 顏色輔助：快取 accent color，只在主題切換時刷新，避免每幀 reflow ──
+  let _cachedAccentRGB = null;
+  function refreshAccentCache() {
+    const probe = document.createElement("div");
+    probe.style.cssText = "display:none;color:" + getComputedStyle(html).getPropertyValue("--accent-color").trim();
+    body.appendChild(probe);
+    _cachedAccentRGB = getComputedStyle(probe).color; // 瀏覽器回傳 "rgb(r, g, b)"
+    body.removeChild(probe);
+  }
   function getAccentRGBA(opacity) {
-    if (!_colorProbe) { _colorProbe = document.createElement("div"); _colorProbe.style.display = "none"; body.appendChild(_colorProbe); }
-    _colorProbe.style.color = getComputedStyle(html).getPropertyValue("--accent-color").trim();
-    const rgb = getComputedStyle(_colorProbe).color; // 瀏覽器一定回傳 "rgb(r, g, b)"
-    return rgb.replace("rgb(", "rgba(").replace(")", ", " + opacity + ")");
+    if (!_cachedAccentRGB) refreshAccentCache();
+    return _cachedAccentRGB.replace("rgb(", "rgba(").replace(")", ", " + opacity + ")");
   }
 
   function animateCanvas() {
@@ -318,7 +278,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function stopCanvas() {
-    if (animationId) cancelAnimationFrame(animationId);
+    if (animationId) { cancelAnimationFrame(animationId); animationId = null; }
+    // ⚠️ _outlineRafId 不在這裡取消，游標圓圈要跨模式持續運作
     if (canvas) {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       window.removeEventListener("resize", resizeCanvas);
@@ -326,6 +287,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ── 自訂游標 (強化版防干擾) ──
+  let _outlineRafId = null;
   function initCustomCursor() {
     const dot = document.querySelector(".cursor-dot");
     const outline = document.querySelector(".cursor-outline");
@@ -355,7 +317,7 @@ document.addEventListener("DOMContentLoaded", () => {
         outline.style.left = outlineX + "px";
         outline.style.top  = outlineY + "px";
       }
-      requestAnimationFrame(animateOutline);
+      _outlineRafId = requestAnimationFrame(animateOutline);
     }
     animateOutline();
 
@@ -366,15 +328,20 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // 3. 讀取儲存的狀態並開始執行
-  const savedMode = localStorage.getItem("tealize.mode") || html.getAttribute("data-mode") || "visual";
-  const savedThemeStr = localStorage.getItem("tealize.theme") || html.getAttribute("data-theme") || "dark";
-  html.setAttribute("data-mode", savedMode); // ✅ 修正：寫入 html
-  html.setAttribute("data-theme", savedThemeStr); // ✅ 修正：寫入 html
+  // ── localStorage 安全存取（防無痕模式 SecurityError）──
+  function lsGet(key, fallback = null) { try { return localStorage.getItem(key) ?? fallback; } catch { return fallback; } }
+  function lsSet(key, val)             { try { localStorage.setItem(key, val); } catch {} }
+
+  const savedMode     = lsGet("tealize.mode")  || html.getAttribute("data-mode")  || "visual";
+  const savedThemeStr = lsGet("tealize.theme") || html.getAttribute("data-theme") || "dark";
+  html.setAttribute("data-mode", savedMode);
+  html.setAttribute("data-theme", savedThemeStr);
   
-  const savedLang = localStorage.getItem("tealize.lang") || (navigator.language.startsWith("en") ? "en" : "zh");
+  const savedLang = lsGet("tealize.lang") || (navigator.language.startsWith("en") ? "en" : "zh");
   setLang(savedLang);
 
   syncIcons();
+  refreshAccentCache();
   initCustomCursor();
   updateVisualMode(savedMode === "visual");
   if (savedMode === "visual") initCanvas();
@@ -393,7 +360,164 @@ document.addEventListener("DOMContentLoaded", () => {
       setLang(nextLang);
   });
 
-  // ── PWA Service Worker 註冊 (完整加回) ──
+  // ── 右側藤蔓導航：SVG 繪製 + 滾動 active 偵測 ──
+  function initSideNav() {
+    const nav      = document.getElementById("sideNav");
+    const svg      = document.getElementById("sideVineSvg");
+    const bubbles  = document.querySelectorAll(".side-bubble");
+    const container = document.querySelector(".view-mode:not(.hidden)") || document.getElementById("visual-mode");
+    if (!nav || !svg || !bubbles.length) return;
+
+    // ── 繪製 SVG 藤蔓 ──
+    function drawVine() {
+      const bubblesEl   = document.getElementById("sideBubbles");
+      if (!bubblesEl) return;
+      const totalH      = bubblesEl.offsetHeight;
+      const svgW        = 80;
+      svg.setAttribute("viewBox", `0 0 ${svgW} ${totalH}`);
+      svg.style.height  = totalH + "px";
+
+      // 主幹：從頂部彎曲到底部，靠右側
+      const cx1 = svgW * 0.2, cy1 = totalH * 0.3;
+      const cx2 = svgW * 0.7, cy2 = totalH * 0.7;
+      const mainPath = `M ${svgW*0.55},0 C ${cx1},${cy1} ${cx2},${cy2} ${svgW*0.45},${totalH}`;
+
+      // 裝飾虛線
+      const dashPath = `M ${svgW*0.4},${totalH*0.1} C ${svgW*0.8},${totalH*0.35} ${svgW*0.15},${totalH*0.65} ${svgW*0.6},${totalH*0.9}`;
+
+      // 小葉片們
+      const leaves = [
+        { x: svgW*0.38, y: totalH*0.18, r: 6, a: -30 },
+        { x: svgW*0.62, y: totalH*0.42, r: 5, a: 20  },
+        { x: svgW*0.30, y: totalH*0.60, r: 7, a: -20 },
+        { x: svgW*0.55, y: totalH*0.78, r: 4, a: 35  },
+      ];
+
+      const accentNovel = getComputedStyle(document.documentElement).getPropertyValue("--accent-color").trim() || "#00c8ff";
+      const accentGame  = "#ff6b4a";
+
+      let svgHTML = `
+        <path d="${mainPath}"
+              stroke="${accentNovel}" stroke-width="1.8" fill="none" opacity="0.45"
+              stroke-linecap="round"/>
+        <path d="${dashPath}"
+              stroke="${accentNovel}" stroke-width="1" fill="none" opacity="0.25"
+              stroke-dasharray="6 5" stroke-linecap="round"/>
+      `;
+
+      // 底部遊戲段用紅橙色加深
+      const gameLine = `M ${svgW*0.45},${totalH*0.72} C ${svgW*0.2},${totalH*0.82} ${svgW*0.75},${totalH*0.88} ${svgW*0.45},${totalH}`;
+      svgHTML += `<path d="${gameLine}" stroke="${accentGame}" stroke-width="1.5" fill="none" opacity="0.4" stroke-linecap="round"/>`;
+
+      // 葉片
+      leaves.forEach((l, i) => {
+        const col = i >= 2 ? accentGame : accentNovel;
+        const op  = i >= 2 ? 0.55 : 0.5;
+        svgHTML += `
+          <g transform="translate(${l.x},${l.y}) rotate(${l.a})">
+            <ellipse cx="0" cy="0" rx="${l.r}" ry="${l.r*1.7}"
+                     fill="${col}" opacity="${op}"/>
+            <line x1="0" y1="${-l.r*1.7}" x2="0" y2="${l.r*1.7}"
+                  stroke="${col}" stroke-width="0.6" opacity="0.6"/>
+          </g>`;
+      });
+
+      // 發光節點（氣泡接點）
+      const nodeYs = [totalH*0.12, totalH*0.28, totalH*0.46, totalH*0.72, totalH*0.88];
+      nodeYs.forEach((y, i) => {
+        const col = i >= 3 ? accentGame : accentNovel;
+        svgHTML += `<circle cx="${svgW*0.5}" cy="${y}" r="3" fill="${col}" opacity="0.8"/>
+                    <circle cx="${svgW*0.5}" cy="${y}" r="6" fill="${col}" opacity="0.18"/>`;
+      });
+
+      svg.innerHTML = svgHTML;
+    }
+
+    drawVine();
+    window.addEventListener("resize", drawVine, { passive: true });
+
+    // ── 手機版 toggle ──
+    const toggleBtn    = document.getElementById("sideNavToggle");
+    const toggleIcon   = document.getElementById("sideNavToggleIcon");
+    const bubblesPanel = document.getElementById("sideBubbles");
+
+    function isMobileNav() { return window.innerWidth <= 768; }
+
+    function openNav() {
+      bubblesPanel.classList.add("is-open");
+      toggleBtn.setAttribute("aria-expanded", "true");
+      toggleBtn.setAttribute("aria-label", "收起導航");
+      toggleIcon.className = "fa-solid fa-chevron-up";
+    }
+    function closeNav() {
+      bubblesPanel.classList.remove("is-open");
+      toggleBtn.setAttribute("aria-expanded", "false");
+      toggleBtn.setAttribute("aria-label", "展開導航");
+      toggleIcon.className = "fa-solid fa-chevron-down";
+    }
+
+    if (toggleBtn) {
+      toggleBtn.addEventListener("click", () => {
+        if (bubblesPanel.classList.contains("is-open")) closeNav();
+        else openNav();
+      });
+    }
+
+    // 點氣泡後自動收合（手機版）
+    bubbles.forEach(bubble => {
+      bubble.addEventListener("click", e => {
+        e.preventDefault();
+        const targetId = bubble.dataset.section;
+        const target   = document.getElementById(targetId);
+        if (!target) return;
+        const scrollEl = document.querySelector(".view-mode:not(.hidden)");
+        if (scrollEl) {
+          const pos = scrollEl.scrollTop + target.getBoundingClientRect().top - 90;
+          scrollEl.scrollTo({ top: pos, behavior: "smooth" });
+        }
+        // 手機版：跳轉後自動收起
+        if (isMobileNav()) closeNav();
+      });
+    });
+
+    // ── 滾動偵測：點亮當前區塊對應的氣泡 ──
+    const sections = ["section-sc","section-lag","section-soil","section-game"]
+      .map(id => document.getElementById(id)).filter(Boolean);
+
+    function updateActive() {
+      const scrollEl = document.querySelector(".view-mode:not(.hidden)");
+      if (!scrollEl) return;
+      const scrollTop = scrollEl.scrollTop;
+      const vh = scrollEl.clientHeight;
+      let current = null;
+
+      sections.forEach(sec => {
+        const rect = sec.getBoundingClientRect();
+        // 區塊進入視窗上半部就算 active
+        if (rect.top < vh * 0.55 && rect.bottom > 0) current = sec.id;
+      });
+
+      bubbles.forEach(b => {
+        b.classList.toggle("is-active", b.dataset.section === current);
+      });
+    }
+
+    const scrollEl = document.querySelector(".view-mode:not(.hidden)") || document.getElementById("visual-mode");
+    if (scrollEl) scrollEl.addEventListener("scroll", updateActive, { passive: true });
+    updateActive();
+  }
+
+  // 初始化（在 visual mode 時執行）
+  if (savedMode === "visual") initSideNav();
+
+  // mode 切換時也重跑
+  const _origToggleMode = toggleMode;
+  // 在 toggleMode 後補掛 initSideNav
+  document.getElementById("modeBtn")?.addEventListener("click", () => {
+    setTimeout(() => {
+      if (html.getAttribute("data-mode") === "visual") initSideNav();
+    }, 100);
+  }, { once: false });
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
       navigator.serviceWorker.register("sw.js").then(() => console.log("SW registered")).catch(() => {});
@@ -401,29 +525,147 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   
   // ── 記錄進站人數 (PageView) ──
-  const API_URL = "https://script.google.com/macros/s/AKfycbxx9-JwDwcQ-XPm4I782i9z0JfYpvw0em4ugiCPI28NR9pKyniRyebA1pTHWSJ6fGJ0/exec"; 
+  const API_URL = "https://script.google.com/macros/s/AKfycbxx9-JwDwcQ-XPm4I782i9z0JfYpvw0em4ugiCPI28NR9pKyniRyebA1pTHWSJ6fGJ0/exec";
   const visitorNumberEl = document.getElementById("visitorNumber");
 
   if (visitorNumberEl) {
-    // 利用 sessionStorage 判斷：同一個人在同一個視窗一直按 F5 重新整理，數字不會狂飆，只算 1 次
     const isNewView = !sessionStorage.getItem("tealize.viewed");
-    
-    // 如果是新訪客就呼叫 action=view (加1)，如果是重新整理就呼叫 action=get (純讀取)
     const action = isNewView ? "view" : "get";
 
-    fetch(`${API_URL}?action=${action}`)
-      .then(res => res.json())
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 8000);
+
+    fetch(`${API_URL}?action=${encodeURIComponent(action)}`, { signal: controller.signal })
+      .then(res => { clearTimeout(timeoutId); return res.json(); })
       .then(data => {
-        if (data && data.views !== undefined) {
-          // 將從 Google Sheets 抓到的數字填入畫面中
-          visitorNumberEl.textContent = data.views;
-          // 標記這個視窗已經計算過了
+        if (data && typeof data.views === "number") {
+          visitorNumberEl.textContent = data.views.toLocaleString();
           if (isNewView) sessionStorage.setItem("tealize.viewed", "true");
         }
       })
       .catch(err => {
-        console.log("無法獲取瀏覽人數", err);
-        visitorNumberEl.textContent = "???"; // 斷線或出錯時的備用顯示
+        clearTimeout(timeoutId);
+        if (err.name !== "AbortError") console.log("無法獲取瀏覽人數", err);
+        visitorNumberEl.textContent = "—";
       });
   }
+
+  // ══════════════════════════════════════
+  // 訪客追蹤系統
+  // ══════════════════════════════════════
+  (function initTracking() {
+
+    // ── clientId：掃描所有 localStorage value，找 uid_/ag_ 前綴 ──
+    function getClientId() {
+      try {
+        // 掃描所有 value（不是 key），找出已知前綴
+        for (const prefix of ["uid_", "ag_"]) {
+          for (let i = 0; i < localStorage.length; i++) {
+            const k = localStorage.key(i);
+            const v = localStorage.getItem(k) || "";
+            if (v.startsWith(prefix)) return v;
+          }
+        }
+        // 找自建的 tw_ tealize id
+        const existing = localStorage.getItem("tw_tealize_id");
+        if (existing) return existing;
+        // 都沒有就建立新的
+        const newId = "tw_" + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
+        localStorage.setItem("tw_tealize_id", newId);
+        return newId;
+      } catch { return "unknown"; }
+    }
+
+    // ── UTC+8 時間字串 ──
+    function toTW8(ts) {
+      return new Date(ts + 8 * 3600000)
+        .toISOString().replace("T", " ").slice(0, 19);
+    }
+
+    const tzOffset  = new Date().getTimezoneOffset(); // 分鐘，UTC+8 = -480
+    const clientId  = getClientId();
+    const enterTime = Date.now();
+    const enterStr  = toTW8(enterTime);
+
+    // ── 點擊追蹤 ──
+    const clickLog = [];
+
+    const TRACKED = [
+      { sel: 'a[href*="framer.app"]',             label: "咬了神一口官網" },
+      { sel: 'a[href*="kadokado"][href*="1425"]',  label: "字命覺醒VOL1" },
+      { sel: 'a[href*="kadokado"][href*="42308"]', label: "字命覺醒VOL2" },
+      { sel: 'a[href*="kadokado"][href*="65322"]', label: "字命覺醒Extra" },
+      { sel: 'a[href*="kadokado"][href*="60627"]', label: "穿越者KadoKado" },
+      { sel: 'a[href*="wixsite"]',                 label: "反轉的真實官網" },
+      { sel: 'a[href*="gamer.com"]',               label: "反轉的真實巴哈" },
+      { sel: 'a[href*="story-command-academy"]',   label: "字命覺醒測驗" },
+      { sel: 'a[href*="DarkBLstory"]',             label: "黑暗特質測驗" },
+      { sel: '#lagAfterwordBtn',                   label: "閱讀後記btn" },
+      { sel: '#spoilerConfirm',                    label: "後記確認進入" },
+      { sel: '#langBtn',                           label: "切換語言" },
+      { sel: '#themeBtn',                          label: "切換主題" },
+      { sel: '#modeBtn',                           label: "切換終端機" },
+      { sel: '[data-section="section-sc"]',        label: "nav:字命覺醒" },
+      { sel: '[data-section="section-lag"]',       label: "nav:咬了神一口" },
+      { sel: '[data-section="section-soil"]',      label: "nav:穿越者" },
+      { sel: '[data-section="section-game"]',      label: "nav:反轉的真實" },
+    ];
+
+    TRACKED.forEach(({ sel, label }) => {
+      document.querySelectorAll(sel).forEach(el => {
+        el.addEventListener("click", () => { clickLog.push(label); }, { passive: true });
+      });
+    });
+
+    // ── 離開時 POST 送出紀錄 ──
+    function sendVisit(reason) {
+      const exitTime    = Date.now();
+      const staySeconds = Math.round((exitTime - enterTime) / 1000);
+      clickLog.push(`X:${reason}`);
+
+      // source / referrer / device
+      const urlParams = new URLSearchParams(window.location.search);
+      const source    = urlParams.get("utm_source") || "direct";
+      const referrer  = document.referrer || "none";
+      const device    = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i
+                          .test(navigator.userAgent) ? "Mobile" : "Desktop";
+
+      const payload = JSON.stringify({
+        action:    "visit",
+        clientId:  clientId,
+        tz:        String(tzOffset),
+        enterTime: enterStr,
+        exitTime:  toTW8(exitTime),
+        stay:      staySeconds,
+        clicks:    clickLog.join(","),
+        source:    source,
+        referrer:  referrer,
+        device:    device
+      });
+
+      // GAS 部署 URL 會做 302 redirect，sendBeacon 不跟 redirect 所以永遠失敗。
+      // 改用 fetch + keepalive:true，瀏覽器關閉時仍會送完整請求並跟隨 redirect。
+      try {
+        fetch(API_URL, {
+          method:    "POST",
+          body:      payload,
+          keepalive: true,
+          headers:   { "Content-Type": "application/json" }
+        });
+      } catch (_) {}
+    }
+
+    let sent = false;
+    function onLeave(reason) {
+      if (sent) return;
+      sent = true;
+      sendVisit(reason);
+    }
+
+    window.addEventListener("beforeunload", () => onLeave("close"));
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "hidden") onLeave("hidden");
+    });
+
+  })();
 });

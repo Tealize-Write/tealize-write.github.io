@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self' https://script.google.com; frame-ancestors 'none';" />
+  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
   <title>後記 — 咬了神一口 | Tealize</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -297,7 +300,11 @@
 
     /* ── Reduced motion ── */
     @media (prefers-reduced-motion: reduce) {
-      * { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+      .bg-glow, .afterword-illus img, .poll-btn, .nav-back, .theme-btn { 
+        animation: none !important; 
+        transition: none !important; 
+      }
+      html { scroll-behavior: auto !important; }
     }
   </style>
 </head>
@@ -409,6 +416,13 @@
         set(key, val)      { try { localStorage.setItem(key, val); } catch {} }
       };
 
+      // ── fetch with timeout helper ──
+      function fetchWithTimeout(url, ms = 8000) {
+        const ctrl = new AbortController();
+        const id = setTimeout(() => ctrl.abort(), ms);
+        return fetch(url, { signal: ctrl.signal }).finally(() => clearTimeout(id));
+      }
+
       // ── Theme ──
       const html = document.documentElement;
       const themeBtn  = document.getElementById("themeBtn");
@@ -486,54 +500,98 @@
       }
       tick();
 	  
-	  // ── Poll Logic (連線正式版) ──
+	  // ── Poll Logic ──
       const pollOptions = document.getElementById("pollOptions");
       const pollResults = document.getElementById("pollResults");
-      const pollBtns = document.querySelectorAll(".poll-btn");
+      const pollBtns    = document.querySelectorAll(".poll-btn");
 
-      const API_URL = "https://script.google.com/macros/s/AKfycbxx9-JwDwcQ-XPm4I782i9z0JfYpvw0em4ugiCPI28NR9pKyniRyebA1pTHWSJ6fGJ0/exec"; 
+      const API_URL = "https://script.google.com/macros/s/AKfycbxx9-JwDwcQ-XPm4I782i9z0JfYpvw0em4ugiCPI28NR9pKyniRyebA1pTHWSJ6fGJ0/exec";
+
+      // ── clientId：掃描 value，找 uid_/ag_ 前綴 ──
+      function getClientId() {
+        try {
+          for (const prefix of ["uid_", "ag_"]) {
+            for (let i = 0; i < localStorage.length; i++) {
+              const v = localStorage.getItem(localStorage.key(i)) || "";
+              if (v.startsWith(prefix)) return v;
+            }
+          }
+          const existing = localStorage.getItem("tw_tealize_id");
+          if (existing) return existing;
+          const newId = "tw_" + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
+          localStorage.setItem("tw_tealize_id", newId);
+          return newId;
+        } catch { return "unknown"; }
+      }
+      const clientId = getClientId();
+
+      // ── 快取票數 key ──
+      const CACHE_KEY = "tealize.poll.cache";
+      const CACHE_TTL = 5 * 60 * 1000; // 5 分鐘快取
+
+      function loadCachedVotes() {
+        try {
+          const raw = localStorage.getItem(CACHE_KEY);
+          if (!raw) return null;
+          const { ts, votes } = JSON.parse(raw);
+          if (Date.now() - ts < CACHE_TTL) return votes;
+        } catch {}
+        return null;
+      }
+      function saveCachedVotes(votes) {
+        try { localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), votes })); } catch {}
+      }
 
       let dbVotes = { deer: 0, lion: 0, switch: 0 };
       const hasVoted = storage.get("tealize.voted");
 
-      // 1. 網頁載入時，先去後台抓取目前最新票數
-      fetch(API_URL + "?action=get")
+      // 1. 已投票的用戶：先用快取顯示，背景更新後刷新
+      // 未投票的用戶：不顯示結果，等投票後才顯示
+      const cached = loadCachedVotes();
+      if (cached && hasVoted) {
+        dbVotes = cached;
+        showResults(); // 先顯示快取（避免白屏）
+      }
+
+      // 背景抓最新（無論有沒有快取都抓）
+      fetchWithTimeout(API_URL + "?action=get")
         .then(res => res.json())
         .then(data => {
-          dbVotes.deer = data.deer || 0;
-          dbVotes.lion = data.lion || 0;
+          dbVotes.deer   = data.deer   || 0;
+          dbVotes.lion   = data.lion   || 0;
           dbVotes.switch = data.switch || 0;
-          // 如果已經投過票，就直接顯示最新結果
-          if (hasVoted) showResults(); 
+          saveCachedVotes(dbVotes);
+          if (hasVoted) showResults(); // 用最新數字覆蓋更新
         })
-        .catch(err => console.log("獲取票數失敗", err));
+        .catch(err => { if (err.name !== "AbortError") console.log("獲取票數失敗", err); });
 
-      // 2. 綁定按鈕點擊事件
+      // 2. 投票
       pollBtns.forEach(btn => {
         btn.addEventListener("click", function() {
           const choice = this.getAttribute("data-vote");
-          
-          // 樂觀更新：前端先假裝投進去了，讓 UI 瞬間反應
+          if (!["deer", "lion", "switch"].includes(choice)) return;
+
           dbVotes[choice]++;
           storage.set("tealize.voted", choice);
+          saveCachedVotes(dbVotes);
+
           pollOptions.style.display = "none";
           pollResults.style.display = "block";
-          
-          // 顯示「計算中」的狀態
-          document.getElementById("res-deer").textContent = "連線更新中...";
-          document.getElementById("res-lion").textContent = "連線更新中...";
-          document.getElementById("res-switch").textContent = "連線更新中...";
+          showResults(); // 樂觀更新立刻顯示
 
-          // 3. 背景將票數傳送到 Google Sheets
-          fetch(API_URL + "?action=vote&choice=" + choice)
+          const voteParams = new URLSearchParams({
+            action: "vote", choice, clientId
+          });
+          fetchWithTimeout(API_URL + "?" + voteParams.toString())
             .then(res => res.json())
             .then(data => {
-              // 收到 Google Sheets 的確認後，刷新為全網最準確的數據
-              dbVotes.deer = data.deer || 0;
-              dbVotes.lion = data.lion || 0;
+              dbVotes.deer   = data.deer   || 0;
+              dbVotes.lion   = data.lion   || 0;
               dbVotes.switch = data.switch || 0;
-              showResults();
-            });
+              saveCachedVotes(dbVotes);
+              showResults(); // 用伺服器最終數字更新
+            })
+            .catch(err => { if (err.name !== "AbortError") console.log("投票失敗", err); });
         });
       });
 

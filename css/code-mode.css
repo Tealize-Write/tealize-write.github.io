@@ -23,7 +23,7 @@
   100%{opacity:0.32737}
 }
 
-.container-code { max-width: 1000px; margin: 0 auto; padding: 100px 30px; position: relative; z-index: 3; }
+.container-code { max-width: 1000px; margin: 0 auto; padding: 72px 30px 100px; position: relative; z-index: 3; }
 .terminal-header { margin-bottom: 3.5rem; border-bottom: 1px dashed var(--code-dim); padding-bottom: 2.5rem; }
 .glow-text { color: var(--code-green); text-shadow: 0 0 10px var(--code-green), 0 0 20px var(--code-green); }
 .cmd-line   { margin-bottom: 15px; font-size: 0.95rem; }
@@ -47,7 +47,25 @@
 
 .code-project { margin-bottom: 3.5rem; padding-left: 25px; border-left: 2px solid #333; transition: border-color 0.3s var(--ease-smooth); }
 .code-project:hover { border-left-color: var(--code-green); }
-.code-h2 { font-size: 1.6rem; color: var(--code-green); margin-bottom: 1.2rem; font-weight: 700; text-shadow: 0 0 10px rgba(0,255,0,0.5); }
+.code-project--red { border-left-color: #550000; }
+.code-project--red:hover { border-left-color: #ff3333; }
+
+.code-h2 { font-size: 1.6rem; color: var(--code-green); margin-bottom: 1rem; font-weight: 700; text-shadow: 0 0 10px rgba(0,255,0,0.5); }
+.code-h2--red { color: #ff3333; text-shadow: 0 0 15px #ff3333; }
+
+/* 一句話描述 */
+.code-desc { color: #a9b7c6; margin-bottom: 1rem; font-size: 0.95rem; line-height: 1.7; }
+
+/* 補充說明 */
+.code-meta { font-size: 0.88rem; color: #888; margin: 12px 0 16px; line-height: 1.6; }
+.code-meta--red { color: #ff3333; font-style: italic; }
+
+/* 連結按鈕群 */
+.code-links { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 4px; }
+
+/* 子模組 */
+.code-submodule { margin-top: 24px; padding-top: 16px; border-top: 1px dashed #444; }
+.code-submodule__title { font-size: 1rem; color: #aaa; margin-bottom: 10px; }
 
 .code-link {
   color: var(--code-text); text-decoration: none;
@@ -58,4 +76,97 @@
 }
 .code-link:hover { background: var(--code-green); color: #000; border-color: var(--code-green); box-shadow: 0 0 25px var(--code-green); transform: translateY(-3px); }
 
+/* 紅色按鈕變體（遊戲區塊） */
+.code-link-red {
+  color: #ff3333;
+  border-color: #ff3333;
+}
+.code-link-red:hover {
+  background: #ff3333;
+  color: #000;
+  border-color: #ff3333;
+  box-shadow: 0 0 25px rgba(255,51,51,0.7);
+  transform: translateY(-3px);
+}
+
 .footer-code { margin-top: 4rem; padding-top: 2rem; border-top: 1px dashed #333; color: #444; font-size: 0.85rem; }
+
+/* ══════════════════════════════════════
+   Code Section Template — 終端機區塊模板
+   新增區塊複製 .code-project 結構即可
+   ══════════════════════════════════════ */
+
+/* ── 區塊 header：標題 + badge 同行 ── */
+.code-project-header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 0.8rem;
+  flex-wrap: wrap;
+}
+.code-project-header .code-h2 { margin-bottom: 0; }
+
+/* ── Type badge ── */
+.code-badge {
+  font-family: "Orbitron", monospace;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid var(--code-green);
+  color: var(--code-green);
+  background: rgba(0,224,160,0.07);
+  flex-shrink: 0;
+}
+.code-badge--red {
+  border-color: #ff3333;
+  color: #ff3333;
+  background: rgba(255,51,51,0.07);
+}
+
+/* ── 描述文字 ── */
+.code-desc {
+  color: #a9b7c6;
+  font-size: 0.92rem;
+  margin-bottom: 14px;
+  line-height: 1.7;
+}
+.code-desc--red { color: #ff6666; font-style: italic; }
+
+/* ── 補充說明 ── */
+.code-note {
+  font-size: 0.85rem;
+  margin-top: 10px;
+  margin-bottom: 0;
+  font-family: "JetBrains Mono", monospace;
+}
+
+/* ── 按鈕列 ── */
+.code-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+/* ── 子模組 ── */
+.code-submodule {
+  margin-top: 22px;
+  padding-top: 16px;
+  border-top: 1px dashed #333;
+}
+.code-submodule-title {
+  font-size: 1rem;
+  color: #aaa;
+  margin-bottom: 10px;
+  font-family: "JetBrains Mono", monospace;
+}
+
+/* ── 紅色區塊變體 ── */
+.code-project--red { border-left-color: #ff3333; }
+.code-project--red:hover { border-left-color: #ff3333; }
+.code-h2--red {
+  color: #ff3333 !important;
+  text-shadow: 0 0 15px #ff3333 !important;
+}

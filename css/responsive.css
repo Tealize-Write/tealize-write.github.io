@@ -20,18 +20,29 @@
   .avatar-visual { width: 110px; height: 110px; }
   .hero-sub      { font-size: 0.85rem; letter-spacing: 1.5px; }
 
-  .container-visual { padding: 90px 16px 60px; }
+  .container-visual { padding: 60px 16px 60px 16px; }
   .glass-panel      { padding: 1.6rem; border-radius: 18px; margin-bottom: 2.5rem; }
   .section-title    { font-size: 1.3rem; gap: 12px; }
 
   .novel-layout     { flex-direction: column; gap: 28px; }
   .novel-cover-link { max-width: 100%; }
 
+  /* 統一 section-body 手機版 */
+  .section-body   { flex-direction: column; gap: 24px; }
+  .section-cover  { width: 100%; }
+  .section-media  { grid-template-columns: 1fr; gap: 16px; }
+  .section-media--wide { grid-template-columns: 1fr; }
+  .section-actions { flex-direction: column; align-items: stretch; }
+  .section-actions .cta-btn { justify-content: center; }
+  .section-title2 { font-size: 1.6rem; }
+
   .lag-layout  { flex-direction: column; gap: 24px; }
-  .lag-images  { order: 1; width: 100%; flex-direction: column; gap: 12px; }
-  .lag-img-main{ width: 100%; aspect-ratio: 1000/1343; }
+  .lag-images  { order: 1; width: 100%; }
+  .lag-img-main{ width: 100%; }
   .lag-text    { order: 2; }
   .lag-booktitle { font-size: 1.8rem; }
+  .lag-actions { flex-direction: column; align-items: stretch; }
+  .lag-actions .cta-btn { justify-content: center; }
 
   .puzzle-input-row { flex-wrap: nowrap; }
   .puzzle-input     { font-size: 0.95rem; padding: 9px 10px; }
@@ -42,7 +53,6 @@
   .game-grid .img-wrap { aspect-ratio: 16/9; }
   .game-links-container { flex-direction: column; }
 
-  .control-btn    { width: 42px; height: 42px; font-size: 1.1rem; }
   .container-code { padding: 80px 16px; }
   .code-h1        { font-size: 2rem; }
 }
@@ -54,11 +64,11 @@
   .control-btn   { width: 38px; height: 38px; font-size: 1rem; }
   .glass-panel   { padding: 1.2rem; border-radius: 14px; }
   .section-title { font-size: 1.15rem; }
+  .container-visual { padding: 58px 10px 60px 10px; }
 
   .book-grid     { grid-template-columns: repeat(2,1fr); gap: 12px; }
   .puzzle-input  { min-width: 0; padding: 8px 8px; }
   .puzzle-submit { padding: 8px 10px; letter-spacing: 0; }
 
-  .lag-booktitle { font-size: 1.5rem; }
-  .lag-desc      { font-size: 0.95rem; }
+  .section-title2 { font-size: 1.4rem; }
 }
