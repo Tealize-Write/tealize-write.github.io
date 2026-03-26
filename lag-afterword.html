@@ -580,7 +580,13 @@
           showResults(); // 樂觀更新立刻顯示
 
           const voteParams = new URLSearchParams({
-            action: "vote", choice, clientId
+            action: "vote", choice, clientId,
+            prefixLabel: (() => {
+              if (clientId.startsWith("uid_")) return "心測";
+              if (clientId.startsWith("ag_"))  return "賣貨便";
+              if (clientId.startsWith("tw_"))  return "兌";
+              return clientId.substring(0, 4);
+            })()
           });
           fetchWithTimeout(API_URL + "?" + voteParams.toString())
             .then(res => res.json())

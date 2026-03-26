@@ -558,23 +558,44 @@ document.addEventListener("DOMContentLoaded", () => {
     // ── clientId：掃描所有 localStorage value，找 uid_/ag_ 前綴 ──
     function getClientId() {
       try {
-        // 掃描所有 value（不是 key），找出已知前綴
         for (const prefix of ["uid_", "ag_"]) {
           for (let i = 0; i < localStorage.length; i++) {
-            const k = localStorage.key(i);
-            const v = localStorage.getItem(k) || "";
+            const v = localStorage.getItem(localStorage.key(i)) || "";
             if (v.startsWith(prefix)) return v;
           }
         }
-        // 找自建的 tw_ tealize id
         const existing = localStorage.getItem("tw_tealize_id");
         if (existing) return existing;
-        // 都沒有就建立新的
         const newId = "tw_" + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
         localStorage.setItem("tw_tealize_id", newId);
         return newId;
       } catch { return "unknown"; }
     }
+
+    // ── 前綴 → 來源顯示名 ──
+    function prefixLabel(id) {
+      if (id.startsWith("uid_")) return "心測";
+      if (id.startsWith("ag_"))  return "賣貨便";
+      if (id.startsWith("tw_"))  return "兌";
+      return id.substring(0, 4);
+    }
+
+    // ── 時區字串 → 國家（ipwho.is 取不到時的備案）──
+    const TZ_TO_COUNTRY = {
+      "Asia/Taipei": "台灣", "Asia/Tokyo": "日本", "Asia/Seoul": "韓國",
+      "Asia/Shanghai": "中國", "Asia/Hong_Kong": "香港",
+      "Asia/Singapore": "新加坡", "Asia/Kuala_Lumpur": "馬來西亞",
+      "Asia/Bangkok": "泰國", "Asia/Ho_Chi_Minh": "越南",
+      "Asia/Jakarta": "印尼", "Asia/Manila": "菲律賓",
+      "Asia/Kolkata": "印度", "Asia/Dubai": "阿聯酋",
+      "Asia/Riyadh": "沙烏地阿拉伯", "Asia/Istanbul": "土耳其",
+      "Europe/London": "英國", "Europe/Paris": "法國",
+      "Europe/Berlin": "德國", "Europe/Moscow": "俄羅斯",
+      "America/New_York": "美國(東)", "America/Chicago": "美國(中)",
+      "America/Los_Angeles": "美國(西)", "America/Toronto": "加拿大",
+      "America/Sao_Paulo": "巴西", "Australia/Sydney": "澳洲",
+      "Pacific/Auckland": "紐西蘭",
+    };
 
     // ── UTC+8 時間字串 ──
     function toTW8(ts) {
@@ -582,10 +603,27 @@ document.addEventListener("DOMContentLoaded", () => {
         .toISOString().replace("T", " ").slice(0, 19);
     }
 
-    const tzOffset  = new Date().getTimezoneOffset(); // 分鐘，UTC+8 = -480
+    const tzName    = Intl.DateTimeFormat().resolvedOptions().timeZone || "unknown";
+    const tzOffset  = new Date().getTimezoneOffset();
     const clientId  = getClientId();
     const enterTime = Date.now();
     const enterStr  = toTW8(enterTime);
+
+    // ── IP 地理位置（非同步，ipwho.is，2秒超時）──
+    let countryResolved = TZ_TO_COUNTRY[tzName] || tzName; // 先用時區備案
+    const locationReady = (async () => {
+      try {
+        const res = await Promise.race([
+          fetch("https://ipwho.is/"),
+          new Promise(r => setTimeout(r, 2000))
+        ]);
+        if (!res || !res.ok) return;
+        const data = await res.json();
+        if (data && data.success && data.country) {
+          countryResolved = data.country + (data.city ? ` · ${data.city}` : "");
+        }
+      } catch (_) {}
+    })();
 
     // ── 點擊追蹤 ──
     const clickLog = [];
@@ -617,13 +655,14 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-    // ── 離開時 POST 送出紀錄 ──
+    // ── 離開時 POST 送出紀錄（同步，不能 await）──
     function sendVisit(reason) {
+      // locationReady 是 Promise，beforeunload 不能 await
+      // ipwho.is 在頁面載入後 2 秒內應已完成，直接讀 countryResolved 的當前值
       const exitTime    = Date.now();
       const staySeconds = Math.round((exitTime - enterTime) / 1000);
       clickLog.push(`X:${reason}`);
 
-      // source / referrer / device
       const urlParams = new URLSearchParams(window.location.search);
       const source    = urlParams.get("utm_source") || "direct";
       const referrer  = document.referrer || "none";
@@ -631,26 +670,22 @@ document.addEventListener("DOMContentLoaded", () => {
                           .test(navigator.userAgent) ? "Mobile" : "Desktop";
 
       const payload = JSON.stringify({
-        action:    "visit",
-        clientId:  clientId,
-        tz:        String(tzOffset),
-        enterTime: enterStr,
-        exitTime:  toTW8(exitTime),
-        stay:      staySeconds,
-        clicks:    clickLog.join(","),
-        source:    source,
-        referrer:  referrer,
-        device:    device
+        action:      "visit",
+        clientId:    clientId,
+        prefixLabel: prefixLabel(clientId),
+        tz:          String(tzOffset),
+        country:     countryResolved,   // ipwho.is 完成就是精確國家，否則是時區中文備案
+        enterTime:   enterStr,
+        exitTime:    toTW8(exitTime),
+        stay:        staySeconds,
+        clicks:      clickLog.join(","),
+        source:      source,
+        referrer:    referrer,
+        device:      device
       });
 
-      // fetch + keepalive：不加 Content-Type header，避免觸發 CORS preflight
-      // GAS doPost 用 e.postData.contents 讀 body，不需要 Content-Type
       try {
-        fetch(API_URL, {
-          method:    "POST",
-          body:      payload,
-          keepalive: true
-        });
+        fetch(API_URL, { method: "POST", body: payload, keepalive: true });
       } catch (_) {}
     }
 
