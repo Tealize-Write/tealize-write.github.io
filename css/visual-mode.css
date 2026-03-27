@@ -854,6 +854,9 @@ body[data-cursor="on"] button   { cursor: none; }
 .divination-luck.luck-大吉 { color: #ffd700; background: rgba(255,215,0,0.1); }
 .divination-luck.luck-小吉 { color: #00e0a0; background: rgba(0,224,160,0.1); }
 .divination-luck.luck-平   { color: var(--accent-color); background: rgba(0,200,255,0.08); }
+.divination-luck.luck-凶   { color: #ff6b4a; background: rgba(255,107,74,0.1); }
+.divination-luck.luck-小凶 { color: #ff9a6c; background: rgba(255,107,74,0.1); }
+.divination-luck.luck-小凶 { color: #ff9a3c; background: rgba(255,154,60,0.1); }
 .divination-right { text-align: left; flex: 1; }
 .divination-name {
   font-family: "Orbitron"; font-size: 0.95rem; font-weight: 700;
