@@ -401,8 +401,8 @@ body[data-cursor="on"] button   { cursor: none; }
   transform: scale(1.05);
 }
 @keyframes featuredPulse {
-  0%,100% { box-shadow: 0 0 18px rgba(0,200,255,0.22), inset 0 0 10px rgba(0,200,255,0.05); }
-  50%     { box-shadow: 0 0 32px rgba(0,200,255,0.42), inset 0 0 16px rgba(0,200,255,0.10); }
+  0%,100% { box-shadow: 0 0 12px rgba(0,200,255,0.18), inset 0 0 8px rgba(0,200,255,0.04); }
+  50%     { box-shadow: 0 0 22px rgba(0,200,255,0.32), inset 0 0 12px rgba(0,200,255,0.08); }
 }
 
 /* ── Book / link cards ── */
@@ -898,8 +898,8 @@ body[data-cursor="on"] button   { cursor: none; }
   transition: width 1s var(--ease-smooth);
 }
 .vote-bar--deer   { background: linear-gradient(90deg, #00c8ff, #3d8eff); }
-.vote-bar--lion   { background: linear-gradient(90deg, #ff6b4a, #ff9a3c); }
-.vote-bar--switch { background: linear-gradient(90deg, #00e0a0, #00c8ff); }
+.vote-bar--lion   { background: linear-gradient(90deg, #00c8ff, #3d8eff); }
+.vote-bar--switch { background: linear-gradient(90deg, #00c8ff, #3d8eff); }
 .vote-bar-pct {
   font-family: "Orbitron"; font-size: 0.65rem;
   color: var(--text-sub); width: 36px; flex-shrink: 0;
