@@ -1,5 +1,5 @@
 // Service Worker for Tealize Website
-const CACHE_VERSION = 9;
+const CACHE_VERSION = 10;
 const CACHE_NAME = `tealize-v${CACHE_VERSION}`;
 
 const urlsToCache = [

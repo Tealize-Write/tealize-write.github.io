@@ -765,10 +765,11 @@ body[data-cursor="on"] button   { cursor: none; }
    hero-quicknav — 精簡導航
    ══════════════════════════════════════ */
 .hero-quicknav {
-  display: inline-flex; flex-wrap: wrap; justify-content: center;
+  display: flex; flex-wrap: wrap; justify-content: center;
   align-items: center; gap: 6px 10px;
   margin: 1rem auto 0.6rem;
   font-size: 0.82rem;
+  width: 100%;
 }
 .hero-qlink {
   color: var(--accent-color); text-decoration: none;
@@ -784,7 +785,7 @@ body[data-cursor="on"] button   { cursor: none; }
    hero-meta — 個人資訊整合膠囊
    ══════════════════════════════════════ */
 .hero-meta {
-  display: inline-flex; flex-wrap: wrap; justify-content: center;
+  display: flex; flex-wrap: wrap; justify-content: center;
   align-items: center; gap: 5px 8px;
   margin: 0.4rem auto 0;
   padding: 6px 18px;
@@ -793,7 +794,8 @@ body[data-cursor="on"] button   { cursor: none; }
   border-radius: 999px;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  font-size: 0.76rem; max-width: 100%;
+  font-size: 0.76rem; max-width: fit-content;
+  width: auto;
 }
 .hero-meta-tag { color: var(--text-sub); white-space: nowrap; }
 .hero-meta-sep { color: var(--glass-border); opacity: 0.5; font-size: 0.85rem; padding: 0 2px; }
@@ -889,12 +891,12 @@ body[data-cursor="on"] button   { cursor: none; }
 .vote-bar-row:last-child { margin-bottom: 0; }
 .vote-bar-label {
   font-size: 0.75rem; color: var(--text-sub);
-  white-space: nowrap; width: 80px; flex-shrink: 0;
+  white-space: nowrap; width: 90px; flex-shrink: 0;
   text-align: right;
 }
 .vote-bar-track {
   flex: 1; height: 8px; background: rgba(255,255,255,0.06);
-  border-radius: 999px; overflow: hidden;
+  border-radius: 999px; overflow: hidden; min-width: 0;
 }
 .vote-bar-fill {
   height: 100%; border-radius: 999px; width: 0%;
@@ -905,5 +907,5 @@ body[data-cursor="on"] button   { cursor: none; }
 .vote-bar--switch { background: linear-gradient(90deg, #00c8ff, #3d8eff); }
 .vote-bar-pct {
   font-family: "Orbitron"; font-size: 0.65rem;
-  color: var(--text-sub); width: 36px; flex-shrink: 0;
+  color: var(--text-sub); width: 40px; flex-shrink: 0; text-align: right;
 }
