@@ -154,7 +154,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const backToTopBtn = document.getElementById("backToTop");
 
   // 1. 目錄按鈕點擊：精準滾動到對應區塊
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  document.querySelectorAll('a[href^="#"], .hero-qlink').forEach(anchor => {
      anchor.addEventListener("click", function (e) {
         e.preventDefault();
         const targetId = this.getAttribute("href");
@@ -609,18 +609,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const enterTime = Date.now();
     const enterStr  = toTW8(enterTime);
 
-    // ── IP 地理位置（非同步，ipwho.is，2秒超時）──
-    let countryResolved = TZ_TO_COUNTRY[tzName] || tzName; // 先用時區備案
+    // ── IP 地理位置（ipapi.co，支援 https，2秒超時）──
+    let countryResolved = TZ_TO_COUNTRY[tzName] || tzName;
     const locationReady = (async () => {
       try {
         const res = await Promise.race([
-          fetch("https://ipwho.is/"),
+          fetch("https://ipapi.co/json/"),
           new Promise(r => setTimeout(r, 2000))
         ]);
         if (!res || !res.ok) return;
         const data = await res.json();
-        if (data && data.success && data.country) {
-          countryResolved = data.country + (data.city ? ` · ${data.city}` : "");
+        if (data && data.country_name) {
+          countryResolved = data.country_name + (data.city ? ` · ${data.city}` : "");
         }
       } catch (_) {}
     })();
