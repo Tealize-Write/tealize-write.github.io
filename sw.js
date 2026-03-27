@@ -1,5 +1,5 @@
 // Service Worker for Tealize Website
-const CACHE_VERSION = 5;
+const CACHE_VERSION = 7;
 const CACHE_NAME = `tealize-v${CACHE_VERSION}`;
 
 const urlsToCache = [
@@ -9,6 +9,8 @@ const urlsToCache = [
   '/manifest.json',
   '/js/i18n.js',
   '/js/app.js',
+  '/js/divination.js',
+  '/js/tracking.js',
   '/css/variables.css',
   '/css/base.css',
   '/css/nav.css',
@@ -30,16 +32,16 @@ const urlsToCache = [
   '/img/littlelion.jpg'
 ];
 
-// Install：逐一快取，單項失敗不影響其他項目
+// Install：單項失敗不阻塞整體
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => {
-      return Promise.allSettled(
+    caches.open(CACHE_NAME).then(cache =>
+      Promise.allSettled(
         urlsToCache.map(url =>
           cache.add(url).catch(err => console.log('Cache skip:', url, err.message))
         )
-      );
-    })
+      )
+    )
   );
   self.skipWaiting();
 });

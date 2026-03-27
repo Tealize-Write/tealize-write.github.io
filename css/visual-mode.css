@@ -217,9 +217,16 @@ body[data-cursor="on"] button   { cursor: none; }
 }
 .glass-panel:hover::before { opacity: 1; }
 .glass-panel:hover::after  { left: 100%; }
-.glass-panel:nth-child(1) { animation-delay: 0.10s; }
-.glass-panel:nth-child(2) { animation-delay: 0.25s; }
-.glass-panel:nth-child(3) { animation-delay: 0.40s; }
+.glass-panel:nth-child(1) { animation-delay: 0.05s; }
+.glass-panel:nth-child(2) { animation-delay: 0.15s; }
+.glass-panel:nth-child(3) { animation-delay: 0.25s; }
+.glass-panel:nth-child(4) { animation-delay: 0.35s; }
+.glass-panel:nth-child(5) { animation-delay: 0.45s; }
+.glass-panel:nth-child(6) { animation-delay: 0.55s; }
+/* 防呆：動畫萬一沒跑，至少顯示出來 */
+@media (prefers-reduced-motion: reduce) {
+  .glass-panel { opacity: 1 !important; animation: none !important; }
+}
 
 @keyframes fadeUpDecode {
   0%   { opacity: 0; transform: translateY(40px) scale(0.96); filter: blur(10px); }
@@ -283,11 +290,22 @@ body[data-cursor="on"] button   { cursor: none; }
   margin-bottom: 1.5rem;
 }
 .section-cover {
-  flex: 0 0 auto; width: 220px;
+  flex: 0 0 auto; width: 200px;
 }
-.section-cover .link-card { border-radius: 14px; }
+.section-cover .link-card { border-radius: 14px; display: block; }
 .section-info {
   flex: 1 1 280px; display: flex; flex-direction: column;
+}
+
+/* 多封面書系：三張封面並排 */
+.section-body--books {
+  flex-wrap: wrap; gap: 16px;
+}
+.section-body--books .section-cover {
+  flex: 1 1 140px; max-width: 200px; min-width: 120px; width: auto;
+}
+.section-body--books .section-info {
+  flex: 1 1 200px;
 }
 
 /* 作品標題 */
@@ -357,15 +375,14 @@ body[data-cursor="on"] button   { cursor: none; }
 /* CTA 按鈕變體 */
 .cta-btn--secondary {
   background: transparent;
-  border-color: rgba(0,200,255,0.35);
-  color: var(--text-sub);
-  font-size: 0.88rem;
-  padding: 10px 22px;
-}
-.cta-btn--secondary:hover {
-  background: rgba(0,200,255,0.1);
   border-color: var(--accent-color);
   color: var(--accent-color);
+  opacity: 0.75;
+}
+.cta-btn--secondary:hover {
+  background: var(--accent-color);
+  color: var(--bg-color);
+  opacity: 1;
 }
 .cta-btn--featured {
   font-family: "Orbitron", sans-serif;
@@ -742,4 +759,148 @@ body[data-cursor="on"] button   { cursor: none; }
   .section-booktitle { font-size: 1.7rem; }
   .section-actions { flex-direction: column; align-items: stretch; }
   .section-actions .cta-btn { justify-content: center; }
+}
+
+/* ══════════════════════════════════════
+   hero-quicknav — 精簡導航
+   ══════════════════════════════════════ */
+.hero-quicknav {
+  display: inline-flex; flex-wrap: wrap; justify-content: center;
+  align-items: center; gap: 6px 10px;
+  margin: 1rem auto 0.6rem;
+  font-size: 0.82rem;
+}
+.hero-qlink {
+  color: var(--accent-color); text-decoration: none;
+  font-weight: 600; letter-spacing: 0.5px;
+  transition: opacity 0.2s;
+  display: inline-flex; align-items: center; gap: 4px;
+}
+.hero-qlink:hover { opacity: 0.7; }
+.hero-qlink i { font-size: 0.75rem; }
+.hero-qdot { color: var(--glass-border); opacity: 0.6; font-size: 0.9rem; }
+
+/* ══════════════════════════════════════
+   hero-meta — 個人資訊整合膠囊
+   ══════════════════════════════════════ */
+.hero-meta {
+  display: inline-flex; flex-wrap: wrap; justify-content: center;
+  align-items: center; gap: 5px 8px;
+  margin: 0.4rem auto 0;
+  padding: 6px 18px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  font-size: 0.76rem; max-width: 100%;
+}
+.hero-meta-tag { color: var(--text-sub); white-space: nowrap; }
+.hero-meta-sep { color: var(--glass-border); opacity: 0.5; font-size: 0.85rem; padding: 0 2px; }
+.hero-meta-career {
+  display: inline-flex; align-items: center; gap: 3px;
+  color: var(--text-sub); white-space: nowrap;
+}
+.hero-meta-career i { color: var(--accent-color); font-size: 0.7rem; opacity: 0.8; }
+.hero-meta-career .career-years {
+  font-family: "Orbitron"; font-size: 0.76rem; font-weight: 700;
+  color: var(--accent-color);
+}
+
+/* ══════════════════════════════════════
+   占卜台
+   ══════════════════════════════════════ */
+.divination-panel {
+  margin-bottom: 3rem;
+  padding: 1.6rem 2rem;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  position: relative; overflow: hidden;
+  display: flex; flex-direction: column; align-items: center; gap: 1rem;
+  animation: fadeUpDecode 0.8s cubic-bezier(0.2,0.8,0.2,1) 0.05s both;
+}
+.divination-panel::before {
+  content: ""; position: absolute; top: 0; left: 20%; right: 20%; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+  opacity: 0.5;
+}
+.divination-eyebrow {
+  font-family: "Orbitron"; font-size: 0.6rem;
+  letter-spacing: 3px; color: var(--accent-color); opacity: 0.7;
+}
+.divination-body {
+  display: flex; align-items: center; gap: 2rem;
+  width: 100%; max-width: 560px;
+}
+.divination-left {
+  display: flex; flex-direction: column; align-items: center; gap: 0.5rem; flex-shrink: 0;
+}
+.divination-symbol {
+  font-size: 2.8rem; line-height: 1;
+  filter: drop-shadow(0 0 10px var(--accent-color));
+  animation: divFloat 4s ease-in-out infinite;
+}
+@keyframes divFloat {
+  0%,100% { transform: translateY(0); }
+  50%     { transform: translateY(-5px); }
+}
+.divination-luck {
+  font-family: "Orbitron"; font-size: 0.6rem; font-weight: 700;
+  letter-spacing: 2px; padding: 3px 10px; border-radius: 999px;
+  border: 1px solid currentColor; white-space: nowrap;
+}
+.divination-luck.luck-大吉 { color: #ffd700; background: rgba(255,215,0,0.1); }
+.divination-luck.luck-小吉 { color: #00e0a0; background: rgba(0,224,160,0.1); }
+.divination-luck.luck-平   { color: var(--accent-color); background: rgba(0,200,255,0.08); }
+.divination-right { text-align: left; flex: 1; }
+.divination-name {
+  font-family: "Orbitron"; font-size: 0.95rem; font-weight: 700;
+  color: var(--text-main); letter-spacing: 2px; margin-bottom: 0.5rem;
+}
+.divination-text {
+  color: var(--text-sub); font-size: 0.9rem; line-height: 1.9; margin: 0; font-style: italic;
+}
+.divination-date { display: none; }
+/* ══════════════════════════════════════
+   攻受投票長條圖
+   ══════════════════════════════════════ */
+.vote-bar-panel {
+  margin-bottom: 1.2rem;
+  padding: 1rem 1.4rem;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 14px;
+  backdrop-filter: blur(10px);
+}
+.vote-bar-title {
+  font-family: "Orbitron"; font-size: 0.62rem;
+  letter-spacing: 2px; color: var(--accent-color);
+  opacity: 0.8; margin-bottom: 0.8rem;
+}
+.vote-bar-row {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 0.5rem;
+}
+.vote-bar-row:last-child { margin-bottom: 0; }
+.vote-bar-label {
+  font-size: 0.75rem; color: var(--text-sub);
+  white-space: nowrap; width: 80px; flex-shrink: 0;
+  text-align: right;
+}
+.vote-bar-track {
+  flex: 1; height: 8px; background: rgba(255,255,255,0.06);
+  border-radius: 999px; overflow: hidden;
+}
+.vote-bar-fill {
+  height: 100%; border-radius: 999px; width: 0%;
+  transition: width 1s var(--ease-smooth);
+}
+.vote-bar--deer   { background: linear-gradient(90deg, #00c8ff, #3d8eff); }
+.vote-bar--lion   { background: linear-gradient(90deg, #ff6b4a, #ff9a3c); }
+.vote-bar--switch { background: linear-gradient(90deg, #00e0a0, #00c8ff); }
+.vote-bar-pct {
+  font-family: "Orbitron"; font-size: 0.65rem;
+  color: var(--text-sub); width: 36px; flex-shrink: 0;
 }

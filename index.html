@@ -12,7 +12,7 @@
   <meta name="keywords" content="兌現藍,Tealize,字命覺醒,是誰把穿越者種在土裡,咬了神一口,反轉的真實,奇幻小說,輕小說,BL,ABO,恐怖RPG,台灣創作,原創插畫,KadoKado" />
   <meta name="author" content="兌現藍 Tealize" />
   <meta name="robots" content="index, follow" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self' https://script.google.com https://script.googleusercontent.com https://ipwho.is; frame-ancestors 'none';" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self' https://script.google.com https://script.googleusercontent.com https://ipapi.co; frame-ancestors 'none';" />
   <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
   <meta http-equiv="X-Content-Type-Options" content="nosniff" />
   <link rel="canonical" href="https://tealize-write.github.io/" />
@@ -143,43 +143,62 @@
           <img id="avatar-img" src="img/avatar_white.jpg" alt="Avatar">
         </div>
         <h1 class="glitch-name" data-text="兌現藍">兌現藍</h1>
-        <div class="tags" aria-label="tags">
-          <span class="neon-tag">INTP</span>
-          <span class="neon-tag" data-i18n="tag-capricorn">魔羯座</span>
-          <span class="neon-tag">綠躍</span>
-          <span class="neon-tag" data-i18n="tag-gamemaker">遊戲 Maker</span>
-          <span class="neon-tag" data-i18n="tag-art">繪圖</span>
-          <span class="neon-tag" data-i18n="tag-creator">奇幻創作者</span>
-        </div>
         <p class="hero-sub">STORY-COMMAND SHAPES REALITY.</p>
 
-        <!-- ── 資歷時間軸（一行） ── -->
-        <div class="career-timeline">
-          <span class="career-item">
+        <!-- ── 精簡導航 ── -->
+        <div class="hero-quicknav">
+          <a href="#section-sc"   class="hero-qlink"><i class="fa-solid fa-book-sparkles"></i> 字命覺醒</a>
+          <span class="hero-qdot">·</span>
+          <a href="#section-lag"  class="hero-qlink"><i class="fa-solid fa-paw"></i> 咬了神一口</a>
+          <span class="hero-qdot">·</span>
+          <a href="#section-soil" class="hero-qlink"><i class="fa-solid fa-seedling"></i> 穿越者種土裡</a>
+          <span class="hero-qdot">·</span>
+          <a href="#section-game" class="hero-qlink"><i class="fa-solid fa-ghost" style="color:#ff6b4a"></i> 反轉的真實</a>
+        </div>
+
+        <!-- ── 個人標籤 + 資歷整合一行 ── -->
+        <div class="hero-meta">
+          <span class="hero-meta-tag">INTP</span>
+          <span class="hero-meta-tag" data-i18n="tag-capricorn">魔羯座</span>
+          <span class="hero-meta-tag">綠躍</span>
+          <span class="hero-meta-sep">|</span>
+          <span class="hero-meta-tag" data-i18n="tag-gamemaker">遊戲 Maker</span>
+          <span class="hero-meta-tag" data-i18n="tag-art">繪圖</span>
+          <span class="hero-meta-tag" data-i18n="tag-creator">奇幻創作者</span>
+          <span class="hero-meta-sep">|</span>
+          <span class="hero-meta-career">
             <i class="fa-solid fa-feather-pointed"></i>
-            <span class="career-label">小說</span>
-            <span class="career-years" id="career-writing">19</span><span class="career-unit"> 年</span>
+            筆齡 <span class="career-years" id="career-writing"></span> 年
           </span>
-          <span class="career-dot" aria-hidden="true">·</span>
-          <span class="career-item">
-            <i class="fa-solid fa-cube"></i>
-            <span class="career-label">3D美術</span>
-            <span class="career-years">4</span><span class="career-unit"> 年+</span>
+          <span class="hero-meta-career">
+            <i class="fa-solid fa-cube"></i> 3D遊戲場景美術 4 年+
           </span>
-          <span class="career-dot" aria-hidden="true">·</span>
-          <span class="career-item">
+          <span class="hero-meta-career">
             <i class="fa-solid fa-server"></i>
-            <span class="career-label">IT系統管理</span>
-            <span class="career-years" id="career-mis">6</span><span class="career-unit"> 年+</span>
+            IT <span class="career-years" id="career-mis"></span> 年+
           </span>
-          <span class="career-dot" aria-hidden="true">·</span>
-          <span class="career-item">
+          <span class="hero-meta-career">
             <i class="fa-solid fa-code"></i>
-            <span class="career-label">前端工程師</span>
-            <span class="career-years" id="career-penana">&lt;1</span><span class="career-unit"> 年</span>
+            前端工程師 <span class="career-years" id="career-penana"></span> 年
           </span>
         </div>
+
       </header>
+
+      <!-- ===== 本次占卜 ===== -->
+      <div class="divination-panel" id="divinationPanel" aria-label="本次創作占卜">
+        <span class="divination-eyebrow">✦ 本次創作卦象 ✦</span>
+        <div class="divination-body">
+          <div class="divination-left">
+            <div class="divination-symbol" id="divSymbol">🌱</div>
+            <div class="divination-luck" id="divLuck"></div>
+          </div>
+          <div class="divination-right">
+            <div class="divination-name" id="divName">載入中…</div>
+            <p class="divination-text" id="divText"></p>
+          </div>
+        </div>
+      </div>
 
       <!-- ═══════════════════════════════════════════
            視覺模式區塊模板（Visual Section Template）
@@ -208,19 +227,34 @@
         <div class="section-quote" data-i18n="sc-quote">「因為是文閉所以會贏。」「冠軍是我們的，你們加油吧。」</div>
         <p class="section-sys" data-i18n="sc-sys">[系統提示] 偵測到高濃度迷因與校園奇幻反應，創作即魔法。</p>
 
-        <div class="section-media">
-          <a href="https://www.kadokado.com.tw/book/1425" target="_blank" rel="noopener noreferrer" class="link-card">
-            <div class="img-wrap"><img src="img/Story_Command1.jpg" alt="字命覺醒 VOL.1" loading="lazy" /><div class="overlay" aria-hidden="true"><i class="fa-solid fa-book-open"></i><span>READ VOL.1</span></div></div>
-            <div class="book-label" data-i18n="sc-vol1">VOL.1 小心字穢</div>
-          </a>
-          <a href="https://www.kadokado.com.tw/book/42308" target="_blank" rel="noopener noreferrer" class="link-card">
-            <div class="img-wrap"><img src="img/Story_Command2.jpg" alt="字命覺醒 VOL.2" loading="lazy" /><div class="overlay" aria-hidden="true"><i class="fa-solid fa-book-open"></i><span>READ VOL.2</span></div></div>
-            <div class="book-label" data-i18n="sc-vol2">VOL.2 字者互毆</div>
-          </a>
-          <a href="https://www.kadokado.com.tw/book/65322" target="_blank" rel="noopener noreferrer" class="link-card">
-            <div class="img-wrap"><img src="img/Story_Command0_Station_Underground_City_Rules.jpg" alt="地下城守則" loading="lazy" /><div class="overlay" aria-hidden="true"><i class="fa-solid fa-scroll"></i><span>READ SIDE</span></div></div>
-            <div class="book-label" data-i18n="sc-side">序曲：北車地下城守則</div>
-          </a>
+        <div class="section-body section-body--books">
+          <div class="section-cover">
+            <a href="https://www.kadokado.com.tw/book/1425" target="_blank" rel="noopener noreferrer" class="link-card">
+              <div class="img-wrap" style="aspect-ratio:2/3;">
+                <img src="img/Story_Command1.jpg" alt="字命覺醒 VOL.1" loading="lazy" />
+                <div class="overlay" aria-hidden="true"><i class="fa-solid fa-book-open"></i><span>READ VOL.1</span></div>
+              </div>
+              <div class="book-label" data-i18n="sc-vol1">VOL.1 小心字穢</div>
+            </a>
+          </div>
+          <div class="section-cover">
+            <a href="https://www.kadokado.com.tw/book/42308" target="_blank" rel="noopener noreferrer" class="link-card">
+              <div class="img-wrap" style="aspect-ratio:2/3;">
+                <img src="img/Story_Command2.jpg" alt="字命覺醒 VOL.2" loading="lazy" />
+                <div class="overlay" aria-hidden="true"><i class="fa-solid fa-book-open"></i><span>READ VOL.2</span></div>
+              </div>
+              <div class="book-label" data-i18n="sc-vol2">VOL.2 字者互毆</div>
+            </a>
+          </div>
+          <div class="section-cover">
+            <a href="https://www.kadokado.com.tw/book/65322" target="_blank" rel="noopener noreferrer" class="link-card">
+              <div class="img-wrap" style="aspect-ratio:2/3;">
+                <img src="img/Story_Command0_Station_Underground_City_Rules.jpg" alt="地下城守則" loading="lazy" />
+                <div class="overlay" aria-hidden="true"><i class="fa-solid fa-scroll"></i><span>READ SIDE</span></div>
+              </div>
+              <div class="book-label" data-i18n="sc-side">序曲：北車地下城守則</div>
+            </a>
+          </div>
         </div>
 
         <div class="section-extra">
@@ -254,12 +288,38 @@
             <p class="section-desc" data-i18n="lag-desc">山上有座不能亂碰的莊園。<br>摘花要付出代價，說謊也有代價。<br>黎昂只是想把弟弟帶回家。<br>但他從來不是會乖乖服從規則的獅子。<br>於是，他咬了神一口。<br>或許還不只一口。</p>
             <div class="section-actions">
               <a href="https://early-marketplaces-521584.framer.app/" target="_blank" rel="noopener noreferrer" class="cta-btn cta-btn--secondary" data-i18n="lag-purchase">
-                <i class="fa-solid fa-globe"></i> 前往官網
+                <i class="fa-solid fa-scroll"></i> 前往官網
               </a>
-              <button class="cta-btn cta-btn--featured" id="lagAfterwordBtn" data-i18n="lag-afterword-btn">
-                <i class="fa-solid fa-scroll"></i> 閱讀後記
+              <button class="cta-btn cta-btn--featured" id="lagAfterwordBtn">
+                <i class="fa-solid fa-scroll"></i> 閱讀後記 &amp; 攻受投票
               </button>
             </div>
+          </div>
+        </div>
+
+        <!-- ── 攻受長條圖 ── -->
+        <div class="vote-bar-panel">
+          <div class="vote-bar-title">📊 讀者支持陣營</div>
+          <div class="vote-bar-row">
+            <span class="vote-bar-label">神攻 × 獅受</span>
+            <div class="vote-bar-track">
+              <div class="vote-bar-fill vote-bar--deer" id="bar-deer"></div>
+            </div>
+            <span class="vote-bar-pct" id="pct-deer">—</span>
+          </div>
+          <div class="vote-bar-row">
+            <span class="vote-bar-label">獅攻 × 神受</span>
+            <div class="vote-bar-track">
+              <div class="vote-bar-fill vote-bar--lion" id="bar-lion"></div>
+            </div>
+            <span class="vote-bar-pct" id="pct-lion">—</span>
+          </div>
+          <div class="vote-bar-row">
+            <span class="vote-bar-label">輪流互攻</span>
+            <div class="vote-bar-track">
+              <div class="vote-bar-fill vote-bar--switch" id="bar-switch"></div>
+            </div>
+            <span class="vote-bar-pct" id="pct-switch">—</span>
           </div>
         </div>
 
@@ -311,7 +371,7 @@
           <h3 class="section-title2">反轉的真實 Friend or Fraud</h3>
           <div class="section-actions">
             <a href="https://responselessaircra.wixsite.com/x-destroyer" target="_blank" rel="noopener noreferrer" class="cta-btn" data-i18n="game-web"><i class="fa-solid fa-globe"></i> 遊戲官網</a>
-            <a href="https://forum.gamer.com.tw/C.php?bsn=4918&snA=28697" target="_blank" rel="noopener noreferrer" class="cta-btn cta-btn--secondary" data-i18n="game-forum"><i class="fa-solid fa-comments"></i> 巴哈姆特</a>
+            <a href="https://forum.gamer.com.tw/C.php?bsn=4918&snA=28697" target="_blank" rel="noopener noreferrer" class="cta-btn cta-btn--secondary" data-i18n="game-forum"><i class="fa-solid fa-globe"></i> 巴哈姆特</a>
           </div>
         </div>
 
@@ -484,5 +544,7 @@
   <!-- ── JS ── -->
   <script src="js/i18n.js" defer></script>
   <script src="js/app.js" defer></script>
+  <script src="js/divination.js" defer></script>
+  <script src="js/tracking.js" defer></script>
 </body>
 </html>
