@@ -31,8 +31,8 @@
   .section-body   { flex-direction: column; gap: 24px; }
   .section-cover  { width: 100%; }
   /* 多封面書系：手機維持橫排三欄 */
-  .section-body--books { flex-direction: row; flex-wrap: wrap; gap: 12px; }
-  .section-body--books .section-cover { width: calc(33% - 8px); max-width: none; }
+  .section-body--books { flex-direction: column; gap: 16px; }
+  .sc-covers { gap: 10px; }
   .section-body--books .section-info  { width: 100%; }
   .section-media  { grid-template-columns: 1fr; gap: 16px; }
   .section-media--wide { grid-template-columns: 1fr; }

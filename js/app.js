@@ -15,15 +15,49 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 2. 定義所有核心函式
   function setLang(lang) {
-    html.lang = lang;
-    lsSet("tealize.lang", lang);
-    document.querySelectorAll("[data-i18n]").forEach(el => {
-      const key = el.dataset.i18n;
-      if (i18nData[lang] && i18nData[lang][key]) el.innerHTML = i18nData[lang][key];
+  html.lang = lang;
+  lsSet("tealize.lang", lang);
+
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const key = el.dataset.i18n;
+    if (i18nData[lang] && i18nData[lang][key] !== undefined) {
+      el.innerHTML = i18nData[lang][key];
+      if (el.dataset.text !== undefined) el.dataset.text = el.textContent;
+    }
+  });
+
+  document.querySelectorAll("[data-i18n-attr]").forEach(el => {
+    const rules = el.dataset.i18nAttr.split(";");
+    rules.forEach(rule => {
+      const [attr, key] = rule.split(":").map(s => s.trim());
+      if (!attr || !key) return;
+      if (i18nData[lang] && i18nData[lang][key]) {
+        el.setAttribute(attr, i18nData[lang][key]);
+      }
     });
-    const langBtnSpan = document.querySelector("#langBtn span") || document.getElementById("langBtnLabel");
-    if (langBtnSpan) langBtnSpan.textContent = html.lang === "zh" ? "EN" : "中文";
-  }
+  });
+
+  document.querySelectorAll("[data-i18n-title]").forEach(el => {
+    const key = el.dataset.i18nTitle;
+    if (i18nData[lang] && i18nData[lang][key]) {
+      document.title = i18nData[lang][key];
+    }
+  });
+
+  document.querySelectorAll("[data-i18n-content]").forEach(el => {
+    const key = el.dataset.i18nContent;
+    if (i18nData[lang] && i18nData[lang][key]) {
+      el.setAttribute("content", i18nData[lang][key]);
+    }
+  });
+
+  const langBtnSpan = document.querySelector("#langBtn span") || document.getElementById("langBtnLabel");
+  if (langBtnSpan) {
+  langBtnSpan.textContent = html.lang === "zh"
+    ? i18nData[lang]["lang-btn-en"]
+    : i18nData[lang]["lang-btn-zh"];
+}
+}
 
   function toggleMode() {
     // ✅ 修正：讀取與寫入 html 的 data-mode
