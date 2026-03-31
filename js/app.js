@@ -53,10 +53,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const langBtnSpan = document.querySelector("#langBtn span") || document.getElementById("langBtnLabel");
   if (langBtnSpan) {
-  langBtnSpan.textContent = html.lang === "zh"
-    ? i18nData[lang]["lang-btn-en"]
-    : i18nData[lang]["lang-btn-zh"];
-}
+    langBtnSpan.textContent = html.lang === "zh"
+      ? (i18nData[lang]["lang-btn-en"] || "EN")
+      : (i18nData[lang]["lang-btn-zh"] || "中文");
+  }
+
+  // 通知其他模組語言已切換
+  document.dispatchEvent(new CustomEvent("langChanged"));
 }
 
   function toggleMode() {
