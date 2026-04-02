@@ -87,6 +87,10 @@ window.i18nData = {
     "game-booktitle": "反轉的真實 Friend or Fraud",
     "game-part1": "PART 1: 井",
     "game-part2": "PART 2: 繩子",
+
+    "nav-music":   "試聽音樂",
+    "music-title": "MUSIC: 原創配樂",
+    "music-sys":   "[系統提示] 遊戲製作配樂，以 <a href=\"https://www.websynths.com/microtonal/\" target=\"_blank\" rel=\"noopener noreferrer\" style=\"color:var(--accent-color);text-decoration:underline;\">WebSynths Microtonal</a> 即興演奏後錄音。點擊封面試聽，再次點擊暫停。一次只播一首。",
     "game-overlay-play1": "PLAY PART 1",
     "game-overlay-play2": "PLAY PART 2",
 
@@ -286,6 +290,10 @@ window.i18nData = {
     "game-part2": "PART 2: The Rope",
     "game-overlay-play1": "PLAY PART 1",
     "game-overlay-play2": "PLAY PART 2",
+
+    "nav-music":   "Listen",
+    "music-title": "MUSIC: Original Soundtrack",
+    "music-sys":   "[System Prompt] Game OST composed by ear with <a href=\"https://www.websynths.com/microtonal/\" target=\"_blank\" rel=\"noopener noreferrer\" style=\"color:var(--accent-color);text-decoration:underline;\">WebSynths Microtonal</a> and recorded live. Click a cover to preview. Click again to pause. One track at a time.",
 
     "footer-rights": "© 2026 Tealize. All rights reserved.",
     "visitor-text": '<i class="fa-solid fa-eye"></i> You are visitor No. <span id="visitorNumber" style="font-weight:bold;font-size:1rem;color:var(--text-main);">...</span>',

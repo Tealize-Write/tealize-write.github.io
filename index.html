@@ -90,6 +90,7 @@
   <link rel="stylesheet" href="css/lag-section.css" />
   <link rel="stylesheet" href="css/code-mode.css" />
   <link rel="stylesheet" href="css/light-overrides.css" />
+  <link rel="stylesheet" href="css/music-section.css" />
   <link rel="stylesheet" href="css/responsive.css" />
 </head>
 
@@ -126,11 +127,13 @@
       </button>
       <div class="side-bubbles" id="sideBubbles">
         <span class="side-cat-label cat-novel" data-i18n="cat-novel-short">NOVELS</span>
-        <a href="#section-sc"   class="side-bubble bubble-novel" data-section="section-sc"><i class="fa-solid fa-book-sparkles"></i><span data-i18n="nav-sc">字命覺醒</span></a>
-        <a href="#section-lag"  class="side-bubble bubble-novel" data-section="section-lag"><i class="fa-solid fa-paw"></i><span data-i18n="nav-lag">咬了神一口</span></a>
-        <a href="#section-soil" class="side-bubble bubble-novel" data-section="section-soil"><i class="fa-solid fa-seedling"></i><span data-i18n="nav-soil">穿越者種土裡</span></a>
+        <a href="#section-sc"    class="side-bubble bubble-novel" data-section="section-sc"><i class="fa-solid fa-book-sparkles"></i><span data-i18n="nav-sc">字命覺醒</span></a>
+        <a href="#section-lag"   class="side-bubble bubble-novel" data-section="section-lag"><i class="fa-solid fa-paw"></i><span data-i18n="nav-lag">咬了神一口</span></a>
+        <a href="#section-soil"  class="side-bubble bubble-novel" data-section="section-soil"><i class="fa-solid fa-seedling"></i><span data-i18n="nav-soil">穿越者種土裡</span></a>
         <span class="side-cat-label cat-game" data-i18n="cat-game-short">GAMES</span>
-        <a href="#section-game" class="side-bubble bubble-game" data-section="section-game"><i class="fa-solid fa-ghost"></i><span data-i18n="nav-game">反轉的真實</span></a>
+        <a href="#section-game"  class="side-bubble bubble-game"  data-section="section-game"><i class="fa-solid fa-ghost"></i><span data-i18n="nav-game">反轉的真實</span></a>
+        <span class="side-cat-label cat-music">MUSIC</span>
+        <a href="#section-music" class="side-bubble bubble-music" data-section="section-music"><i class="fa-solid fa-music"></i><span data-i18n="nav-music">試聽音樂</span></a>
       </div>
     </nav>
 
@@ -229,15 +232,15 @@
 
         <div class="section-media">
           <a href="https://www.kadokado.com.tw/book/1425" target="_blank" rel="noopener noreferrer" class="link-card">
-            <div class="img-wrap"><img src="img/Story_Command1.jpg" alt="字命覺醒 VOL.1" loading="lazy" /><div class="overlay" aria-hidden="true"><i class="fa-solid fa-book-open"></i><span data-i18n="sc-vol1">VOL.1 小心字穢</span></div></div>
+            <div class="img-wrap" style="aspect-ratio:2/3;"><img src="img/Story_Command1.jpg" alt="字命覺醒 VOL.1" loading="lazy" /><div class="overlay" aria-hidden="true"><i class="fa-solid fa-book-open"></i><span data-i18n="sc-vol1">VOL.1 小心字穢</span></div></div>
             <div class="book-label" data-i18n="sc-vol1">VOL.1 小心字穢</div>
           </a>
           <a href="https://www.kadokado.com.tw/book/42308" target="_blank" rel="noopener noreferrer" class="link-card">
-            <div class="img-wrap"><img src="img/Story_Command2.jpg" alt="字命覺醒 VOL.2" loading="lazy" /><div class="overlay" aria-hidden="true"><i class="fa-solid fa-book-open"></i><span data-i18n="sc-vol2">VOL.2 字者互毆</span></div></div>
+            <div class="img-wrap" style="aspect-ratio:2/3;"><img src="img/Story_Command2.jpg" alt="字命覺醒 VOL.2" loading="lazy" /><div class="overlay" aria-hidden="true"><i class="fa-solid fa-book-open"></i><span data-i18n="sc-vol2">VOL.2 字者互毆</span></div></div>
             <div class="book-label" data-i18n="sc-vol2">VOL.2 字者互毆</div>
           </a>
           <a href="https://www.kadokado.com.tw/book/65322" target="_blank" rel="noopener noreferrer" class="link-card">
-            <div class="img-wrap"><img src="img/Story_Command0_Station_Underground_City_Rules.jpg" alt="地下城守則" loading="lazy" /><div class="overlay" aria-hidden="true"><i class="fa-solid fa-scroll"></i><span data-i18n="sc-side">序曲：北車地下城守則</span></div></div>
+            <div class="img-wrap" style="aspect-ratio:2/3;"><img src="img/Story_Command0_Station_Underground_City_Rules.jpg" alt="地下城守則" loading="lazy" /><div class="overlay" aria-hidden="true"><i class="fa-solid fa-scroll"></i><span data-i18n="sc-side">序曲：北車地下城守則</span></div></div>
             <div class="book-label" data-i18n="sc-side">序曲：北車地下城守則</div>
           </a>
         </div>
@@ -369,6 +372,22 @@
             <div class="img-wrap" style="aspect-ratio:16/9;"><img src="img/Friend_or_Fraud2.jpg" alt="反轉的真實 PART 2" loading="lazy" /><div class="overlay" aria-hidden="true"><i class="fa-solid fa-train"></i><span>PLAY PART 2</span></div></div>
             <div class="book-label" data-i18n="game-part2">PART 2: 繩子</div>
           </a>
+        </div>
+      </section>
+
+      <!-- ===== 音樂試聽 ===== -->
+      <section class="glass-panel" id="section-music">
+        <div class="section-header">
+          <h2 class="section-title">
+            <i class="fa-solid fa-music"></i>
+            <span data-i18n="music-title">MUSIC: 原創配樂</span>
+          </h2>
+          <span class="section-badge badge-music">MUSIC</span>
+        </div>
+        <p class="section-sys" data-i18n="music-sys">[系統提示] 點擊封面即可試聽，再次點擊暫停。一次只播一首。</p>
+
+        <div class="music-grid" id="musicGrid" aria-label="音樂列表">
+          <!-- 由 music.js 動態渲染 -->
         </div>
       </section>
 
@@ -531,5 +550,6 @@
   <script src="js/app.js" defer></script>
   <script src="js/divination.js" defer></script>
   <script src="js/tracking.js" defer></script>
+  <script src="js/music.js" defer></script>
 </body>
 </html>

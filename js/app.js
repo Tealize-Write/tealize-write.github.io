@@ -69,8 +69,13 @@ document.addEventListener("DOMContentLoaded", () => {
     html.setAttribute("data-mode", newMode);
     lsSet("tealize.mode", newMode);
     
-    if (newMode === "visual") initCanvas();
-    else stopCanvas();
+    if (newMode === "visual") {
+      initCanvas();
+      // 切回視覺模式時重跑 side nav（整合進來，避免重複綁定 modeBtn）
+      setTimeout(() => initSideNav(), 100);
+    } else {
+      stopCanvas();
+    }
     updateVisualMode(newMode === "visual");
   }
   
@@ -244,12 +249,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const openModal = () => {
       spoilerOverlay.classList.add("active");
       spoilerOverlay.setAttribute("aria-hidden", "false");
-      body.style.overflow = "hidden";
+      // 鎖住真正的滾動容器（而非 body，頁面由 .view-mode 負責滾動）
+      document.querySelector(".view-mode:not(.hidden)")?.style.setProperty("overflow", "hidden");
     };
     const closeModal = () => {
       spoilerOverlay.classList.remove("active");
       spoilerOverlay.setAttribute("aria-hidden", "true");
-      body.style.overflow = "";
+      document.querySelector(".view-mode:not(.hidden)")?.style.removeProperty("overflow");
     };
 
     spoilerBtn.addEventListener("click", openModal);
@@ -277,12 +283,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function createParticles() {
     particles = [];
-    const count = window.innerWidth > 768 ? 50 : 25;
+    const count = window.innerWidth > 768 ? 70 : 35;
     for (let i = 0; i < count; i++) {
       particles.push({
         x: Math.random() * canvas.width, y: Math.random() * canvas.height,
-        r: Math.random() * 2 + 1, vx: (Math.random() - 0.5) * 0.5, vy: (Math.random() - 0.5) * 0.5,
-        opacity: Math.random() * 0.4 + 0.2
+        r: Math.random() * 2.2 + 0.5,
+        vx: (Math.random() - 0.5) * 0.6, vy: (Math.random() - 0.5) * 0.6,
+        opacity: Math.random() * 0.5 + 0.15,
+        pulse: Math.random() * Math.PI * 2, // 隨機相位，製造粒子閃爍
       });
     }
   }
@@ -301,16 +309,48 @@ document.addEventListener("DOMContentLoaded", () => {
     return _cachedAccentRGB.replace("rgb(", "rgba(").replace(")", ", " + opacity + ")");
   }
 
+  const MAX_LINK_DIST = 120; // 粒子間連線距離上限
+
   function animateCanvas() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // ── 更新粒子位置 ──
     particles.forEach(p => {
       p.x += p.vx; p.y += p.vy;
-      if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+      p.pulse += 0.018;
+      if (p.x < 0 || p.x > canvas.width)  p.vx *= -1;
       if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = getAccentRGBA(p.opacity);
+    });
+
+    // ── 繪製連線 ──
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < MAX_LINK_DIST) {
+          const lineOpacity = (1 - dist / MAX_LINK_DIST) * 0.18;
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = getAccentRGBA(lineOpacity);
+          ctx.lineWidth = 0.8;
+          ctx.stroke();
+        }
+      }
+    }
+
+    // ── 繪製粒子（帶呼吸閃爍） ──
+    particles.forEach(p => {
+      const breath = 1 + 0.3 * Math.sin(p.pulse);
+      const r = p.r * breath;
+      const op = p.opacity * (0.85 + 0.15 * Math.sin(p.pulse + Math.PI));
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
+      ctx.fillStyle = getAccentRGBA(op);
       ctx.fill();
     });
+
     animationId = requestAnimationFrame(animateCanvas);
   }
 
@@ -519,7 +559,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // ── 滾動偵測：點亮當前區塊對應的氣泡 ──
-    const sections = ["section-sc","section-lag","section-soil","section-game"]
+    const sections = ["section-sc","section-lag","section-soil","section-game","section-music"]
       .map(id => document.getElementById(id)).filter(Boolean);
 
     function updateActive() {
@@ -549,13 +589,6 @@ document.addEventListener("DOMContentLoaded", () => {
   if (savedMode === "visual") initSideNav();
 
   // mode 切換時也重跑
-  const _origToggleMode = toggleMode;
-  // 在 toggleMode 後補掛 initSideNav
-  document.getElementById("modeBtn")?.addEventListener("click", () => {
-    setTimeout(() => {
-      if (html.getAttribute("data-mode") === "visual") initSideNav();
-    }, 100);
-  }, { once: false });
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
       navigator.serviceWorker.register("sw.js").then(() => console.log("SW registered")).catch(() => {});
@@ -627,10 +660,15 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     } catch {}
 
-    // 背景拉最新
+    // 背景拉最新，同時更新快取
     fetch(API_URL + "?action=get")
       .then(r => r.json())
-      .then(d => { if (d) renderBars(d.deer || 0, d.lion || 0, d.switch || 0); })
+      .then(d => {
+        if (!d) return;
+        renderBars(d.deer || 0, d.lion || 0, d.switch || 0);
+        // 寫回快取，下次進站可立即顯示最新數字
+        try { localStorage.setItem("tealize.poll.cache", JSON.stringify({ votes: d, ts: Date.now() })); } catch {}
+      })
       .catch(() => {});
   })();
 
