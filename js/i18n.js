@@ -36,7 +36,7 @@ window.i18nData = {
     "lag-title":        "NOVEL: 《咬了神一口》",
     "lag-quote":        "「改編自美女與野獸。如果美人成為嚴守文明價值的屋主，野獸反而是誤闖莊園破壞文明的獅子，會變成怎樣的交鋒？」",
     "lag-subtitle":     "A Bite of God &nbsp;·&nbsp; Beauty &amp; the Beast retelling",
-    "lag-desc":         "山上有座奇怪的莊園。<br>摘花要付出代價，說謊會被壓在地上。<br>黎昂只拒絕服從規則，他只想帶弟弟回家。<br>於是，他狠狠地咬了神一口。<br>或許還不只一口。",
+    "lag-desc":         "山上有座奇怪的莊園。<br>摘花要付出代價，說謊會被壓在地上。<br>黎昂拒絕服從規則，他只想帶弟弟回家。<br>於是，他狠狠地咬了神一口。<br>或許還不只一口。",
     "lag-purchase":     '<i class="fa-solid fa-globe"></i> 前往官網',
     "lag-afterword-btn":'<i class="fa-solid fa-scroll"></i> 閱讀後記',
     "lag-line-buy":     '<i class="fa-brands fa-line"></i> 黑森林LINE貼圖',
