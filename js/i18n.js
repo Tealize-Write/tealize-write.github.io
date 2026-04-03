@@ -34,19 +34,20 @@ window.i18nData = {
     "sc-quiz-btn":   '開始測驗 <i class="fa-solid fa-wand-magic-sparkles"></i>',
 
     "lag-title":        "NOVEL: 《咬了神一口》",
-    "lag-quote":        "「改編自美女與野獸。山上有座不能亂碰的莊園，摘花要付出代價，說謊也有代價。」",
+    "lag-quote":        "「改編自美女與野獸。如果美人成為嚴守文明價值的屋主，野獸反而是誤闖莊園破壞文明的獅子，會變成怎樣的交鋒？」",
     "lag-subtitle":     "A Bite of God &nbsp;·&nbsp; Beauty &amp; the Beast retelling",
-    "lag-desc":         "山上有座不能亂碰的莊園。<br>摘花要付出代價，說謊也有代價。<br>黎昂只是想把弟弟帶回家。<br>但他從來不是會乖乖服從規則的獅子。<br>於是，他咬了神一口。<br>或許還不只一口。",
+    "lag-desc":         "山上有座奇怪的莊園。<br>摘花要付出代價，說謊會被壓在地上。<br>黎昂只拒絕服從規則，他只想帶弟弟回家。<br>於是，他狠狠地咬了神一口。<br>或許還不只一口。",
     "lag-purchase":     '<i class="fa-solid fa-globe"></i> 前往官網',
     "lag-afterword-btn":'<i class="fa-solid fa-scroll"></i> 閱讀後記',
+    "lag-line-buy":     '<i class="fa-brands fa-line"></i> 黑森林LINE貼圖',
     "lag-quiz-btn":     '測測你的黑暗特質 <i class="fa-solid fa-arrow-right"></i>',
 
     "soil-title":     "NOVEL：REVISING (修文施工中)",
     "soil-read":      "點擊閱讀",
     "soil-booktitle": "是誰把穿越者種在土裡",
-    "soil-sys":       "[系統提示] 恐龍注意！",
-    "soil-quote":     "「17歲的蘇海躍選擇結束生命，卻在陌生山林的泥土裡被挖了出來。」",
-    "soil-desc":      "一個人類分為 ABO、幽靈依附費洛蒙、恐龍遊蕩於街頭的瘋狂世界。蘇海躍在這個怪異卻溫暖的日常中，遇見了蒼白如鬼的 Alpha 陸翎邑。新聞上另一個「完美的蘇海躍」失蹤案，揭開了橫跨兩個世界的巨大陰謀。",
+    "soil-sys":       "[系統提示] ABO 及 恐龍 注意！",
+    "soil-quote":     "「17歲的蘇海躍跳樓自殺，卻在陌生山林的泥土裡被怪人挖了出來，劈頭被告知自己是他殺的，怪人還錄影到了兇手？」",
+    "soil-desc":      "一個人類分為 ABO、有幽靈又有恐龍的瘋狂世界。蘇海躍在這個怪異卻溫暖的新世界，遇見了蒼白如鬼的 Alpha 陸翎邑，同時新聞上報導著蘇海躍失蹤案，這究竟是怎麼回事？",
     "soil-link":      '<i class="fa-solid fa-arrow-right"></i> 前往 KadoKado',
 
     "game-title":  "GAME: 恐怖民俗RPG遊戲",
@@ -88,8 +89,8 @@ window.i18nData = {
     "game-part1": "PART 1: 井",
     "game-part2": "PART 2: 繩子",
 
-    "nav-music":   "試聽音樂",
-    "music-title": "MUSIC: 原創配樂",
+    "nav-music":   "音樂創作",
+    "music-title": "MUSIC: 配樂創作",
     "music-sys":   "[系統提示] 遊戲製作配樂，以 <a href=\"https://www.websynths.com/microtonal/\" target=\"_blank\" rel=\"noopener noreferrer\" style=\"color:var(--accent-color);text-decoration:underline;\">WebSynths Microtonal</a> 即興演奏後錄音。點擊封面試聽，再次點擊暫停。一次只播一首。",
     "game-overlay-play1": "PLAY PART 1",
     "game-overlay-play2": "PLAY PART 2",
@@ -109,11 +110,11 @@ window.i18nData = {
     "code-sc-submodule-comment": "# 鑑定你的創作屬性...",
 
     "code-lag-title": ">>> Projects / [NOVEL] 《咬了神一口》",
-    "code-lag-desc": "改編自美女與野獸。獅子黎昂想把弟弟帶回來，神的莊園卻不好惹。",
+    "code-lag-desc": "改編自美女與野獸。如果美人成為嚴守文明價值的屋主，野獸反而是誤闖莊園破壞文明的獅子，會變成怎樣的交鋒？",
     "code-lag-meta": "Beauty & the Beast retelling · 官網已開放",
 
     "code-soil-title": ">>> Projects / [NOVEL] 《是誰把穿越者種在土裡》",
-    "code-soil-desc": "17歲的蘇海躍選擇結束生命，卻在陌生山林的泥土裡被挖了出來。",
+    "code-soil-desc": "17歲的蘇海躍跳樓自殺，卻在陌生山林的泥土裡被怪人挖了出來，劈頭被告知自己是他殺的，怪人還錄影到了兇手？",
     "code-soil-meta": "REVISING — 修文施工中",
 
     "code-game-title": ">>> Projects / [GAME] 《反轉的真實》",
@@ -235,19 +236,20 @@ window.i18nData = {
     "sc-quiz-btn":   'Start Test <i class="fa-solid fa-wand-magic-sparkles"></i>',
 
     "lag-title":        "NOVEL: To Bite a God",
-    "lag-quote":        '"A Beauty and the Beast retelling. There\'s an untouchable manor on the mountain..."',
+    "lag-quote":        '"A Beauty and the Beast retelling. What if the Beauty is a manor owner who strictly upholds civilization, while the Beast is a lion who breaks in and disrupts it all?"',
     "lag-subtitle":     "A Bite of God &nbsp;·&nbsp; Beauty &amp; the Beast retelling",
-    "lag-desc":         "There is a manor on the mountain that shouldn't be touched.<br>Picking flowers has a price, and lying does too.<br>Leon just wanted to bring his brother home.<br>But he's never been an obedient lion.<br>So, he took a bite out of God.<br>Maybe more than one bite.",
+    "lag-desc":         "There is a strange manor on the mountain.<br>Picking flowers has a price, and lying gets you pinned to the ground.<br>Leon refused to follow the rules — he just wanted to bring his brother home.<br>So, he bit God. Hard.<br>Maybe more than once.",
     "lag-purchase":     '<i class="fa-solid fa-globe"></i> Official Website',
     "lag-afterword-btn":'<i class="fa-solid fa-scroll"></i> Read Afterword',
+    "lag-line-buy":     '<i class="fa-brands fa-line"></i> Black Forest LINE Stickers',
     "lag-quiz-btn":     'Test Your Dark Traits <i class="fa-solid fa-arrow-right"></i>',
 
     "soil-title":     "NOVEL: REVISING",
     "soil-read":      "Click to Read",
     "soil-booktitle": "Who Buried the Otherworlder?",
-    "soil-sys":       "[System Prompt] Dinosaur Warning!",
-    "soil-quote":     '"17-year-old Su Hai-Yue chose to end his life, only to be dug out of the soil..."',
-    "soil-desc":      "A world where humans are ABO, ghosts cling to pheromones, and dinosaurs roam the streets. Su Hai-Yue meets the ghost-pale Alpha Lu Ling-Yi, uncovering a conspiracy spanning two worlds.",
+    "soil-sys":       "[System Prompt] ABO & Dinosaur Warning!",
+    "soil-quote":     '"17-year-old Su Hai-Yue jumped off a building, only to be dug out of the forest soil by a stranger who claimed he was murdered — and had footage of the killer."',
+    "soil-desc":      "A world where humans are divided into ABO types, ghosts exist alongside dinosaurs roaming the streets. Su Hai-Yue wakes in this bizarre yet warm new world, meets the ghost-pale Alpha Lu Ling-Yi — and sees his own disappearance reported in the news.",
     "soil-link":      '<i class="fa-solid fa-arrow-right"></i> Go to KadoKado',
 
     "game-title":  "GAME: Folklore Horror RPG",
@@ -291,7 +293,7 @@ window.i18nData = {
     "game-overlay-play1": "PLAY PART 1",
     "game-overlay-play2": "PLAY PART 2",
 
-    "nav-music":   "Listen",
+    "nav-music":   "BGM Music",
     "music-title": "MUSIC: Original Soundtrack",
     "music-sys":   "[System Prompt] Game OST composed by ear with <a href=\"https://www.websynths.com/microtonal/\" target=\"_blank\" rel=\"noopener noreferrer\" style=\"color:var(--accent-color);text-decoration:underline;\">WebSynths Microtonal</a> and recorded live. Click a cover to preview. Click again to pause. One track at a time.",
 

@@ -133,7 +133,7 @@
         <span class="side-cat-label cat-game" data-i18n="cat-game-short">GAMES</span>
         <a href="#section-game"  class="side-bubble bubble-game"  data-section="section-game"><i class="fa-solid fa-ghost"></i><span data-i18n="nav-game">反轉的真實</span></a>
         <span class="side-cat-label cat-music">MUSIC</span>
-        <a href="#section-music" class="side-bubble bubble-music" data-section="section-music"><i class="fa-solid fa-music"></i><span data-i18n="nav-music">試聽音樂</span></a>
+        <a href="#section-music" class="side-bubble bubble-music" data-section="section-music"><i class="fa-solid fa-music"></i><span data-i18n="nav-music">音樂創作</span></a>
       </div>
     </nav>
 
@@ -223,10 +223,13 @@
 
       <!-- ===== 字命覺醒 ===== -->
       <section class="glass-panel" id="section-sc">
-        <h2 class="section-title">
-          <i class="fa-solid fa-book-sparkles"></i>
-          <span data-i18n="sc-title">NOVEL: 字命覺醒</span>
-        </h2>
+        <div class="section-header">
+          <h2 class="section-title">
+            <i class="fa-solid fa-book-sparkles"></i>
+            <span data-i18n="sc-title">NOVEL: 字命覺醒</span>
+          </h2>
+          <span class="section-badge badge-novel">NOVEL</span>
+        </div>
         <div class="section-quote" data-i18n="sc-quote">「因為是文閉所以會贏。」「冠軍是我們的，你們加油吧。」</div>
         <p class="section-sys" data-i18n="sc-sys">[系統提示] 偵測到高濃度迷因與校園奇幻反應，創作即魔法。</p>
 
@@ -255,13 +258,16 @@
 
       <!-- ===== 咬了神一口 ===== -->
       <section class="glass-panel" id="section-lag">
-        <h2 class="section-title">
-          <i class="fa-solid fa-paw"></i>
-          <span data-i18n="lag-title">NOVEL: 《咬了神一口》</span>
-        </h2>
+        <div class="section-header">
+          <h2 class="section-title">
+            <i class="fa-solid fa-paw"></i>
+            <span data-i18n="lag-title">NOVEL: 《咬了神一口》</span>
+          </h2>
+          <span class="section-badge badge-novel">NOVEL</span>
+        </div>
         <div class="section-quote" data-i18n="lag-quote">「改編自美女與野獸。如果美人成為嚴守文明價值的屋主，野獸反而是誤闖莊園破壞文明的獅子，會變成怎樣的交鋒？」</div>
 
-        <div class="section-body">
+        <div class="section-body section-body--cover">
           <div class="section-cover">
             <a href="https://early-marketplaces-521584.framer.app/" target="_blank" rel="noopener noreferrer" class="link-card">
               <div class="img-wrap" style="aspect-ratio:1000/1343;">
@@ -271,42 +277,39 @@
             </a>
           </div>
           <div class="section-info">
-            <h3 class="section-title2" data-i18n="lag-booktitle">咬了神一口</h3>
-            <p class="section-sub" data-i18n="lag-subtitle">A Bite of God &nbsp;·&nbsp; Beauty &amp; the Beast retelling</p>
+            <h3 class="section-booktitle" data-i18n="lag-booktitle">咬了神一口</h3>
+            <p class="section-subtitle" data-i18n="lag-subtitle">A Bite of God &nbsp;·&nbsp; Beauty &amp; the Beast retelling</p>
             <p class="section-desc" data-i18n="lag-desc">山上有座奇怪的莊園。<br>摘花要付出代價，說謊會被壓在地上。<br>黎昂只拒絕服從規則，他只想帶弟弟回家。<br>於是，他狠狠地咬了神一口。<br>或許還不只一口。</p>
             <div class="section-actions">
+			            <a href="https://store.line.me/stickershop/product/33376988" target="_blank" rel="noopener noreferrer" class="cta-btn cta-btn--line" data-i18n="lag-line-buy">
+              <i class="fa-brands fa-line"></i> 黑森林LINE貼圖
+            </a>
               <a href="https://early-marketplaces-521584.framer.app/" target="_blank" rel="noopener noreferrer" class="cta-btn cta-btn--featured" data-i18n="lag-purchase">
                 <i class="fa-solid fa-globe"></i> 前往官網
               </a>
               <button class="cta-btn cta-btn--featured" id="lagAfterwordBtn" data-i18n="lag-afterword-vote">
                 <i class="fa-solid fa-scroll"></i> 閱讀後記 &amp; 攻受投票
               </button>
-            </div><br/>
+            </div>
           </div>
         </div>
 
         <!-- ── 攻受長條圖 ── -->
-        <div class="vote-bar-panel">
+        <div class="vote-bar-panel" style="margin-top:1.8rem;">
           <div class="vote-bar-title" data-i18n="vote-title">📊 讀者支持陣營</div>
           <div class="vote-bar-row">
             <span class="vote-bar-label" data-i18n="vote-deer">神攻 × 獅受</span>
-            <div class="vote-bar-track">
-              <div class="vote-bar-fill vote-bar--deer" id="bar-deer"></div>
-            </div>
+            <div class="vote-bar-track"><div class="vote-bar-fill vote-bar--deer" id="bar-deer"></div></div>
             <span class="vote-bar-pct" id="pct-deer">—</span>
           </div>
           <div class="vote-bar-row">
             <span class="vote-bar-label" data-i18n="vote-lion">獅攻 × 神受</span>
-            <div class="vote-bar-track">
-              <div class="vote-bar-fill vote-bar--lion" id="bar-lion"></div>
-            </div>
+            <div class="vote-bar-track"><div class="vote-bar-fill vote-bar--lion" id="bar-lion"></div></div>
             <span class="vote-bar-pct" id="pct-lion">—</span>
           </div>
           <div class="vote-bar-row">
             <span class="vote-bar-label" data-i18n="vote-switch">輪流互攻</span>
-            <div class="vote-bar-track">
-              <div class="vote-bar-fill vote-bar--switch" id="bar-switch"></div>
-            </div>
+            <div class="vote-bar-track"><div class="vote-bar-fill vote-bar--switch" id="bar-switch"></div></div>
             <span class="vote-bar-pct" id="pct-switch">—</span>
           </div>
         </div>
@@ -321,12 +324,15 @@
 
       <!-- ===== 穿越者種在土裡 ===== -->
       <section class="glass-panel" id="section-soil">
-        <h2 class="section-title">
-          <i class="fa-solid fa-seedling"></i>
-          <span data-i18n="soil-title">NOVEL：REVISING (修文施工中)</span>
-        </h2>
+        <div class="section-header">
+          <h2 class="section-title">
+            <i class="fa-solid fa-seedling"></i>
+            <span data-i18n="soil-title">NOVEL：REVISING (修文施工中)</span>
+          </h2>
+          <span class="section-badge badge-novel">NOVEL</span>
+        </div>
 
-        <div class="section-body">
+        <div class="section-body section-body--cover">
           <div class="section-cover">
             <a href="https://www.kadokado.com.tw/book/60627" target="_blank" rel="noopener noreferrer" class="link-card">
               <div class="img-wrap" style="aspect-ratio:2/3;">
@@ -336,7 +342,7 @@
             </a>
           </div>
           <div class="section-info">
-            <h3 class="section-title2" data-i18n="soil-booktitle">是誰把穿越者種在土裡</h3>
+            <h3 class="section-booktitle" data-i18n="soil-booktitle">是誰把穿越者種在土裡</h3>
             <p class="section-sys" data-i18n="soil-sys">[系統提示] ABO 及 恐龍 注意！</p>
             <div class="section-quote" data-i18n="soil-quote">「17歲的蘇海躍跳樓自殺，卻在陌生山林的泥土裡被怪人挖了出來，劈頭被告知自己是他殺的，怪人還錄影到了兇手？」</div>
             <p class="section-desc" data-i18n="soil-desc">一個人類分為 ABO、有幽靈又有恐龍的瘋狂世界。蘇海躍在這個怪異卻溫暖的新世界，遇見了蒼白如鬼的 Alpha 陸翎邑，同時新聞上報導著蘇海躍失蹤案，這究竟是怎麼回事？</p>
@@ -349,15 +355,18 @@
 
       <!-- ===== 反轉的真實 ===== -->
       <section class="glass-panel" id="section-game">
-        <h2 class="section-title">
-          <i class="fa-solid fa-gamepad"></i>
-          <span data-i18n="game-title">GAME: 恐怖民俗RPG遊戲</span>
-        </h2>
+        <div class="section-header">
+          <h2 class="section-title">
+            <i class="fa-solid fa-gamepad"></i>
+            <span data-i18n="game-title">GAME: 恐怖民俗RPG遊戲</span>
+          </h2>
+          <span class="section-badge badge-game">GAME</span>
+        </div>
         <div class="section-quote" data-i18n="game-warn"><i class="fa-solid fa-triangle-exclamation"></i> 【系統警告】包含大量紅色顏料與精神污染（開玩笑的，但也許不是）。</div>
 
         <div class="section-info" style="margin-bottom:1.5rem;">
-          <h3 class="section-title2" data-i18n="game-booktitle">反轉的真實 Friend or Fraud</h3>
-          <div class="section-actions">
+          <h3 class="section-booktitle" data-i18n="game-booktitle">反轉的真實 Friend or Fraud</h3>
+          <div class="section-actions" style="margin-top:1rem;">
             <a href="https://responselessaircra.wixsite.com/x-destroyer" target="_blank" rel="noopener noreferrer" class="cta-btn cta-btn--featured" data-i18n="game-web"><i class="fa-solid fa-globe"></i> 遊戲官網</a>
             <a href="https://forum.gamer.com.tw/C.php?bsn=4918&snA=28697" target="_blank" rel="noopener noreferrer" class="cta-btn cta-btn--featured" data-i18n="game-forum"><i class="fa-solid fa-comments"></i> 巴哈姆特</a>
           </div>
@@ -375,12 +384,12 @@
         </div>
       </section>
 
-      <!-- ===== 音樂試聽 ===== -->
+      <!-- ===== 音樂 ===== -->
       <section class="glass-panel" id="section-music">
         <div class="section-header">
           <h2 class="section-title">
             <i class="fa-solid fa-music"></i>
-            <span data-i18n="music-title">MUSIC: 原創配樂</span>
+            <span data-i18n="music-title">MUSIC: 配樂創作</span>
           </h2>
           <span class="section-badge badge-music">MUSIC</span>
         </div>
