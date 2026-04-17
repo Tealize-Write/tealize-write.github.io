@@ -9,23 +9,29 @@ document.addEventListener("DOMContentLoaded", () => {
     const API_URL = window.TEALIZE_API_URL;
     if (!API_URL) return;
 
-    // ── clientId：掃描所有 localStorage value，找 uid_/ag_ 前綴 ──
-    function getClientId() {
+    // ── clientIdentity：依固定 key 順序查找，回傳完整識別資訊 ──
+    function getClientIdentity() {
       try {
-        for (const prefix of ["uid_", "ag_"]) {
-          for (let i = 0; i < localStorage.length; i++) {
-            const v = localStorage.getItem(localStorage.key(i)) || "";
-            if (v.startsWith(prefix)) return v;
-          }
+        // 1. stats.js 專案的 ID（優先）
+        const statsId = localStorage.getItem("abyss_client_id");
+        if (statsId && statsId.startsWith("uid_")) {
+          return { clientId: statsId, source: "stats", playedStats: true };
         }
+        // 2. 本站既有 ID
         const existing = localStorage.getItem("tw_tealize_id");
-        if (existing) return existing;
+        if (existing) {
+          return { clientId: existing, source: "tealize", playedStats: false };
+        }
+        // 3. 新建本站 ID
         const newId = "tw_" + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
         localStorage.setItem("tw_tealize_id", newId);
-        return newId;
-      } catch { return "unknown"; }
+        return { clientId: newId, source: "tealize", playedStats: false };
+      } catch {
+        return { clientId: "unknown", source: "unknown", playedStats: false };
+      }
     }
 
+    // prefixLabel 保留做顯示分類，不再作為來源判定依據
     function prefixLabel(id) {
       if (id.startsWith("uid_")) return "心測";
       if (id.startsWith("ag_"))  return "賣貨便";
@@ -55,9 +61,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const tzName    = Intl.DateTimeFormat().resolvedOptions().timeZone || "unknown";
     const tzOffset  = new Date().getTimezoneOffset();
-    const clientId  = getClientId();
-    const enterTime = Date.now();
-    const enterStr  = toTW8(enterTime);
+    const { clientId, source: clientIdSource, playedStats } = getClientIdentity();
+    let enterTime = Date.now();
+    let enterStr  = toTW8(enterTime);
 
     // ── IP 地理位置（ipapi.co，2 秒超時）──
     let countryResolved = TZ_TO_COUNTRY[tzName] || tzName;
@@ -110,21 +116,30 @@ document.addEventListener("DOMContentLoaded", () => {
       clickLog.push(`X:${reason}`);
       const urlParams = new URLSearchParams(window.location.search);
       const payload = JSON.stringify({
-        action:      "visit",
-        clientId:    clientId,
-        prefixLabel: prefixLabel(clientId),
-        tz:          String(tzOffset),
-        country:     countryResolved,
-        enterTime:   enterStr,
-        exitTime:    toTW8(exitTime),
-        stay:        staySeconds,
-        clicks:      clickLog.join(","),
-        source:      urlParams.get("utm_source") || "direct",
-        referrer:    document.referrer || "none",
-        device:      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i
-                       .test(navigator.userAgent) ? "Mobile" : "Desktop"
+        action:         "visit",
+        clientId:       clientId,
+        prefixLabel:    prefixLabel(clientId),
+        clientIdSource: clientIdSource,
+        playedStats:    playedStats,
+        tz:             String(tzOffset),
+        country:        countryResolved,
+        enterTime:      enterStr,
+        exitTime:       toTW8(exitTime),
+        stay:           staySeconds,
+        clicks:         clickLog.join(","),
+        source:         urlParams.get("utm_source") || "direct",
+        referrer:       document.referrer || "none",
+        device:         /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i
+                          .test(navigator.userAgent) ? "Mobile" : "Desktop"
       });
-      try { fetch(API_URL, { method: "POST", body: payload, keepalive: true }); } catch (_) {}
+      try {
+        fetch(API_URL, {
+          method:    "POST",
+          headers:   { "Content-Type": "text/plain" },
+          body:      payload,
+          keepalive: true,
+        });
+      } catch (_) {}
     }
 
     let sent = false;
@@ -133,7 +148,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     window.addEventListener("beforeunload", () => onLeave("close"));
     document.addEventListener("visibilitychange", () => {
-      if (document.visibilityState === "hidden") onLeave("hidden");
+      if (document.visibilityState === "hidden") {
+        onLeave("hidden");
+      } else if (document.visibilityState === "visible") {
+        sent = false;
+        clickLog.length = 0;
+        enterTime = Date.now();
+        enterStr  = toTW8(enterTime);
+      }
     });
 
   })();

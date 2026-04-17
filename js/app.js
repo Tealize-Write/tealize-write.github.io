@@ -597,16 +597,32 @@ document.addEventListener("DOMContentLoaded", () => {
   
   // ── 記錄進站人數 (PageView) ──
   const API_URL = "https://script.google.com/macros/s/AKfycbxx9-JwDwcQ-XPm4I782i9z0JfYpvw0em4ugiCPI28NR9pKyniRyebA1pTHWSJ6fGJ0/exec";
+  window.TEALIZE_API_URL = API_URL; // 提前暴露給 tracking.js，消除 script 順序依賴
+
+  // 與 tracking.js 相同優先順序：心測 ID → 本站 ID → 新建 ID
+  function getOrCreateClientId() {
+    try {
+      const statsId = localStorage.getItem("abyss_client_id");
+      if (statsId && statsId.startsWith("uid_")) return statsId;
+      const existing = localStorage.getItem("tw_tealize_id");
+      if (existing) return existing;
+      const newId = "tw_" + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
+      localStorage.setItem("tw_tealize_id", newId);
+      return newId;
+    } catch { return ""; }
+  }
+
   const visitorNumberEl = document.getElementById("visitorNumber");
 
   if (visitorNumberEl) {
     const isNewView = !sessionStorage.getItem("tealize.viewed");
     const action = isNewView ? "view" : "get";
+    const viewClientId = getOrCreateClientId();
 
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 8000);
 
-    fetch(`${API_URL}?action=${encodeURIComponent(action)}`, { signal: controller.signal })
+    fetch(`${API_URL}?action=${encodeURIComponent(action)}&clientId=${encodeURIComponent(viewClientId)}`, { signal: controller.signal })
       .then(res => { clearTimeout(timeoutId); return res.json(); })
       .then(data => {
         if (data && typeof data.views === "number") {
@@ -621,9 +637,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   }
 
-
-  // ── API URL 暴露給 tracking.js ──
-  window.TEALIZE_API_URL = API_URL;
 
   // ── 攻受投票長條圖 ──
   (function initVoteBar() {
