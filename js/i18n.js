@@ -10,6 +10,7 @@ window.i18nData = {
     "cat-novel-short": "NOVELS",
     "cat-game": '<i class="fa-solid fa-gamepad"></i> GAMES | 遊戲區',
     "cat-game-short": "GAMES",
+    "cat-music-short": "MUSIC",
     "tag-capricorn": "魔羯座", "tag-school": "綠躍", "tag-gamemaker": "遊戲 Maker", "tag-art": "繪圖", "tag-creator": "奇幻創作者",
 
     "hero-name": "兌現藍",
@@ -21,7 +22,7 @@ window.i18nData = {
     "career-writing-label": "筆齡",
     "career-yr":            "年",
     "career-yr-plus":       "年+",
-    "career-3d":            "3D遊戲場景美術 4 年+",
+    "career-3d-label":      "3D遊戲場景美術",
     "career-fe":            "前端工程師",
 
     "sc-title": "NOVEL: 字命覺醒",
@@ -37,8 +38,8 @@ window.i18nData = {
     "lag-quote":        "「改編自美女與野獸。如果美人成為嚴守文明價值的屋主，野獸反而是誤闖莊園破壞文明的獅子，會變成怎樣的交鋒？」",
     "lag-subtitle":     "A Bite of God &nbsp;·&nbsp; Beauty &amp; the Beast retelling",
     "lag-desc":         "山上有座奇怪的莊園。<br>摘花要付出代價，說謊會被壓在地上。<br>黎昂拒絕服從規則，他只想帶弟弟回家。<br>於是，他狠狠地咬了神一口。<br>或許還不只一口。",
+    "lag-booktitle":    "咬了神一口",
     "lag-purchase":     '<i class="fa-solid fa-globe"></i> 前往官網',
-    "lag-afterword-btn":'<i class="fa-solid fa-scroll"></i> 閱讀後記',
     "lag-line-buy":     '<i class="fa-brands fa-line"></i> 黑森林LINE貼圖',
     "lag-quiz-btn":     '測測你的黑暗特質 <i class="fa-solid fa-arrow-right"></i>',
 
@@ -72,9 +73,6 @@ window.i18nData = {
 
     "hero-sub": "STORY-COMMAND SHAPES REALITY.",
 
-    "divination-eyebrow": "✦ 創作卦象 ✦",
-    "divination-loading": "載入中…",
-
     "lag-overlay-site": "前往官網",
     "lag-afterword-vote": '<i class="fa-solid fa-scroll"></i> 閱讀後記 &amp; 攻受投票',
 
@@ -96,7 +94,8 @@ window.i18nData = {
     "game-overlay-play2": "PLAY PART 2",
 
     "footer-rights": "© 2026 Tealize. All rights reserved.",
-    "visitor-text": '<i class="fa-solid fa-eye"></i> 你是第 <span id="visitorNumber" style="font-weight:bold;font-size:1rem;color:var(--text-main);">...</span> 位拜訪者',
+    "visitor-before": "你是第 ",
+    "visitor-after":  " 位拜訪者",
 
     "code-bio": "[奇幻創作者] [遊戲Maker] [INTP] [魔羯座] [綠躍]",
     "code-intro-status": "被創作拖著走",
@@ -129,6 +128,9 @@ window.i18nData = {
 "divination-panel-label": "本次創作占卜",
 "divination-eyebrow": "✦ 創作卦象 ✦",
 "divination-loading": "載入中…",
+"divination-intro": "沉澱心靈，仔細想著你想詢問的作品，再按下按鈕。",
+"divination-btn": "✦ 抽取卦象 ✦",
+"divination-retry": "↺ 再次詢問",
 
 "sc-read-vol1": "READ VOL.1",
 "sc-read-vol2": "READ VOL.2",
@@ -203,6 +205,7 @@ window.i18nData = {
     "cat-novel-short": "NOVELS",
     "cat-game": '<i class="fa-solid fa-gamepad"></i> GAMES',
     "cat-game-short": "GAMES",
+    "cat-music-short": "MUSIC",
     "tag-capricorn": "Capricorn", "tag-school": "Verdance", "tag-gamemaker": "Game Maker", "tag-art": "Illustration", "tag-creator": "Fantasy Creator",
 
     "hero-name": "Tealize",
@@ -211,10 +214,6 @@ window.i18nData = {
     "lag-booktitle":   "To Bite a God",
     "visitor-before":  "You are visitor #",
     "visitor-after":   "",
-    "sc-sub":          "School Fantasy · Creation Magic",
-    "divination-eyebrow": "✦ Creative Divination ✦",
-    "lang-btn-en":     "EN",
-    "lang-btn-zh":     "中文",
     "qnav-sc":   '<i class="fa-solid fa-book-sparkles"></i> Story-Command',
     "qnav-lag":  '<i class="fa-solid fa-paw"></i> To Bite a God',
     "qnav-soil": '<i class="fa-solid fa-seedling"></i> Who Buried the Otherworlder?',
@@ -223,7 +222,6 @@ window.i18nData = {
     "career-writing-label": "Writing",
     "career-yr":            "yr",
     "career-yr-plus":       "yr+",
-    "career-3d":            "3D Game Art  4 yr+",
     "career-fe":            "Frontend Dev",
 
     "sc-title": "NOVEL: Story-Command Awakens",
@@ -240,7 +238,6 @@ window.i18nData = {
     "lag-subtitle":     "A Bite of God &nbsp;·&nbsp; Beauty &amp; the Beast retelling",
     "lag-desc":         "There is a strange manor on the mountain.<br>Picking flowers has a price, and lying gets you pinned to the ground.<br>Leon refused to follow the rules — he just wanted to bring his brother home.<br>So, he bit God. Hard.<br>Maybe more than once.",
     "lag-purchase":     '<i class="fa-solid fa-globe"></i> Official Website',
-    "lag-afterword-btn":'<i class="fa-solid fa-scroll"></i> Read Afterword',
     "lag-line-buy":     '<i class="fa-brands fa-line"></i> Black Forest LINE Stickers',
     "lag-quiz-btn":     'Test Your Dark Traits <i class="fa-solid fa-arrow-right"></i>',
 
@@ -276,6 +273,9 @@ window.i18nData = {
 
     "divination-eyebrow": "✦ Creative Divination ✦",
     "divination-loading": "Loading...",
+    "divination-intro": "Clear your mind, think of the work you wish to ask about, then press the button.",
+    "divination-btn": "✦ Draw Divination ✦",
+    "divination-retry": "↺ Ask Again",
 
     "lag-overlay-site": "Official Site",
     "lag-afterword-vote": '<i class="fa-solid fa-scroll"></i> Read Afterword &amp; Vote',
@@ -298,7 +298,6 @@ window.i18nData = {
     "music-sys":   "[System Prompt] Game OST composed by ear with <a href=\"https://www.websynths.com/microtonal/\" target=\"_blank\" rel=\"noopener noreferrer\" style=\"color:var(--accent-color);text-decoration:underline;\">WebSynths Microtonal</a> and recorded live. Click a cover to preview. Click again to pause. One track at a time.",
 
     "footer-rights": "© 2026 Tealize. All rights reserved.",
-    "visitor-text": '<i class="fa-solid fa-eye"></i> You are visitor No. <span id="visitorNumber" style="font-weight:bold;font-size:1rem;color:var(--text-main);">...</span>',
 
     "code-bio": "[Fantasy Creator] [Game Maker] [INTP] [Capricorn] [Verdance]",
     "code-intro-status": "dragged along by creation",
@@ -330,6 +329,8 @@ window.i18nData = {
 "divination-panel-label": "Today's Creative Divination",
 "divination-eyebrow": "✦ Creative Divination ✦",
 "divination-loading": "Loading...",
+"divination-intro": "Clear your mind, think of the work you wish to ask about, then press the button.",
+"divination-btn": "✦ Draw Divination ✦",
 
 "sc-read-vol1": "READ VOL.1",
 "sc-read-vol2": "READ VOL.2",

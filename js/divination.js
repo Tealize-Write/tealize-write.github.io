@@ -24,10 +24,12 @@ const DIVINATION_READINGS = [
   { nameKey: "div-bless-name",    luckKey: "div-bless-luck",    emoji: "🎉",  textKey: "div-bless-text"    },
 ];
 
-// 隨機挑一組（固定後不再換）
-const _divItem = DIVINATION_READINGS[Math.floor(Math.random() * DIVINATION_READINGS.length)];
+let _divItem     = null;
+let _resultShown = false;
+let _meditTimer  = null;
 
 function renderDivination() {
+  if (!_divItem) return;
   const lang = document.documentElement.lang?.startsWith("en") ? "en" : "zh";
   const dict = window.i18nData?.[lang] || window.i18nData?.zh || {};
 
@@ -44,10 +46,89 @@ function renderDivination() {
   elLuck.className     = `divination-luck luck-${dict[_divItem.luckKey] || _divItem.luckKey}`;
 }
 
-// 初次渲染
+function sendDivinationToGAS(resultName, luck) {
+  const API_URL = window.TEALIZE_API_URL;
+  if (!API_URL) return;
+  try {
+    let clientId = "";
+    const statsId = localStorage.getItem("abyss_client_id");
+    if (statsId && statsId.startsWith("uid_")) {
+      clientId = statsId;
+    } else {
+      clientId = localStorage.getItem("tw_tealize_id") || "";
+    }
+    fetch(
+      `${API_URL}?action=divination` +
+      `&clientId=${encodeURIComponent(clientId)}` +
+      `&result=${encodeURIComponent(resultName)}` +
+      `&luck=${encodeURIComponent(luck)}`,
+      { keepalive: true }
+    ).catch(() => {});
+  } catch (_) {}
+}
+
+function _revealResult() {
+  _resultShown = true;
+  const medit = document.getElementById("divMedit");
+  const body  = document.getElementById("divBody");
+  if (medit) {
+    medit.classList.add("medit-fadeout");
+    setTimeout(() => {
+      medit.style.display = "none";
+      medit.classList.remove("medit-fadeout");
+      if (body) body.style.display = "";
+    }, 400);
+  } else {
+    if (body) body.style.display = "";
+  }
+
+  renderDivination();
+
+  const lang = document.documentElement.lang?.startsWith("en") ? "en" : "zh";
+  const dict = window.i18nData?.[lang] || window.i18nData?.zh || {};
+  sendDivinationToGAS(dict[_divItem.nameKey] || _divItem.nameKey, dict[_divItem.luckKey] || _divItem.luckKey);
+}
+
+function startMeditation() {
+  if (_meditTimer) clearTimeout(_meditTimer);
+  _divItem     = DIVINATION_READINGS[Math.floor(Math.random() * DIVINATION_READINGS.length)];
+  _resultShown = false;
+
+  const medit = document.getElementById("divMedit");
+  if (medit) {
+    medit.style.display = "";
+    // 重啟 ring 動畫
+    medit.querySelectorAll(".medit-ring, .medit-core").forEach(el => {
+      el.style.animation = "none";
+      el.offsetHeight; // reflow
+      el.style.animation = "";
+    });
+  }
+
+  _meditTimer = setTimeout(_revealResult, 3000);
+}
+
 document.addEventListener("DOMContentLoaded", () => {
-  setTimeout(renderDivination, 50); // 等 app.js setLang 跑完
+  const btn   = document.getElementById("divBtn");
+  const retry = document.getElementById("divRetry");
+  if (!btn) return;
+
+  btn.addEventListener("click", () => {
+    const intro = document.getElementById("divIntro");
+    if (intro) intro.style.display = "none";
+    startMeditation();
+  });
+
+  if (retry) {
+    retry.addEventListener("click", () => {
+      const body = document.getElementById("divBody");
+      if (body) body.style.display = "none";
+      startMeditation();
+    });
+  }
 });
 
-// 語言切換時重新渲染（app.js 的 setLang 結束後會 dispatch 此事件）
-document.addEventListener("langChanged", renderDivination);
+// 語言切換時，若結果已顯示則重新渲染
+document.addEventListener("langChanged", () => {
+  if (_resultShown) renderDivination();
+});

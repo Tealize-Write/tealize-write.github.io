@@ -445,69 +445,67 @@ document.addEventListener("DOMContentLoaded", () => {
     const container = document.querySelector(".view-mode:not(.hidden)") || document.getElementById("visual-mode");
     if (!nav || !svg || !bubbles.length) return;
 
-    // ── 繪製 SVG 藤蔓 ──
+    // ── 繪製 SVG 藤蔓主幹 ──
     function drawVine() {
-      const bubblesEl   = document.getElementById("sideBubbles");
+      const bubblesEl = document.getElementById("sideBubbles");
       if (!bubblesEl) return;
-      const totalH      = bubblesEl.offsetHeight;
-      const svgW        = 80;
-      svg.setAttribute("viewBox", `0 0 ${svgW} ${totalH}`);
-      svg.style.height  = totalH + "px";
+      const totalH = bubblesEl.offsetHeight;
+      const W = 90;
+      svg.setAttribute("viewBox", `0 0 ${W} ${totalH}`);
+      svg.style.height = totalH + "px";
 
-      // 主幹：從頂部彎曲到底部，靠右側
-      const cx1 = svgW * 0.2, cy1 = totalH * 0.3;
-      const cx2 = svgW * 0.7, cy2 = totalH * 0.7;
-      const mainPath = `M ${svgW*0.55},0 C ${cx1},${cy1} ${cx2},${cy2} ${svgW*0.45},${totalH}`;
+      const cx = W * 0.5;
 
-      // 裝飾虛線
-      const dashPath = `M ${svgW*0.4},${totalH*0.1} C ${svgW*0.8},${totalH*0.35} ${svgW*0.15},${totalH*0.65} ${svgW*0.6},${totalH*0.9}`;
-
-      // 小葉片們
-      const leaves = [
-        { x: svgW*0.38, y: totalH*0.18, r: 6, a: -30 },
-        { x: svgW*0.62, y: totalH*0.42, r: 5, a: 20  },
-        { x: svgW*0.30, y: totalH*0.60, r: 7, a: -20 },
-        { x: svgW*0.55, y: totalH*0.78, r: 4, a: 35  },
+      // 5 節點色彩（對應 sc / lag / soil / game / music）
+      const nodes = [
+        { t: 0.11, c: "#47d7ff", g: "rgba(71,215,255,0.42)",  dur: "3.2s" },
+        { t: 0.29, c: "#47d7ff", g: "rgba(71,215,255,0.42)",  dur: "3.8s" },
+        { t: 0.47, c: "#47d7ff", g: "rgba(71,215,255,0.42)",  dur: "2.9s" },
+        { t: 0.67, c: "#ff7a63", g: "rgba(255,122,99,0.38)",  dur: "3.5s" },
+        { t: 0.85, c: "#b774ff", g: "rgba(183,116,255,0.38)", dur: "4.0s" },
       ];
 
-      const accentNovel = getComputedStyle(document.documentElement).getPropertyValue("--accent-color").trim() || "#00c8ff";
-      const accentGame  = "#ff6b4a";
+      const nodesSVG = nodes.map(({ t, c, g, dur }) => {
+        const y = totalH * t;
+        return `
+          <circle cx="${cx}" cy="${y}" r="5.5" fill="none" stroke="${c}" stroke-width="0.7" opacity="0" filter="url(#geo-glow)">
+            <animate attributeName="r"       values="5.5;8.5;5.5"    dur="${dur}" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.55;0.1;0.55"  dur="${dur}" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="${cx}" cy="${y}" r="2.2" fill="${c}" opacity="0.9" filter="url(#geo-glow)"/>
+          <line x1="${cx-9}" y1="${y}" x2="${cx+9}" y2="${y}" stroke="${c}" stroke-width="0.65" opacity="0.28"/>`;
+      }).join("");
 
-      let svgHTML = `
-        <path d="${mainPath}"
-              stroke="${accentNovel}" stroke-width="1.8" fill="none" opacity="0.45"
-              stroke-linecap="round"/>
-        <path d="${dashPath}"
-              stroke="${accentNovel}" stroke-width="1" fill="none" opacity="0.25"
-              stroke-dasharray="6 5" stroke-linecap="round"/>
-      `;
+      svg.innerHTML = `<defs>
+        <linearGradient id="geo-axis" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox">
+          <stop offset="0%"   stop-color="#47d7ff" stop-opacity="0"/>
+          <stop offset="10%"  stop-color="#47d7ff" stop-opacity="0.48"/>
+          <stop offset="52%"  stop-color="#6bb6ff" stop-opacity="0.32"/>
+          <stop offset="90%"  stop-color="#b774ff" stop-opacity="0.44"/>
+          <stop offset="100%" stop-color="#b774ff" stop-opacity="0"/>
+        </linearGradient>
+        <filter id="geo-glow" x="-120%" y="-120%" width="340%" height="340%">
+          <feGaussianBlur stdDeviation="2.4" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
 
-      // 底部遊戲段用紅橙色加深
-      const gameLine = `M ${svgW*0.45},${totalH*0.72} C ${svgW*0.2},${totalH*0.82} ${svgW*0.75},${totalH*0.88} ${svgW*0.45},${totalH}`;
-      svgHTML += `<path d="${gameLine}" stroke="${accentGame}" stroke-width="1.5" fill="none" opacity="0.4" stroke-linecap="round"/>`;
+      <!-- 主軸線 -->
+      <line x1="${cx}" y1="${totalH*0.02}" x2="${cx}" y2="${totalH*0.98}"
+            stroke="url(#geo-axis)" stroke-width="1"/>
 
-      // 葉片
-      leaves.forEach((l, i) => {
-        const col = i >= 2 ? accentGame : accentNovel;
-        const op  = i >= 2 ? 0.55 : 0.5;
-        svgHTML += `
-          <g transform="translate(${l.x},${l.y}) rotate(${l.a})">
-            <ellipse cx="0" cy="0" rx="${l.r}" ry="${l.r*1.7}"
-                     fill="${col}" opacity="${op}"/>
-            <line x1="0" y1="${-l.r*1.7}" x2="0" y2="${l.r*1.7}"
-                  stroke="${col}" stroke-width="0.6" opacity="0.6"/>
-          </g>`;
-      });
+      <!-- 星圖虛線疊層 -->
+      <line x1="${cx}" y1="${totalH*0.07}" x2="${cx}" y2="${totalH*0.93}"
+            stroke="rgba(190,225,255,0.055)" stroke-width="4" stroke-dasharray="1 22"/>
 
-      // 發光節點（氣泡接點）
-      const nodeYs = [totalH*0.12, totalH*0.28, totalH*0.46, totalH*0.72, totalH*0.88];
-      nodeYs.forEach((y, i) => {
-        const col = i >= 3 ? accentGame : accentNovel;
-        svgHTML += `<circle cx="${svgW*0.5}" cy="${y}" r="3" fill="${col}" opacity="0.8"/>
-                    <circle cx="${svgW*0.5}" cy="${y}" r="6" fill="${col}" opacity="0.18"/>`;
-      });
+      <!-- 節點 -->
+      ${nodesSVG}
 
-      svg.innerHTML = svgHTML;
+      <!-- 分類分隔刻度（GAMES / MUSIC 區段起點） -->
+      <line x1="${cx-16}" y1="${totalH*0.56}" x2="${cx+16}" y2="${totalH*0.56}"
+            stroke="rgba(255,122,99,0.2)" stroke-width="0.8" stroke-dasharray="2 3"/>
+      <line x1="${cx-16}" y1="${totalH*0.75}" x2="${cx+16}" y2="${totalH*0.75}"
+            stroke="rgba(183,116,255,0.2)" stroke-width="0.8" stroke-dasharray="2 3"/>`;
     }
 
     drawVine();

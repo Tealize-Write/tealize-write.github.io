@@ -127,13 +127,13 @@
       </button>
       <div class="side-bubbles" id="sideBubbles">
         <span class="side-cat-label cat-novel" data-i18n="cat-novel-short">NOVELS</span>
-        <a href="#section-sc"    class="side-bubble bubble-novel" data-section="section-sc"><i class="fa-solid fa-book-sparkles"></i><span data-i18n="nav-sc">字命覺醒</span></a>
-        <a href="#section-lag"   class="side-bubble bubble-novel" data-section="section-lag"><i class="fa-solid fa-paw"></i><span data-i18n="nav-lag">咬了神一口</span></a>
-        <a href="#section-soil"  class="side-bubble bubble-novel" data-section="section-soil"><i class="fa-solid fa-seedling"></i><span data-i18n="nav-soil">穿越者種土裡</span></a>
+        <a href="#section-sc"    class="side-bubble bubble-novel bubble-sc"         data-section="section-sc"><i class="fa-solid fa-book-sparkles"></i><span data-i18n="nav-sc">字命覺醒</span></a>
+        <a href="#section-lag"   class="side-bubble bubble-novel bubble-lag"        data-section="section-lag"><i class="fa-solid fa-paw"></i><span data-i18n="nav-lag">咬了神一口</span></a>
+        <a href="#section-soil"  class="side-bubble bubble-novel bubble-soil"       data-section="section-soil"><i class="fa-solid fa-seedling"></i><span data-i18n="nav-soil">穿越者種土裡</span></a>
         <span class="side-cat-label cat-game" data-i18n="cat-game-short">GAMES</span>
-        <a href="#section-game"  class="side-bubble bubble-game"  data-section="section-game"><i class="fa-solid fa-ghost"></i><span data-i18n="nav-game">反轉的真實</span></a>
-        <span class="side-cat-label cat-music">MUSIC</span>
-        <a href="#section-music" class="side-bubble bubble-music" data-section="section-music"><i class="fa-solid fa-music"></i><span data-i18n="nav-music">音樂創作</span></a>
+        <a href="#section-game"  class="side-bubble bubble-game bubble-game-main"   data-section="section-game"><i class="fa-solid fa-ghost"></i><span data-i18n="nav-game">反轉的真實</span></a>
+        <span class="side-cat-label cat-music" data-i18n="cat-music-short">MUSIC</span>
+        <a href="#section-music" class="side-bubble bubble-music bubble-music-main" data-section="section-music"><i class="fa-solid fa-music"></i><span data-i18n="nav-music">音樂創作</span></a>
       </div>
     </nav>
 
@@ -190,16 +190,26 @@
 
       <!-- ===== 本次占卜 ===== -->
       <div class="divination-panel" id="divinationPanel" aria-label="本次創作占卜">
-        <span class="divination-eyebrow" data-i18n="divination-eyebrow" >✦ 創作卦象 ✦</span>
-        <div class="divination-body">
-          <div class="divination-left">
-            <div class="divination-symbol" id="divSymbol">🌱</div>
-            <div class="divination-luck" id="divLuck"></div>
+        <span class="divination-eyebrow" data-i18n="divination-eyebrow">✦ 創作卦象 ✦</span>
+        <div class="divination-intro" id="divIntro">
+          <p class="divination-intro-text" data-i18n="divination-intro">沉澱心靈，仔細想著你想詢問的作品，再按下按鈕。</p>
+          <button class="divination-btn" id="divBtn" data-i18n="divination-btn">✦ 抽取卦象 ✦</button>
+        </div>
+        <div class="divination-medit" id="divMedit" style="display:none" aria-hidden="true">
+          <div class="medit-orb">
+            <span class="medit-ring"></span>
+            <span class="medit-ring"></span>
+            <span class="medit-ring"></span>
+            <span class="medit-core"></span>
           </div>
-          <div class="divination-right">
-            <div class="divination-name" id="divName">載入中…</div>
-            <p class="divination-text" id="divText"></p>
-          </div>
+        </div>
+        <div class="divination-body" id="divBody" style="display:none">
+          <div class="divination-symbol" id="divSymbol">🌱</div>
+          <div class="divination-luck" id="divLuck"></div>
+          <div class="divination-sep"></div>
+          <div class="divination-name" id="divName"></div>
+          <p class="divination-text" id="divText"></p>
+          <button class="divination-retry" id="divRetry" data-i18n="divination-retry">↺ 再次詢問</button>
         </div>
       </div>
 

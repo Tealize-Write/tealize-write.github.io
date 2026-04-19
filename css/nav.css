@@ -1,47 +1,48 @@
 /* ══════════════════════════════════════
-   nav.css — 右側懸浮藤蔓目錄 v4
+   nav.css — 右側星圖節點導覽
    ══════════════════════════════════════ */
 
-/* ── 整體容器：固定在右側 ── */
+/* ── 整體容器 ── */
 .side-nav {
   position: fixed;
-  right: 0;
+  right: 18px;
   top: 50%;
   transform: translateY(-50%);
   z-index: 1800;
-  display: flex;
-  align-items: center;
-  flex-direction: row;
+  width: 220px;
   pointer-events: none;
 }
 
-/* ── SVG 藤蔓 ── */
+.side-nav > * {
+  pointer-events: auto;
+}
+
+/* ── SVG 幾何主軸 ── */
 .side-vine-svg {
   position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 80px;
-  height: 420px;
+  top: 0;
+  bottom: 0;
+  right: 118px;
+  width: 90px;
+  height: 100%;
   pointer-events: none;
   overflow: visible;
-  filter: drop-shadow(0 0 6px rgba(0, 200, 255, 0.35));
-  animation: vineSway 8s ease-in-out infinite alternate;
+  opacity: 0.88;
+  animation: geoAxisBreath 6s ease-in-out infinite alternate;
 }
-@keyframes vineSway {
-  0%   { filter: drop-shadow(0 0 6px rgba(0,200,255,0.25)); }
-  100% { filter: drop-shadow(0 0 14px rgba(0,200,255,0.55)); }
+@keyframes geoAxisBreath {
+  0%   { opacity: 0.75; }
+  100% { opacity: 0.96; }
 }
 
 /* ── 氣泡群容器 ── */
 .side-bubbles {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  pointer-events: auto;
-  padding-right: 12px;
-  position: relative;
-  z-index: 2;
+  gap: 10px;
+  pointer-events: none;
 }
 
 /* ── 分類標頭 ── */
@@ -50,193 +51,273 @@
   font-size: 0.58rem;
   font-weight: 700;
   letter-spacing: 2.5px;
-  padding: 4px 11px;
+  padding: 4px 12px;
   border-radius: 999px;
   border: 1px dashed;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  margin-bottom: 7px;
-  margin-top: 16px;
+  margin-top: 8px;
   white-space: nowrap;
   opacity: 0.85;
-  transition: opacity 0.3s;
+  position: relative;
+  align-self: flex-end;
+  pointer-events: auto;
 }
 .side-cat-label:first-child { margin-top: 0; }
 
-.side-cat-label.cat-novel {
-  color: var(--accent-color);
-  border-color: rgba(0, 200, 255, 0.4);
-  background: rgba(0, 200, 255, 0.06);
-}
-.side-cat-label.cat-game {
-  color: #ff6b4a;
-  border-color: rgba(255, 107, 74, 0.4);
-  background: rgba(255, 107, 74, 0.06);
+/* 分類標頭左側刻度線 */
+.side-cat-label::before {
+  content: "";
+  position: absolute;
+  right: calc(100% + 6px);
+  top: 50%;
+  width: 16px;
+  height: 1px;
+  transform: translateY(-50%);
+  background: currentColor;
+  opacity: 0.38;
 }
 
-/* ── 單顆氣泡 ── */
+.side-cat-label.cat-novel {
+  color: #47d7ff;
+  border-color: rgba(71, 215, 255, 0.3);
+  background: linear-gradient(180deg, rgba(10, 28, 45, 0.82), rgba(6, 16, 26, 0.88));
+  box-shadow: 0 0 12px rgba(71, 215, 255, 0.08);
+}
+.side-cat-label.cat-game {
+  color: #ff7a63;
+  border-color: rgba(255, 122, 99, 0.3);
+  background: linear-gradient(180deg, rgba(45, 17, 17, 0.82), rgba(26, 10, 10, 0.88));
+  box-shadow: 0 0 12px rgba(255, 122, 99, 0.08);
+}
+.side-cat-label.cat-music {
+  color: #b774ff;
+  border-color: rgba(183, 116, 255, 0.3);
+  background: linear-gradient(180deg, rgba(32, 14, 50, 0.82), rgba(18, 8, 30, 0.88));
+  box-shadow: 0 0 12px rgba(183, 116, 255, 0.08);
+}
+
+/* ── 單顆氣泡：共用基礎 ── */
 .side-bubble {
-  display: flex;
+  /* 色彩 token（預設：小說 cyan） */
+  --bubble-glow:   rgba(71, 215, 255, 0.14);
+  --bubble-border: rgba(31, 164, 255, 0.38);
+  --bubble-icon:   #3fdcff;
+  --branch-color:  rgba(71, 215, 255, 0.48);
+  --branch-glow:   rgba(71, 215, 255, 0.18);
+  --node-ring:     rgba(71, 215, 255, 0.28);
+
+  position: relative;
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 9px 16px 9px 14px;
+  gap: 10px;
+  min-height: 46px;
+  padding: 0 18px;
   border-radius: 999px;
+  border: 1px solid var(--bubble-border);
+  background:
+    radial-gradient(circle at 18% 50%, rgba(255,255,255,0.05), transparent 22%),
+    linear-gradient(180deg, rgba(11, 23, 42, 0.95), rgba(6, 12, 24, 0.96));
+  color: #f4f8ff;
   text-decoration: none;
   font-family: "Noto Sans TC", sans-serif;
   font-size: 0.82rem;
   font-weight: 700;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.02em;
   white-space: nowrap;
-  margin-bottom: 7px;
-  position: relative;
-  overflow: hidden;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.03) inset,
+    0 0 16px var(--bubble-glow);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
+  overflow: visible;
+  isolation: isolate;
+  pointer-events: auto;
   transition:
-    transform     0.4s var(--ease-pop),
-    box-shadow    0.4s var(--ease-smooth),
-    background    0.3s var(--ease-smooth),
-    border-color  0.3s var(--ease-smooth),
-    color         0.3s var(--ease-smooth),
-    padding-right 0.4s var(--ease-pop);
+    transform    180ms ease,
+    box-shadow   180ms ease,
+    border-color 180ms ease;
 }
+
+.side-bubble i {
+  color: var(--bubble-icon);
+  flex: 0 0 auto;
+  font-size: 0.88rem;
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--bubble-icon) 38%, transparent));
+  transition: transform 0.3s ease;
+}
+
+.side-bubble span {
+  white-space: nowrap;
+  position: relative;
+  z-index: 2;
+}
+
+/* 連接線（::before）：從氣泡左側水平延伸，右端實色 → 左端淡出 */
+.side-bubble::before {
+  content: "";
+  position: absolute;
+  right: calc(100% - 1px);
+  top: 50%;
+  width: 28px;
+  height: 1px;
+  transform: translateY(-50%);
+  background: linear-gradient(to right, transparent 0%, var(--branch-color) 100%);
+  pointer-events: none;
+  transition: opacity 180ms ease, box-shadow 180ms ease;
+  z-index: 0;
+}
+
+/* 節點（::after）：核心點 + 外圈環 */
 .side-bubble::after {
   content: "";
   position: absolute;
-  top: 0; left: -120%; width: 60%; height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
-  transition: left 0.6s var(--ease-smooth);
+  left: -31px;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  transform: translateY(-50%);
+  background: radial-gradient(circle, rgba(255,255,255,0.95) 0% 18%, var(--bubble-icon) 42%, transparent 68%);
+  /* gap shadow first (renders on top), ring below */
+  box-shadow:
+    0 0 0 2.5px rgba(5, 10, 25, 0.9),
+    0 0 0 4.5px var(--node-ring),
+    0 0 8px var(--branch-glow);
   pointer-events: none;
-}
-.side-bubble:hover::after { left: 200%; }
-.side-bubble i {
-  font-size: 0.88rem;
-  flex-shrink: 0;
-  transition: transform 0.4s var(--ease-pop), color 0.3s;
+  transition: box-shadow 180ms ease, transform 180ms ease;
+  z-index: 1;
 }
 
-/* 小說：藍色 */
-.side-bubble.bubble-novel {
-  background: rgba(5, 10, 28, 0.72);
-  border: 1.5px solid rgba(0, 200, 255, 0.22);
-  color: var(--text-main);
-  box-shadow: 0 6px 24px rgba(0,0,0,0.4), inset 0 0 8px rgba(0,200,255,0.04);
-}
-.side-bubble.bubble-novel i { color: var(--accent-color); }
-.side-bubble.bubble-novel:hover {
-  background: var(--accent-color);
-  border-color: var(--accent-color);
-  color: #020a18;
-  transform: translateX(-7px) scale(1.05);
-  box-shadow: 0 0 30px rgba(0,200,255,0.5), 0 8px 20px rgba(0,0,0,0.3);
-  padding-right: 22px;
-}
-.side-bubble.bubble-novel:hover i { color: #020a18; transform: scale(1.2) rotate(-8deg); }
+/* ── 各類型 token ── */
+.bubble-novel { /* 沿用預設 cyan */ }
 
-/* 遊戲：紅橙色 */
-.side-bubble.bubble-game {
-  background: rgba(20, 6, 4, 0.72);
-  border: 1.5px solid rgba(255, 107, 74, 0.22);
-  color: var(--text-main);
-  box-shadow: 0 6px 24px rgba(0,0,0,0.4), inset 0 0 8px rgba(255,107,74,0.04);
+.bubble-game {
+  --bubble-glow:   rgba(255, 122, 99, 0.14);
+  --bubble-border: rgba(255, 106, 76, 0.34);
+  --bubble-icon:   #ff7a63;
+  --branch-color:  rgba(255, 106, 76, 0.50);
+  --branch-glow:   rgba(255, 106, 76, 0.18);
+  --node-ring:     rgba(255, 106, 76, 0.26);
+  background:
+    radial-gradient(circle at 18% 50%, rgba(255,255,255,0.04), transparent 22%),
+    linear-gradient(180deg, rgba(34, 10, 14, 0.96), rgba(20, 8, 10, 0.96));
 }
-.side-bubble.bubble-game i { color: #ff6b4a; }
-.side-bubble.bubble-game:hover {
-  background: #ff6b4a;
-  border-color: #ff6b4a;
-  color: #1a0800;
-  transform: translateX(-7px) scale(1.05);
-  box-shadow: 0 0 30px rgba(255,107,74,0.5), 0 8px 20px rgba(0,0,0,0.3);
-  padding-right: 22px;
-}
-.side-bubble.bubble-game:hover i { color: #1a0800; transform: scale(1.2) rotate(-8deg); }
 
-/* Active 狀態 */
-.side-bubble.is-active.bubble-novel {
-  background: rgba(0, 200, 255, 0.15);
-  border-color: rgba(0,200,255,0.7);
-  color: var(--accent-color);
-  box-shadow: 0 0 20px rgba(0,200,255,0.3);
+.bubble-music {
+  --bubble-glow:   rgba(183, 116, 255, 0.15);
+  --bubble-border: rgba(183, 116, 255, 0.34);
+  --bubble-icon:   #b774ff;
+  --branch-color:  rgba(183, 116, 255, 0.52);
+  --branch-glow:   rgba(183, 116, 255, 0.18);
+  --node-ring:     rgba(183, 116, 255, 0.26);
+  background:
+    radial-gradient(circle at 18% 50%, rgba(255,255,255,0.04), transparent 22%),
+    linear-gradient(180deg, rgba(25, 10, 42, 0.96), rgba(15, 8, 25, 0.96));
 }
-.side-bubble.is-active.bubble-game {
-  background: rgba(255, 107, 74, 0.15);
-  border-color: rgba(255,107,74,0.7);
-  color: #ff6b4a;
-  box-shadow: 0 0 20px rgba(255,107,74,0.3);
+
+/* ── 個別寬度（stable class） ── */
+.bubble-sc         { width: 148px; }
+.bubble-lag        { width: 164px; }
+.bubble-soil       { width: 178px; }
+.bubble-game-main  { width: 178px; }
+.bubble-music-main { width: 170px; }
+
+/* ── Hover：bubble + 連接線 + 節點同步亮 ── */
+.side-bubble:hover,
+.side-bubble:focus-visible {
+  transform: translateX(-4px);
+  border-color: color-mix(in srgb, var(--bubble-icon) 68%, white 10%);
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.05) inset,
+    0 0 24px color-mix(in srgb, var(--bubble-icon) 28%, transparent),
+    0 0 40px color-mix(in srgb, var(--bubble-icon) 12%, transparent);
+}
+
+.side-bubble:hover i,
+.side-bubble:focus-visible i {
+  transform: scale(1.12) rotate(-6deg);
+}
+
+.side-bubble:hover::before,
+.side-bubble:focus-visible::before {
+  opacity: 1;
+  box-shadow: 0 0 6px var(--branch-glow), 0 0 14px var(--branch-glow);
+}
+
+.side-bubble:hover::after,
+.side-bubble:focus-visible::after {
+  transform: translateY(-50%) scale(1.22);
+  box-shadow:
+    0 0 0 2.5px rgba(5, 10, 25, 0.9),
+    0 0 0 5px color-mix(in srgb, var(--bubble-icon) 60%, transparent),
+    0 0 12px var(--branch-glow),
+    0 0 22px var(--branch-glow);
+}
+
+/* ── Active（滾動偵測） ── */
+.side-bubble.is-active {
+  transform: translateX(-5px);
+  border-color: color-mix(in srgb, var(--bubble-icon) 74%, white 12%);
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.05) inset,
+    0 0 20px color-mix(in srgb, var(--bubble-icon) 26%, transparent),
+    0 0 40px color-mix(in srgb, var(--bubble-icon) 16%, transparent);
+}
+
+.side-bubble.is-active::after {
+  box-shadow:
+    0 0 0 2.5px rgba(5, 10, 25, 0.9),
+    0 0 0 5px color-mix(in srgb, var(--bubble-icon) 55%, transparent),
+    0 0 10px var(--branch-glow),
+    0 0 20px var(--branch-glow);
 }
 
 /* ── Light mode ── */
-[data-theme="light"] .side-bubble.bubble-novel {
-  background: rgba(235, 245, 255, 0.9);
+[data-theme="light"] .side-vine-svg {
+  opacity: 0.6;
+  filter: saturate(0.8) brightness(0.85);
+}
+[data-theme="light"] .side-cat-label.cat-novel { color: #1a6dcc; background: rgba(26,109,204,0.07); border-color: rgba(26,109,204,0.28); }
+[data-theme="light"] .side-cat-label.cat-game  { color: #c04020; background: rgba(200,64,32,0.07);  border-color: rgba(200,64,32,0.28);  }
+[data-theme="light"] .side-cat-label.cat-music { color: #7c3aed; background: rgba(124,58,237,0.07); border-color: rgba(124,58,237,0.28); }
+
+[data-theme="light"] .side-bubble {
+  background:
+    radial-gradient(circle at 18% 50%, rgba(255,255,255,0.3), transparent 22%),
+    linear-gradient(180deg, rgba(235,245,255,0.95), rgba(220,235,250,0.96));
   color: #0c1a30;
-  border-color: rgba(26,109,204,0.3);
-  box-shadow: 0 6px 20px rgba(10,30,80,0.10);
+  box-shadow:
+    0 0 0 1px rgba(0,0,0,0.04) inset,
+    0 0 14px var(--bubble-glow);
 }
 [data-theme="light"] .side-bubble.bubble-game {
-  background: rgba(255, 245, 242, 0.9);
+  background:
+    radial-gradient(circle at 18% 50%, rgba(255,255,255,0.2), transparent 22%),
+    linear-gradient(180deg, rgba(255,245,242,0.95), rgba(255,235,230,0.96));
   color: #2a0a00;
-  border-color: rgba(200,70,40,0.28);
-  box-shadow: 0 6px 20px rgba(80,20,10,0.10);
 }
-[data-theme="light"] .side-cat-label.cat-novel { color: #1a6dcc; background: rgba(26,109,204,0.07); border-color: rgba(26,109,204,0.3); }
-[data-theme="light"] .side-cat-label.cat-game  { color: #c04020; background: rgba(200,64,32,0.07); border-color: rgba(200,64,32,0.3); }
-[data-theme="light"] .side-vine-svg { filter: drop-shadow(0 0 5px rgba(26,109,204,0.2)); }
-[data-theme="light"] .side-bubble.bubble-novel:hover { background: var(--accent-color); color: #fff; }
-[data-theme="light"] .side-bubble.bubble-game:hover  { background: #d04020; color: #fff; border-color: #d04020; }
-
-/* ── 手機版 toggle 按鈕（桌面隱藏） ── */
-.side-nav-toggle { display: none; }
-
-.side-cat-label.cat-music {
-  color: #a855f7;
-  border-color: rgba(168, 85, 247, 0.4);
-  background: rgba(168, 85, 247, 0.06);
-}
-
-/* 音樂：紫色 */
-.side-bubble.bubble-music {
-  background: rgba(15, 5, 28, 0.72);
-  border: 1.5px solid rgba(168, 85, 247, 0.22);
-  color: var(--text-main);
-  box-shadow: 0 6px 24px rgba(0,0,0,0.4), inset 0 0 8px rgba(168,85,247,0.04);
-}
-.side-bubble.bubble-music i { color: #a855f7; }
-.side-bubble.bubble-music:hover {
-  background: #a855f7;
-  border-color: #a855f7;
-  color: #0f0020;
-  transform: translateX(-7px) scale(1.05);
-  box-shadow: 0 0 30px rgba(168,85,247,0.5), 0 8px 20px rgba(0,0,0,0.3);
-  padding-right: 22px;
-}
-.side-bubble.bubble-music:hover i { color: #0f0020; transform: scale(1.2) rotate(-8deg); }
-
-.side-bubble.is-active.bubble-music {
-  background: rgba(168, 85, 247, 0.15);
-  border-color: rgba(168,85,247,0.7);
-  color: #a855f7;
-  box-shadow: 0 0 20px rgba(168,85,247,0.3);
-}
-
 [data-theme="light"] .side-bubble.bubble-music {
-  background: rgba(248, 240, 255, 0.9);
+  background:
+    radial-gradient(circle at 18% 50%, rgba(255,255,255,0.2), transparent 22%),
+    linear-gradient(180deg, rgba(248,240,255,0.95), rgba(240,228,255,0.96));
   color: #3b0070;
-  border-color: rgba(140,60,220,0.28);
-  box-shadow: 0 6px 20px rgba(80,20,120,0.10);
 }
-[data-theme="light"] .side-cat-label.cat-music { color: #7c3aed; background: rgba(124,58,237,0.07); border-color: rgba(124,58,237,0.3); }
-[data-theme="light"] .side-bubble.bubble-music:hover { background: #7c3aed; color: #fff; border-color: #7c3aed; }
+
+/* ── 手機版 toggle（桌面隱藏） ── */
+.side-nav-toggle { display: none; }
 
 /* ── 手機版 ── */
 @media (max-width: 768px) {
-  /* side-nav：固定在 modeBtn 正下方，往下展開 */
   .side-nav {
     position: fixed;
-    top: 54px;        /* header(50px) + 4px 間距，緊貼 modeBtn 下方 */
+    top: 54px;
     right: 12px;
     bottom: auto;
     left: auto;
+    width: auto;
     transform: none;
+    display: flex;
     flex-direction: column;
     align-items: flex-end;
     z-index: 2100;
@@ -244,12 +325,11 @@
 
   .side-vine-svg { display: none; }
 
-  /* Toggle 按鈕：圓形，在最上方 */
   .side-nav-toggle {
     display: flex;
     align-items: center;
     justify-content: center;
-    position: relative;   /* 跟著 side-nav flow，不再獨立 fixed */
+    position: relative;
     width: 38px;
     height: 38px;
     border-radius: 50%;
@@ -260,42 +340,34 @@
     cursor: pointer;
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
-    box-shadow: 0 0 14px rgba(0,200,255,0.25), 0 4px 16px rgba(0,0,0,0.5);
-    transition:
-      background   0.3s var(--ease-smooth),
-      box-shadow   0.3s var(--ease-smooth),
-      border-color 0.3s var(--ease-smooth),
-      transform    0.4s var(--ease-pop);
+    box-shadow: 0 0 14px rgba(0,200,255,0.22), 0 4px 16px rgba(0,0,0,0.5);
+    transition: background 0.3s, box-shadow 0.3s, border-color 0.3s, transform 0.4s;
     pointer-events: auto;
     flex-shrink: 0;
   }
   .side-nav-toggle:hover {
-    background: rgba(0,200,255,0.15);
-    box-shadow: 0 0 22px rgba(0,200,255,0.45), 0 4px 16px rgba(0,0,0,0.4);
+    background: rgba(0,200,255,0.14);
+    box-shadow: 0 0 22px rgba(0,200,255,0.4), 0 4px 16px rgba(0,0,0,0.4);
     border-color: var(--accent-color);
   }
   .side-nav-toggle[aria-expanded="true"] {
     background: var(--accent-color);
     color: #020a18;
     border-color: var(--accent-color);
-    box-shadow: 0 0 28px rgba(0,200,255,0.6), 0 4px 16px rgba(0,0,0,0.4);
-    transform: rotate(180deg);   /* 向下箭頭旋轉表示展開 */
+    box-shadow: 0 0 28px rgba(0,200,255,0.55), 0 4px 16px rgba(0,0,0,0.4);
+    transform: rotate(180deg);
   }
 
-  /* 氣泡群：收合時隱藏，展開往下長 */
   .side-bubbles {
-    padding-right: 0;
     max-height: 0;
     overflow: hidden;
     opacity: 0;
     pointer-events: none;
-    transform: translateY(-8px);   /* 向上收縮，展開往下 */
-    transition:
-      max-height 0.45s var(--ease-smooth),
-      opacity    0.35s var(--ease-smooth),
-      transform  0.4s  var(--ease-pop);
+    transform: translateY(-8px);
+    transition: max-height 0.45s ease, opacity 0.35s ease, transform 0.4s ease;
     align-items: flex-end;
     margin-top: 6px;
+    gap: 6px;
   }
   .side-bubbles.is-open {
     max-height: 600px;
@@ -305,19 +377,26 @@
   }
 
   .side-cat-label { font-size: 0.52rem; padding: 3px 9px; margin-top: 10px; }
-  .side-bubble    { font-size: 0.78rem; padding: 8px 13px 8px 11px; margin-bottom: 6px; }
+  .side-bubble    { font-size: 0.78rem; padding: 0 13px; min-height: 40px; }
+
+  /* 手機隱藏連接線與節點 */
+  .side-bubble::before,
+  .side-bubble::after { display: none; }
+
+  /* 手機重設寬度 */
+  .bubble-sc, .bubble-lag, .bubble-soil,
+  .bubble-game-main, .bubble-music-main { width: auto; }
 }
 
-/* Light mode toggle */
 [data-theme="light"] .side-nav-toggle {
   background: rgba(235, 245, 255, 0.92);
-  border-color: rgba(26, 109, 204, 0.45);
+  border-color: rgba(26, 109, 204, 0.42);
   color: #1a6dcc;
-  box-shadow: 0 0 12px rgba(26,109,204,0.18), 0 4px 14px rgba(0,0,0,0.1);
+  box-shadow: 0 0 12px rgba(26,109,204,0.15), 0 4px 14px rgba(0,0,0,0.1);
 }
 [data-theme="light"] .side-nav-toggle:hover {
   background: rgba(26, 109, 204, 0.1);
-  box-shadow: 0 0 20px rgba(26,109,204,0.3);
+  box-shadow: 0 0 20px rgba(26,109,204,0.28);
 }
 [data-theme="light"] .side-nav-toggle[aria-expanded="true"] {
   background: var(--accent-color);

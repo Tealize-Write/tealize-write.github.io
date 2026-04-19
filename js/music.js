@@ -389,6 +389,25 @@ function fmtTime(sec) {
   return `${m}:${s}`;
 }
 
+// ── GAS 追蹤 ──
+function sendMusicToGAS(event, trackTitle) {
+  const API_URL = window.TEALIZE_API_URL;
+  if (!API_URL) return;
+  try {
+    let clientId = "";
+    const statsId = localStorage.getItem("abyss_client_id");
+    if (statsId && statsId.startsWith("uid_")) clientId = statsId;
+    else clientId = localStorage.getItem("tw_tealize_id") || "";
+    fetch(
+      `${API_URL}?action=music` +
+      `&event=${encodeURIComponent(event)}` +
+      `&track=${encodeURIComponent(trackTitle)}` +
+      `&clientId=${encodeURIComponent(clientId)}`,
+      { keepalive: true }
+    ).catch(() => {});
+  } catch (_) {}
+}
+
 // ── 全域狀態 ──
 let _currentAudio = null;
 let _currentCard  = null;
@@ -408,7 +427,7 @@ function stopAll() {
 }
 
 // ── 播放 / 暫停切換 ──
-function toggleTrack(card, audio, fillEl, curEl, durEl) {
+function toggleTrack(card, audio, fillEl, curEl, durEl, trackTitle) {
   const isThisCard = _currentCard === card;
 
   if (isThisCard) {
@@ -418,11 +437,13 @@ function toggleTrack(card, audio, fillEl, curEl, durEl) {
       card.classList.remove("is-paused");
       card.classList.add("is-playing");
       tickProgress(audio, fillEl, curEl);
+      sendMusicToGAS("resume", trackTitle);
     } else {
       audio.pause();
       card.classList.remove("is-playing");
       card.classList.add("is-paused");
       if (_rafId) { cancelAnimationFrame(_rafId); _rafId = null; }
+      sendMusicToGAS("pause", trackTitle);
     }
     return;
   }
@@ -447,6 +468,7 @@ function toggleTrack(card, audio, fillEl, curEl, durEl) {
     card.classList.remove("is-playing");
     _currentAudio = null; _currentCard = null;
   });
+  sendMusicToGAS("play", trackTitle);
   tickProgress(audio, fillEl, curEl);
 
   // 播完
@@ -531,11 +553,11 @@ function renderMusicSection() {
     audio.addEventListener("pause", syncIcon);
     audio.addEventListener("ended", () => { iconEl.className = "fa-solid fa-play"; });
 
-    card.addEventListener("click", () => toggleTrack(card, audio, fillEl, curEl, durEl));
+    card.addEventListener("click", () => toggleTrack(card, audio, fillEl, curEl, durEl, track.titleZh));
     card.addEventListener("keydown", e => {
       if (e.key === "Enter" || e.key === " ") {
         e.preventDefault();
-        toggleTrack(card, audio, fillEl, curEl, durEl);
+        toggleTrack(card, audio, fillEl, curEl, durEl, track.titleZh);
       }
     });
 
