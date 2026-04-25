@@ -30,6 +30,8 @@
   /* 統一 section-body 手機版 */
   .section-body   { flex-direction: column; gap: 24px; }
   .section-cover  { width: 100%; }
+  .sc-book-entry  { flex-direction: column; gap: 16px; }
+  .sc-book-cover  { width: 100%; max-width: 180px; }
   /* 多封面書系：手機維持橫排三欄 */
   .section-body--books { flex-direction: column; gap: 16px; }
   .sc-covers { gap: 10px; }

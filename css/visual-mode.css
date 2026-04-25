@@ -126,7 +126,7 @@ body[data-cursor="on"] button   { cursor: none; }
   border-radius: 999px;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   max-width: 100%;
 }
 .career-item {
@@ -135,16 +135,16 @@ body[data-cursor="on"] button   { cursor: none; }
   white-space: nowrap;
 }
 .career-item i {
-  color: var(--accent-color); font-size: 0.75rem;
+  color: var(--accent-color); font-size: 0.82rem;
   opacity: 0.8;
 }
 .career-label { color: var(--text-sub); }
 .career-years {
-  font-family: "Orbitron"; font-size: 0.78rem; font-weight: 700;
+  font-family: "Orbitron"; font-size: 0.82rem; font-weight: 700;
   color: var(--accent-color);
 }
 .career-unit {
-  font-family: "Orbitron"; font-size: 0.6rem;
+  font-family: "Orbitron"; font-size: 0.82rem;
   color: var(--text-sub); opacity: 0.7;
 }
 .career-dot {
@@ -316,7 +316,7 @@ body[data-cursor="on"] button   { cursor: none; }
 /* ── Type badge ── */
 .section-badge {
   font-family: "Orbitron", sans-serif;
-  font-size: 0.58rem; font-weight: 700;
+  font-size: 0.82rem; font-weight: 700;
   letter-spacing: 2px; padding: 3px 10px;
   border-radius: 999px; border: 1px solid;
   opacity: 0.85; flex-shrink: 0; align-self: center;
@@ -410,7 +410,7 @@ body[data-cursor="on"] button   { cursor: none; }
 /* 副標題 */
 .section-sub {
   color: var(--accent-color); font-family: "Orbitron";
-  font-size: 0.72rem; letter-spacing: 1.5px;
+  font-size: 0.82rem; letter-spacing: 1.5px;
   margin: 10px 0 1.4rem; opacity: 0.85;
 }
 /* 描述 */
@@ -713,7 +713,7 @@ body[data-cursor="on"] button   { cursor: none; }
 /* ── Type badge ── */
 .section-badge {
   font-family: "Orbitron", sans-serif;
-  font-size: 0.58rem; font-weight: 700;
+  font-size: 0.82rem; font-weight: 700;
   letter-spacing: 2px; padding: 3px 10px;
   border-radius: 999px; border: 1px solid;
   opacity: 0.85; flex-shrink: 0; align-self: center;
@@ -784,7 +784,7 @@ body[data-cursor="on"] button   { cursor: none; }
 .section-subtitle {
   color: var(--accent-color);
   font-family: "Orbitron", sans-serif;
-  font-size: 0.72rem;
+  font-size: 0.82rem;
   letter-spacing: 1.5px;
   margin-bottom: 1.2rem;
   opacity: 0.85;
@@ -935,7 +935,7 @@ body[data-cursor="on"] button   { cursor: none; }
   display: inline-flex; align-items: center; gap: 4px;
 }
 .hero-qlink:hover { opacity: 0.7; }
-.hero-qlink i { font-size: 0.75rem; }
+.hero-qlink i { font-size: 0.82rem; }
 .hero-qdot { color: var(--glass-border); opacity: 0.6; font-size: 0.9rem; }
 
 /* ══════════════════════════════════════
@@ -951,7 +951,7 @@ body[data-cursor="on"] button   { cursor: none; }
   border-radius: 999px;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  font-size: 0.76rem; max-width: fit-content;
+  font-size: 0.82rem; max-width: fit-content;
   width: auto;
 }
 .hero-meta-tag { color: var(--text-sub); white-space: nowrap; }
@@ -960,9 +960,9 @@ body[data-cursor="on"] button   { cursor: none; }
   display: inline-flex; align-items: center; gap: 3px;
   color: var(--text-sub); white-space: nowrap;
 }
-.hero-meta-career i { color: var(--accent-color); font-size: 0.7rem; opacity: 0.8; }
+.hero-meta-career i { color: var(--accent-color); font-size: 0.82rem; opacity: 0.8; }
 .hero-meta-career .career-years {
-  font-family: "Orbitron"; font-size: 0.76rem; font-weight: 700;
+  font-family: "Orbitron"; font-size: 0.82rem; font-weight: 700;
   color: var(--accent-color);
 }
 
@@ -992,7 +992,7 @@ body[data-cursor="on"] button   { cursor: none; }
   opacity: 0.25;
 }
 .divination-eyebrow {
-  font-family: "Orbitron"; font-size: 0.6rem;
+  font-family: "Orbitron"; font-size: 0.82rem;
   letter-spacing: 4px; color: var(--accent-color); opacity: 0.8;
 }
 .divination-body {
@@ -1010,7 +1010,7 @@ body[data-cursor="on"] button   { cursor: none; }
   50%     { transform: translateY(-6px); }
 }
 .divination-luck {
-  font-family: "Orbitron"; font-size: 0.65rem; font-weight: 700;
+  font-family: "Orbitron"; font-size: 0.82rem; font-weight: 700;
   letter-spacing: 2px; padding: 4px 14px; border-radius: 999px;
   border: 1px solid currentColor; white-space: nowrap;
 }
@@ -1083,7 +1083,7 @@ body[data-cursor="on"] button   { cursor: none; }
   text-align: center; max-width: 340px; font-style: italic;
 }
 .divination-btn {
-  font-family: "Orbitron"; font-size: 0.7rem; letter-spacing: 3px; font-weight: 700;
+  font-family: "Orbitron"; font-size: 0.82rem; letter-spacing: 3px; font-weight: 700;
   color: var(--accent-color); background: transparent;
   border: 1px solid var(--accent-color); border-radius: 999px;
   padding: 0.65rem 2rem; cursor: pointer;
@@ -1094,7 +1094,7 @@ body[data-cursor="on"] button   { cursor: none; }
   box-shadow: 0 0 16px rgba(0,200,255,0.35);
 }
 .divination-retry {
-  font-family: "Orbitron"; font-size: 0.62rem; letter-spacing: 2px; font-weight: 600;
+  font-family: "Orbitron"; font-size: 0.82rem; letter-spacing: 2px; font-weight: 600;
   color: var(--accent-color); background: transparent;
   border: 1px solid rgba(0,200,255,0.35); border-radius: 999px;
   padding: 0.45rem 1.4rem; cursor: pointer; margin-top: 0.4rem;
@@ -1111,13 +1111,10 @@ body[data-cursor="on"] button   { cursor: none; }
 .vote-bar-panel {
   margin-bottom: 1.2rem;
   padding: 1rem 1.4rem;
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
   border-radius: 14px;
-  backdrop-filter: blur(10px);
 }
 .vote-bar-title {
-  font-family: "Orbitron"; font-size: 0.62rem;
+  font-family: "Orbitron"; font-size: 0.82rem;
   letter-spacing: 2px; color: var(--accent-color);
   opacity: 0.8; margin-bottom: 0.8rem;
 }
@@ -1127,7 +1124,7 @@ body[data-cursor="on"] button   { cursor: none; }
 }
 .vote-bar-row:last-child { margin-bottom: 0; }
 .vote-bar-label {
-  font-size: 0.72rem; color: var(--text-sub);
+  font-size: 0.82rem; color: var(--text-sub);
   white-space: nowrap; width: 140px; flex-shrink: 0;
   text-align: right;
 }
@@ -1140,9 +1137,248 @@ body[data-cursor="on"] button   { cursor: none; }
   transition: width 1s var(--ease-smooth);
 }
 .vote-bar--deer   { background: linear-gradient(90deg, #00c8ff, #3d8eff); }
-.vote-bar--lion   { background: linear-gradient(90deg, #00c8ff, #3d8eff); }
-.vote-bar--switch { background: linear-gradient(90deg, #00c8ff, #3d8eff); }
+.vote-bar--lion   { background: linear-gradient(90deg, #ff8a6a, #ff4f2e); }
+.vote-bar--switch { background: linear-gradient(90deg, #b774ff, #7c3aed); }
 .vote-bar-pct {
-  font-family: "Orbitron"; font-size: 0.65rem;
+  font-family: "Orbitron"; font-size: 0.82rem;
   color: var(--text-sub); width: 40px; flex-shrink: 0; text-align: right;
 }
+
+/* ══════════════════════════════════════
+   延伸測驗廣場 (Quiz Zone)
+   ══════════════════════════════════════ */
+
+.quiz-zone {
+  /* 繼承 section-extra 的底部出血設計 */
+  gap: 18px;
+}
+
+.quiz-zone__eyebrow {
+  font-family: "Orbitron";
+  font-size: 0.82rem;
+  letter-spacing: 4px;
+  color: var(--accent-color);
+  opacity: 0.62;
+}
+
+.quiz-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+}
+
+.quiz-card {
+  flex: 1 1 176px;
+  max-width: 240px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 1.5rem 1.4rem 1.3rem;
+  border: 1px solid var(--glass-border);
+  border-radius: 18px;
+  text-decoration: none;
+  text-align: center;
+  background: rgba(0, 200, 255, 0.022);
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.28s ease, transform 0.28s ease,
+              box-shadow 0.28s ease, background 0.28s ease;
+}
+/* 頂部微光邊 */
+.quiz-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 20%; right: 20%; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,200,255,0.4), transparent);
+  transition: opacity 0.3s;
+  opacity: 0.5;
+}
+.quiz-card:hover {
+  border-color: color-mix(in srgb, var(--accent-color) 65%, transparent);
+  transform: translateY(-5px);
+  background: rgba(0, 200, 255, 0.055);
+  box-shadow: 0 10px 30px rgba(0, 200, 255, 0.1);
+}
+.quiz-card:hover::before { opacity: 1; }
+
+.quiz-card__icon {
+  font-size: 2.1rem;
+  line-height: 1;
+  margin-bottom: 2px;
+  filter: drop-shadow(0 0 10px rgba(0, 200, 255, 0.35));
+  transition: transform 0.3s ease;
+}
+.quiz-card:hover .quiz-card__icon { transform: scale(1.1) translateY(-2px); }
+
+.quiz-card__vol {
+  font-family: "Orbitron";
+  font-size: 0.82rem;
+  letter-spacing: 3px;
+  color: var(--accent-color);
+  opacity: 0.5;
+}
+
+.quiz-card__title {
+  color: var(--text-main);
+  font-weight: 700;
+  font-size: 0.85rem;
+  line-height: 1.65;
+  letter-spacing: 0.3px;
+  margin-top: 5px;
+}
+
+.quiz-card__cta {
+  margin-top: 8px;
+  font-family: "Orbitron";
+  font-size: 0.82rem;
+  letter-spacing: 2px;
+  color: var(--accent-color);
+  opacity: 0.62;
+  transition: opacity 0.25s;
+  white-space: nowrap;
+}
+.quiz-card:hover .quiz-card__cta { opacity: 1; }
+
+@media (max-width: 768px) {
+  .quiz-row { gap: 12px; }
+  .quiz-card { flex: 1 1 140px; padding: 1.2rem 1rem 1rem; }
+  .quiz-card__icon { font-size: 1.8rem; }
+  .quiz-card__title { font-size: 0.8rem; }
+}
+@media (max-width: 480px) {
+  .quiz-row { flex-direction: row; }
+  .quiz-card { flex: 1 1 120px; max-width: none; padding: 1rem 0.8rem; }
+}
+
+/* ══════════════════════════════════════
+   全頁美化：各區塊類型頂部色條
+   ══════════════════════════════════════ */
+
+/* GAME 區塊 — 橘紅頂部光邊 */
+#section-game::before {
+  background: linear-gradient(90deg, transparent, rgba(255, 107, 74, 0.52), transparent);
+}
+
+/* MUSIC 區塊 — 紫色頂部光邊 */
+#section-music::before {
+  background: linear-gradient(90deg, transparent, rgba(168, 85, 247, 0.5), transparent);
+}
+
+/* GAME 區塊 hover 邊框色 */
+#section-game:hover {
+  border-color: color-mix(in oklab, #ff6b4a 55%, transparent);
+  box-shadow:
+    var(--shadow-2),
+    0 0  0  1px color-mix(in oklab, #ff6b4a 20%, transparent),
+    0 30px 80px -20px rgba(200, 80, 40, 0.3),
+    inset 0 0 40px rgba(255, 107, 74, 0.025);
+}
+
+/* MUSIC 區塊 hover 邊框色 */
+#section-music:hover {
+  border-color: color-mix(in oklab, #a855f7 55%, transparent);
+  box-shadow:
+    var(--shadow-2),
+    0 0  0  1px color-mix(in oklab, #a855f7 20%, transparent),
+    0 30px 80px -20px rgba(120, 40, 200, 0.28),
+    inset 0 0 40px rgba(168, 85, 247, 0.025);
+}
+
+/* GAME 區塊 section-title icon 色 */
+#section-game .section-title i { color: #ff6b4a; filter: drop-shadow(0 0 8px #ff6b4a); }
+
+/* MUSIC 區塊 section-title icon 色 */
+#section-music .section-title i { color: #a855f7; filter: drop-shadow(0 0 8px #a855f7); }
+
+/* GAME 區塊 header 底部亮點色 */
+#section-game .section-header::after {
+  background: linear-gradient(90deg, #ff6b4a, transparent);
+}
+
+/* MUSIC 區塊 header 底部亮點色 */
+#section-music .section-header::after {
+  background: linear-gradient(90deg, #a855f7, transparent);
+}
+
+/* ══════════════════════════════════════
+   全頁美化：badge 微光增強
+   ══════════════════════════════════════ */
+.badge-game  { box-shadow: 0 0 10px rgba(255, 107, 74, 0.18); }
+.badge-music { box-shadow: 0 0 10px rgba(168,  85, 247, 0.18); }
+.badge-novel { box-shadow: 0 0 10px rgba(0, 200, 255, 0.15); }
+
+/* ══════════════════════════════════════
+   全頁美化：section-cover 圖片外框
+   ══════════════════════════════════════ */
+.section-cover .link-card {
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+  transition: box-shadow 0.4s ease, transform 0.4s ease;
+}
+.section-cover .link-card:hover {
+  box-shadow: 0 8px 36px rgba(0, 200, 255, 0.18), 0 4px 24px rgba(0, 0, 0, 0.4);
+}
+
+/* ══════════════════════════════════════
+   全頁美化：hero-meta 手機最佳化
+   ══════════════════════════════════════ */
+@media (max-width: 600px) {
+  .hero-meta {
+    padding: 6px 12px;
+    gap: 4px 6px;
+    font-size: 0.82rem;
+    border-radius: 16px;
+    max-width: 92vw;
+  }
+  .hero-meta-sep { display: none; }
+  .hero-quicknav { gap: 5px 8px; font-size: 0.82rem; }
+}
+
+/* ══════════════════════════════════════
+   Light mode overrides for new elements
+   ══════════════════════════════════════ */
+[data-theme="light"] .quiz-card {
+  background: rgba(26, 109, 204, 0.035);
+  border-color: rgba(26, 109, 204, 0.18);
+}
+[data-theme="light"] .quiz-card:hover {
+  background: rgba(26, 109, 204, 0.07);
+  border-color: rgba(26, 109, 204, 0.5);
+  box-shadow: 0 8px 24px rgba(26, 109, 204, 0.1);
+}
+[data-theme="light"] #section-game:hover {
+  border-color: rgba(200, 64, 32, 0.4);
+  box-shadow: var(--shadow-2), 0 30px 80px -20px rgba(200, 64, 32, 0.2);
+}
+[data-theme="light"] #section-music:hover {
+  border-color: rgba(124, 58, 237, 0.4);
+  box-shadow: var(--shadow-2), 0 30px 80px -20px rgba(124, 58, 237, 0.18);
+}
+
+/* ── 字命覺醒系列書籍列 ── */
+.sc-book-list {
+  display: flex;
+  flex-direction: column;
+}
+.sc-book-entry {
+  display: flex;
+  gap: 28px;
+  align-items: flex-start;
+  padding: 2rem 0;
+}
+.sc-book-entry + .sc-book-entry {
+  border-top: 1px dashed var(--glass-border);
+}
+.sc-book-entry:first-child { padding-top: 0; }
+.sc-book-entry:last-child  { padding-bottom: 0; }
+
+.sc-book-cover {
+  flex: 0 0 auto;
+  width: 130px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+}
+.sc-book-entry .section-booktitle { font-size: 1.6rem; }

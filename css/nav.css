@@ -48,7 +48,7 @@
 /* ── 分類標頭 ── */
 .side-cat-label {
   font-family: "Orbitron", sans-serif;
-  font-size: 0.58rem;
+  font-size: 0.82rem;
   font-weight: 700;
   letter-spacing: 2.5px;
   padding: 4px 12px;
@@ -376,8 +376,8 @@
     transform: translateY(0);
   }
 
-  .side-cat-label { font-size: 0.52rem; padding: 3px 9px; margin-top: 10px; }
-  .side-bubble    { font-size: 0.78rem; padding: 0 13px; min-height: 40px; }
+  .side-cat-label { font-size: 0.82rem; padding: 3px 9px; margin-top: 10px; }
+  .side-bubble    { font-size: 0.82rem; padding: 0 13px; min-height: 40px; }
 
   /* 手機隱藏連接線與節點 */
   .side-bubble::before,
