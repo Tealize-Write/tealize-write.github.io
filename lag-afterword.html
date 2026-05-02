@@ -408,6 +408,7 @@
     </div>
   </div>
 
+  <script src="js/config.js"></script>
   <script>
     (() => {
       // ── Storage helper ──
@@ -505,7 +506,7 @@
       const pollResults = document.getElementById("pollResults");
       const pollBtns    = document.querySelectorAll(".poll-btn");
 
-      const API_URL = "https://script.google.com/macros/s/AKfycbxx9-JwDwcQ-XPm4I782i9z0JfYpvw0em4ugiCPI28NR9pKyniRyebA1pTHWSJ6fGJ0/exec";
+      const API_URL = window.TEALIZE_GAS_URL || "";
 
       // ── clientId：掃描 value，找 uid_/ag_ 前綴 ──
       function getClientId() {
