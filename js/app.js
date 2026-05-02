@@ -594,7 +594,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   
   // ── 記錄進站人數 (PageView) ──
-  const API_URL = "https://script.google.com/macros/s/AKfycbxx9-JwDwcQ-XPm4I782i9z0JfYpvw0em4ugiCPI28NR9pKyniRyebA1pTHWSJ6fGJ0/exec";
+  const API_URL = window.TEALIZE_GAS_URL || "";
   window.TEALIZE_API_URL = API_URL; // 提前暴露給 tracking.js，消除 script 順序依賴
 
   // 與 tracking.js 相同優先順序：心測 ID → 本站 ID → 新建 ID
