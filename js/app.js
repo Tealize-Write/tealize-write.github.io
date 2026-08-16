@@ -597,17 +597,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const API_URL = window.TEALIZE_GAS_URL || "";
   window.TEALIZE_API_URL = API_URL; // 提前暴露給 tracking.js，消除 script 順序依賴
 
-  // 與 tracking.js 相同優先順序：心測 ID → 本站 ID → 新建 ID
-  function getOrCreateClientId() {
-    try {
-      const statsId = localStorage.getItem("abyss_client_id");
-      if (statsId && statsId.startsWith("uid_")) return statsId;
-      const existing = localStorage.getItem("tw_tealize_id");
-      if (existing) return existing;
-      const newId = "tw_" + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
-      localStorage.setItem("tw_tealize_id", newId);
-      return newId;
-    } catch { return ""; }
+  // ID 邏輯集中於 js/client-identity.js；模組未載入時提供最小 fallback
+  function resolveIdentity() {
+    return (window.ClientIdentity && window.ClientIdentity.get())
+      || { clientId: "", clientIdStatus: "missing", clientIdStorageStatus: "module_unavailable", isLegacyStats: false };
   }
 
   const visitorNumberEl = document.getElementById("visitorNumber");
@@ -615,7 +608,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (visitorNumberEl) {
     const isNewView = !sessionStorage.getItem("tealize.viewed");
     const action = isNewView ? "view" : "get";
-    const viewClientId = getOrCreateClientId();
+    const viewClientId = resolveIdentity().clientId;
 
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 8000);

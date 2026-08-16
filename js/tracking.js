@@ -9,33 +9,21 @@ document.addEventListener("DOMContentLoaded", () => {
     const API_URL = window.TEALIZE_API_URL;
     if (!API_URL) return;
 
-    // ── clientIdentity：依固定 key 順序查找，回傳完整識別資訊 ──
-    function getClientIdentity() {
-      try {
-        // 1. stats.js 專案的 ID（優先）
-        const statsId = localStorage.getItem("abyss_client_id");
-        if (statsId && statsId.startsWith("uid_")) {
-          return { clientId: statsId, source: "stats", playedStats: true };
-        }
-        // 2. 本站既有 ID
-        const existing = localStorage.getItem("tw_tealize_id");
-        if (existing) {
-          return { clientId: existing, source: "tealize", playedStats: false };
-        }
-        // 3. 新建本站 ID
-        const newId = "tw_" + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
-        localStorage.setItem("tw_tealize_id", newId);
-        return { clientId: newId, source: "tealize", playedStats: false };
-      } catch {
-        return { clientId: "unknown", source: "unknown", playedStats: false };
-      }
+    // ID 邏輯集中於 js/client-identity.js；模組未載入時提供最小 fallback
+    function resolveIdentity() {
+      return (window.ClientIdentity && window.ClientIdentity.get())
+        || { clientId: "", clientIdStatus: "missing", clientIdStorageStatus: "module_unavailable", isLegacyStats: false };
     }
 
-    // prefixLabel 保留做顯示分類，不再作為來源判定依據
+    // prefixLabel 保留做顯示分類，不再作為來源判定依據。
+    // 語意是「最初頒發此 ID 的站點」，不是使用者本次從哪裡進站——
+    // 因為 abyss_client_id 是三個測驗共用、先到先得、不會被覆寫（見 client-identity.js）。
     function prefixLabel(id) {
-      if (id.startsWith("uid_")) return "心測";
-      if (id.startsWith("ag_"))  return "賣貨便";
-      if (id.startsWith("tw_"))  return "兌";
+      if (id.startsWith("uid_"))  return "黑暗特質測驗";
+      if (id.startsWith("tale_")) return "反轉童話測驗";
+      if (id.startsWith("sc_"))   return "創作者屬性鑑定";
+      if (id.startsWith("ag_"))   return "賣貨便";
+      if (id.startsWith("tw_"))   return "兌";
       return id.substring(0, 4);
     }
 
@@ -61,7 +49,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const tzName    = Intl.DateTimeFormat().resolvedOptions().timeZone || "unknown";
     const tzOffset  = new Date().getTimezoneOffset();
-    const { clientId, source: clientIdSource, playedStats } = getClientIdentity();
+    const identity = resolveIdentity();
+    const clientId = identity.clientId;
+    const clientIdStatus = identity.clientIdStatus;
+    const clientIdStorageStatus = identity.clientIdStorageStatus;
+    const playedStats = identity.isLegacyStats;
     let enterTime = Date.now();
     let enterStr  = toTW8(enterTime);
 
@@ -116,21 +108,22 @@ document.addEventListener("DOMContentLoaded", () => {
       clickLog.push(`X:${reason}`);
       const urlParams = new URLSearchParams(window.location.search);
       const payload = JSON.stringify({
-        action:         "visit",
-        clientId:       clientId,
-        prefixLabel:    prefixLabel(clientId),
-        clientIdSource: clientIdSource,
-        playedStats:    playedStats,
-        tz:             String(tzOffset),
-        country:        countryResolved,
-        enterTime:      enterStr,
-        exitTime:       toTW8(exitTime),
-        stay:           staySeconds,
-        clicks:         clickLog.join(","),
-        source:         urlParams.get("utm_source") || "direct",
-        referrer:       document.referrer || "none",
-        device:         /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i
-                          .test(navigator.userAgent) ? "Mobile" : "Desktop"
+        action:                "visit",
+        clientId:              clientId,
+        prefixLabel:           prefixLabel(clientId),
+        clientIdStatus:        clientIdStatus,
+        clientIdStorageStatus: clientIdStorageStatus,
+        playedStats:           playedStats,
+        tz:                    String(tzOffset),
+        country:                countryResolved,
+        enterTime:              enterStr,
+        exitTime:               toTW8(exitTime),
+        stay:                   staySeconds,
+        clicks:                 clickLog.join(","),
+        source:                 urlParams.get("utm_source") || "direct",
+        referrer:               document.referrer || "none",
+        device:                 /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i
+                                  .test(navigator.userAgent) ? "Mobile" : "Desktop"
       });
       try {
         fetch(API_URL, {

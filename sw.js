@@ -1,5 +1,5 @@
 // Service Worker for Tealize Website
-const CACHE_VERSION = 18;
+const CACHE_VERSION = 19;
 const CACHE_NAME = `tealize-v${CACHE_VERSION}`;
 
 const urlsToCache = [
@@ -7,10 +7,12 @@ const urlsToCache = [
   '/index.html',
   '/lag-afterword.html',
   '/manifest.json',
+  '/js/client-identity.js',
   '/js/i18n.js',
   '/js/app.js',
   '/js/divination.js',
   '/js/tracking.js',
+  '/js/music.js',
   '/css/variables.css',
   '/css/base.css',
   '/css/nav.css',
@@ -19,6 +21,7 @@ const urlsToCache = [
   '/css/lag-section.css',
   '/css/code-mode.css',
   '/css/light-overrides.css',
+  '/css/music-section.css',
   '/css/responsive.css',
   '/img/avatar_white.jpg',
   '/img/avatar_black.jpg',

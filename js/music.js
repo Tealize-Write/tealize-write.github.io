@@ -390,19 +390,24 @@ function fmtTime(sec) {
 }
 
 // ── GAS 追蹤 ──
+// ID 邏輯集中於 js/client-identity.js；模組未載入時提供最小 fallback
+function resolveIdentity() {
+  return (window.ClientIdentity && window.ClientIdentity.get())
+    || { clientId: "", clientIdStatus: "missing", clientIdStorageStatus: "module_unavailable", isLegacyStats: false };
+}
+
 function sendMusicToGAS(event, trackTitle) {
   const API_URL = window.TEALIZE_API_URL;
   if (!API_URL) return;
   try {
-    let clientId = "";
-    const statsId = localStorage.getItem("abyss_client_id");
-    if (statsId && statsId.startsWith("uid_")) clientId = statsId;
-    else clientId = localStorage.getItem("tw_tealize_id") || "";
+    const identity = resolveIdentity();
     fetch(
       `${API_URL}?action=music` +
       `&event=${encodeURIComponent(event)}` +
       `&track=${encodeURIComponent(trackTitle)}` +
-      `&clientId=${encodeURIComponent(clientId)}`,
+      `&clientId=${encodeURIComponent(identity.clientId)}` +
+      `&clientIdStatus=${encodeURIComponent(identity.clientIdStatus)}` +
+      `&clientIdStorageStatus=${encodeURIComponent(identity.clientIdStorageStatus)}`,
       { keepalive: true }
     ).catch(() => {});
   } catch (_) {}
